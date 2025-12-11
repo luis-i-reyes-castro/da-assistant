@@ -6,8 +6,8 @@ kgstorage/
 
 # Directory Patterns
 */archive/
-agent_prompts/[a-z]*_T\d{2,}.md
-T\d{2,}_dkb/
+agent_prompts/*_T*0.md
+T*0_dkb/
 
 # Specific Files
 .env
