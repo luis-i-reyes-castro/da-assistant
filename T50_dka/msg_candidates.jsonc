@@ -1,0 +1,12 @@
+[
+{
+"key"          : "error_battery_compliance_region",
+"name"         : "Battery region compliance check failed – flight prohibited",
+"name_spanish" : "Los siguientes componentes no cumplen las normas pertinentes de la región actual. Vuelo prohibido. Ponte en contacto con el distribuidor para obtener ayuda"
+},
+{
+"key"          : "warning_terrain_follow_error",
+"name"         : "Terrain following deactivated – error setting crop height",
+"name_spanish" : "Seguimiento del terreno desactivado. Error al establecer la altura por encima de los cultivos"
+}
+]

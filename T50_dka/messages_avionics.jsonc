@@ -1,0 +1,148 @@
+[
+// Barometer
+{
+    "messages":
+    [
+    {
+    "key"          : "error_barometer_excessive_deviation",
+    "name"         : "Excessive barometer deviation",
+    "name_spanish" : "Desvío excesivo de barómetro"
+    },
+    {
+    "key"          : "error_barometer_out_of_range",
+    "name"         : "Barometer out of range",
+    "name_spanish" : "Barómetro fuera de rango"
+    },
+    {
+    "key"          : "error_barometer_static_altitude_change",
+    "name"         : "Aircraft static altitude change",
+    "name_spanish" : "Cambio de la altitud estática de la aeronave"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "barometer_absorbed_humidity"
+    ],
+    "signals":
+    [
+        "sensor_barometer_power_and_data"
+    ]
+    }
+},
+// CNN algorithm
+{
+    "messages":
+    [
+    {
+    "key"          : "error_cnn_algorithm",
+    "name"         : "Error initializing CNN algorithm. Restart aircraft or fly with caution.",
+    "name_spanish" : "Error al inicial el algoritmo de CNN. Re-inicie la aeronave o vuele con cuidado."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving"
+    ],
+    "signals": []
+    }
+},
+// Compass
+{
+    "messages":
+    [
+    {
+    "key"          : "error_compass",
+    "name"         : "Compass error. Check compass after completing the task to ensure flight safety",
+    "name_spanish" : "Error de brújula. Compruebe la brújula después de completar la tarea para garantizar la seguridad del vuelo"
+    },
+    {
+    "key"          : "error_magnetic_interference",
+    "name"         : "Magnetic interference. Move aircraft or calibrate compass with DJI Agras",
+    "name_spanish" : "Interferencia magnética. Mueva la aeronave o calibre la brújula con DJI Agras"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_avionics",
+        "large_iron_structures_near_takeoff_area",
+        "sensor_compass_calibration",
+        "using_compass_for_orientation"
+    ],
+    "signals": []
+    }
+},
+// Component compliance
+{
+    "messages":
+    [
+    {
+    "key"          : "error_component_compliance",
+    "name"         : "Certain components of aircraft do not comply with relevant standards in current region. Flight prohibited. Tap to view details",
+    "name_spanish" : "Ciertos componentes de la aeronave no cumplen con las normas pertinentes de la región actual. Vuelo prohibido. Toque para ver los detalles"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "component_compliance"
+    ],
+    "signals": []
+    }
+},
+// Flight control sensor and IMU
+{
+    "messages":
+    [
+    {
+    "key"          : "error_flight_control_sensor_cannot_take_off",
+    "name"         : "Flight control sensor error. Cannot take off",
+    "name_spanish" : "Error del sensor de control de vuelo. No se puede despegar"
+    },
+    {
+    "key"          : "error_flight_control_sensor_in_flight",
+    "name"         : "Flight control sensor error. Return to origin or land quickly to ensure flight safety",
+    "name_spanish" : "Error del sensor de control de vuelo. Regrese al punto de origen o aterrice rápidamente para garantizar la seguridad del vuelo"
+    },
+    {
+    "key"          : "error_IMU",
+    "name"         : "Position sensor error (IMU). Cannot take off",
+    "name_spanish" : "Error del sensor de posición (IMU). No se puede despegar"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_avionics",
+        "firmware_misbehaving"
+    ],
+    "signals": []
+    }
+},
+// Module version
+{
+    "messages":
+    [
+    {
+    "key"          : "error_module_version",
+    "name"         : "Aircraft module version incompatible",
+    "name_spanish" : "Versión del módulo Aeronave incompatible"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_update_needed"
+    ],
+    "signals": []
+    }
+}
+]

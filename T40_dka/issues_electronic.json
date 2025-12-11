@@ -1,0 +1,29 @@
+{
+"e_damage_avionics":
+{
+    "name": "Avionics Board: Possible Electronics-level Damage",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the Avionics Board."
+    ]
+},
+"e_damage_esc_{MOTOR}":
+{
+    "name": "ESC {SAME[MOTOR]}: Electronics-level Damage",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the ESC."
+    ]
+},
+"e_damage_radar_RF_board":
+{
+    "name": "Electronics-level Damage of the Radar's Internal Board",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the Omnidirectional Radar Module."
+    ]
+}
+}

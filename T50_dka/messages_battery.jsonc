@@ -1,0 +1,210 @@
+[
+// Aging
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_aging",
+    "name"         : "Battery aging. Calibration required",
+    "name_spanish" : "Envejecimiento de la batería. Necesita calibración"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_calibration_required"
+    ],
+    "signals": []
+    }
+},
+// Authentication failure and communication
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_authentication_failure",
+    "name"         : "Could not authenticate battery",
+    "name_spanish" : "No se ha podido autenticar la batería"
+    },
+    {
+    "key"          : "error_battery_communication",
+    "name"         : "Battery communication error. Cannot take off. Clean the battery charging port and the aircraft power distribution board",
+    "name_spanish" : "Error de comunicación de batería. No se puede despegar. Limpie el puerto de carga de la batería y la placa de distribución de energía de la aeronave"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals":
+    [
+        "battery_data"
+    ]
+    }
+},
+// Connector overheated
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_connector_overheated",
+    "name"         : "Battery connector overheated. Replace the battery, and clean or replace the interface panel.",
+    "name_spanish" : "Conector de batería sobrecalentado. Reemplace la batería, y limpie o reemplace el panel de la interfaz de..."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals":
+    [
+        "battery_power"
+    ]
+    }
+},
+// Large voltage differences between battery cells
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_large_voltage_differences_between_cells",
+    "name"         : "Large voltage differences between battery cells during discharge. Stop using the battery.",
+    "name_spanish" : "Gran diferencia de voltaje entre las celdas de la batería durante la descarga. Deje de utilizar la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_cells_damaged",
+        "battery_cells_out_of_balance",
+        "battery_control_board_damaged"
+    ],
+    "signals": []
+    }
+},
+// Maintenance
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_maintenance_required",
+    "name"         : "Battery maintenance required",
+    "name_spanish" : "La batería requiere mantenimiento"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_cells_out_of_balance",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals": []
+    }
+},
+// MOS overheating
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_mos_overheating",
+    "name"         : "Battery MOS overheating",
+    "name_spanish" : "Sobrecalentamiento MOS de la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_control_board_damaged"
+    ],
+    "signals": []
+    }
+},
+// Not properly mounted
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_not_properly_mounted",
+    "name"         : "Battery not properly mounted. Verify that the battery is correctly seated",
+    "name_spanish" : "La batería no está montada correctamente. Compruebe si la batería encaja en su posición"
+    }
+
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_not_properly_mounted",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals": []
+    }
+},
+// Self-check and voltage sensor
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_self_check",
+    "name"         : "Battery self-check error. Do not take off.",
+    "name_spanish" : "Error de comprobación automática de la batería. No despegue."
+    },
+    {
+    "key"          : "error_battery_voltage_sensor",
+    "name"         : "Battery voltage sensor error",
+    "name_spanish" : "Error del sensor de voltaje de la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_control_board_damaged",
+        "firmware_misbehaving",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals":
+    [
+        "battery_data"
+    ]
+    }
+},
+// Voltage
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_voltage",
+    "name"         : "Battery voltage error",
+    "name_spanish" : "Error de voltaje de la batería"
+    },
+    {
+    "key"          : "error_battery_voltage_too_high",
+    "name"         : "Battery voltage too high. Stop using the battery.",
+    "name_spanish" : "Voltaje de la batería demasiado alto. Deje de utilizar la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_cells_damaged",
+        "battery_cells_out_of_balance",
+        "battery_control_board_damaged",
+        "battery_level_too_low",
+        "excessive_loading",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals": []
+    }
+}
+]

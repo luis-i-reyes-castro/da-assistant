@@ -1,0 +1,144 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_authentication_failed",
+    "name"         : "Battery authentication failed",
+    "name_spanish" : "Ha fallado la autenticación de la batería"
+    },
+    {
+    "key"          : "error_battery_flight_controller_communication_error",
+    "name"         : "Communication error between flight controller and battery",
+    "name_spanish" : "Error de comunicación entre el controlador de vuelo y la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals":
+    [
+        "battery_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_connector_overheated",
+    "name"         : "Battery connector overheated. Replace the battery, and clean or replace the interface panel.",
+    "name_spanish" : "Conector de batería sobrecalentado. Reemplace la batería, y limpie o reemplace el panel de la interfaz de..."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals":
+    [
+        "battery_power"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_maintenance_required",
+    "name"         : "Battery maintenance required",
+    "name_spanish" : "Se requiere mantenimiento de la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_cells_out_of_balance",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_mos_overheating",
+    "name"         : "Battery MOS overheating",
+    "name_spanish" : "Sobrecalentamiento MOS de la batería"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_control_board_damaged",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_self_check",
+    "name"         : "Battery self-check error. Do not take off.",
+    "name_spanish" : "Error de comprobación automática de la batería. No despegue."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_control_board_damaged",
+        "firmware_misbehaving",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals":
+    [
+        "battery_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_battery_voltage",
+    "name"         : "Battery voltage error",
+    "name_spanish" : "Error de voltaje de la batería"
+    },
+    {
+    "key"          : "error_battery_voltage_too_high",
+    "name"         : "Battery voltage too high. Emergency landing in progress.",
+    "name_spanish" : "Salida de voltaje de la batería demasiado alta. Aterrizaje forzoso en curso."
+    },
+    {
+    "key"          : "error_battery_voltage_too_low",
+    "name"         : "Battery voltage too low. Emergency landing in progress.",
+    "name_spanish" : "Salida de voltaje de la batería demasiado baja. Aterrizaje forzoso en curso."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "battery_cells_damaged",
+        "battery_cells_out_of_balance",
+        "battery_control_board_damaged",
+        "battery_level_too_low",
+        "excessive_loading",
+        "pins_between_battery_and_pdb_dirty_or_damaged"
+    ],
+    "signals": []
+    }
+}
+]

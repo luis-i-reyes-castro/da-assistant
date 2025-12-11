@@ -1,0 +1,63 @@
+[
+{
+"signals":
+    [
+    "esc_{MOTOR_FRONT}_data",
+    "esc_{MOTOR_FRONT}_throttle",
+    "esc_{MOTOR_FRONT}_throttle_backup"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "board_esc_{SAME[MOTOR_FRONT]}"
+    }
+},
+{
+"signals":
+    [
+    "esc_{MOTOR_BACK}_data",
+    "esc_{MOTOR_BACK}_throttle"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "board_esc_{SAME[MOTOR_BACK]}",
+    "bridge": "cable_signal_left"
+    }
+},
+{
+"signals":
+    [
+    "esc_{MOTOR_BACK}_throttle_backup"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "board_esc_{SAME[MOTOR_BACK]}",
+    "bridge": "cable_signal_right"
+    }
+},
+{
+"signals":
+    [
+    "esc_{MOTOR_FRONT}_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "board_esc_{SAME[MOTOR_FRONT]}",
+    "bridge": "cable_esc_front_power_{CABLE_EFP_SIDE[MOTOR_FRONT]}"
+    }
+},
+{
+"signals":
+    [
+    "esc_{MOTOR_BACK}_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "board_esc_{SAME[MOTOR_BACK]}"
+    }
+}
+]

@@ -1,0 +1,72 @@
+[
+{
+"signals":
+    [
+    "battery_data"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "board_avionics",
+    "bridge": "cable_comm"
+    }
+},
+{
+"signals":
+    [
+    "battery_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "pdb"
+    }
+},
+{
+"signals":
+    [
+    "board_avionics_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "board_avionics",
+    "bridge": "cable_throttle"
+    }
+},
+{
+"signals":
+    [
+    "board_RF_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "board_RF",
+    "bridge": "cable_throttle"
+    }
+},
+{
+"signals":
+    [
+    "board_spray_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "board_spray",
+    "bridge": "cable_comm"
+    }
+},
+{
+"signals":
+    [
+    "board_spray_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "board_spray"
+    }
+}
+]

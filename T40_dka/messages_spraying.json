@@ -1,0 +1,280 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_disconnected",
+    "name"         : "Centrifugal nozzle {SAME[NOZZLE]} disconnected",
+    "name_spanish" : "Boquilla centrífuga {SAME[NOZZLE]} desconectada"
+    },
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_esc",
+    "name"         : "Centrifugal nozzle {SAME[NOZZLE]} ESC error",
+    "name_spanish" : "Boquilla Centrífuga {SAME[NOZZLE]} Error ESC"
+    },
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_esc_self_check",
+    "name"         : "Centrifugal nozzle {SAME[NOZZLE]} ESC self-check error",
+    "name_spanish" : "Boquilla Centrífuga {SAME[NOZZLE]} Fallo de Comprobación Automática ESC"
+    },
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_esc_timeout_exception",
+    "name"         : "Centrifugal nozzle {SAME[NOZZLE]} ESC timeout exception",
+    "name_spanish" : "Excepción de tiempo de funcionamiento del ESC de la boquilla centrífuga {SAME[NOZZLE]}"
+    },
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_voltage_low",
+    "name"         : "Centrifugal nozzle {SAME[NOZZLE]} voltage too low",
+    "name_spanish" : "Voltaje de la boquilla centrífuga {SAME[NOZZLE]} demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "motor_centrifugal_{SAME[NOZZLE]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_stuck",
+    "name"         : "Centrifugal Nozzle {SAME[NOZZLE]} stuck",
+    "name_spanish" : "Boquilla Centrífuga {SAME[NOZZLE]} Motor Atascado"
+    },
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_worn_out_or_clogged",
+    "name"         : "Centrifugal Nozzle {SAME[NOZZLE]} worn out or clogged",
+    "name_spanish" : "Cabezal del Boquilla Desgastado o Boquilla Obstruida (Boquilla Centrífuga {SAME[NOZZLE]})"
+    },
+    {
+    "key"          : "error_pump_{PUMP}_stuck",
+    "name"         : "Delivery pump {SAME[PUMP]} stuck",
+    "name_spanish" : "El rotor del motor {SAME[PUMP]} de la bomba de agua está bloqueado"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{SAME[PUMP]}_impeller_stuck",
+        "check_valve_{SAME[PUMP]}_stuck",
+        "centrifugal_nozzle_{SAME[NOZZLE]}_stuck"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_centrifugal_nozzle_{NOZZLE}_temperature_high",
+    "name"         : "Centrifugal Nozzle {SAME[NOZZLE]} temperature too high",
+    "name_spanish" : "Boquilla Centrífuga {SAME[NOZZLE]} Temperatura demasiado alta"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "centrifugal_nozzle_{SAME[NOZZLE]}_overheated"
+    ],
+    "signals":
+    [
+        "motor_centrifugal_{SAME[NOZZLE]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_flow_meter_disconnected",
+    "name"         : "Flow meter disconnected",
+    "name_spanish" : "Caudímetro desconectado"
+    },
+    {
+    "key"          : "error_flow_meter_voltage_high",
+    "name"         : "Flow meter voltage too high",
+    "name_spanish" : "Voltaje de carga del caudímetro demasiado alto"
+    },
+    {
+    "key"          : "error_flow_meter_voltage_low",
+    "name"         : "Flow meter voltage too low",
+    "name_spanish" : "Voltaje de carga del caudímetro demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "sensor_flow_meter_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_flow_meter_zero_calibration_exception",
+    "name"         : "Flow meter zero calibration exception",
+    "name_spanish" : "Excepción de puesta a cero del caudímetro"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "sensor_flow_meter_calibration"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_load_sensor_cable_broken",
+    "name"         : "Load sensor cable broken",
+    "name_spanish" : "Cable de conexión del sensor de peso roto"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "sensor_load_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_disconnected",
+    "name"         : "Delivery pump {SAME[PUMP]} disconnected",
+    "name_spanish" : "Bomba {SAME[PUMP]} desconectada"
+    },
+    {
+    "key"          : "error_pump_{PUMP}_esc",
+    "name"         : "Delivery pump {SAME[PUMP]} ESC error",
+    "name_spanish" : "Error del ESC de la bomba {SAME[PUMP]}"
+    },
+    {
+    "key"          : "error_pump_{PUMP}_esc_self_check",
+    "name"         : "Delivery pump {SAME[PUMP]} ESC self-check error",
+    "name_spanish" : "Error de autocomprobación del ESC de la bomba {SAME[PUMP]}"
+    },
+    {
+    "key"          : "error_pump_{PUMP}_esc_timeout_exception",
+    "name"         : "Delivery pump {SAME[PUMP]} ESC timeout exception",
+    "name_spanish" : "Excepción de tiempo de funcionamiento del ESC de la bomba {SAME[PUMP]}"
+    },
+    {
+    "key"          : "error_pump_{PUMP}_voltage_low",
+    "name"         : "Delivery pump {SAME[PUMP]} voltage too low",
+    "name_spanish" : "Voltaje de la bomba {SAME[PUMP]} demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "motor_pump_{SAME[PUMP]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_flow_calculation",
+    "name"         : "Delivery pump {SAME[PUMP]} flow calculation error",
+    "name_spanish" : "Error de cálculo de caudal de la bomba {SAME[PUMP]}"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{SAME[PUMP]}_motor_magnet_loose",
+        "check_valve_{SAME[PUMP]}_stuck"
+    ],
+    "signals":
+    [
+        "motor_pump_{SAME[PUMP]}_esc_power_and_data",
+        "sensor_flow_meter_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_temperature_high",
+    "name"         : "Delivery pump {SAME[PUMP]} temperature too high",
+    "name_spanish" : "Bomba {SAME[PUMP]} temperatura demasiado alta"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{SAME[PUMP]}_overheated"
+    ],
+    "signals":
+    [
+        "motor_pump_{SAME[PUMP]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_single_point_hall_sensor",
+    "name"         : "Single-point hall sensor error",
+    "name_spanish" : "Error en sensor de nivel de líquido Hall de punto único"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "liquid_level_gauge_misalignment"
+    ],
+    "signals":
+    [
+        "sensor_liquid_level_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_single_point_hall_sensor_disconnected",
+    "name"         : "Single-point hall sensor disconnected",
+    "name_spanish" : "Sensor de nivel de líquido Hall de punto único desconectado"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "sensor_liquid_level_power_and_data"
+    ]
+    }
+}
+]

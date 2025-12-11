@@ -1,0 +1,50 @@
+{
+"firmware_misbehaving":
+{
+    "name": "Firmware Is Misbehaving",
+    "solutions":
+    [
+    "Restart the drone."
+    ]
+},
+"firmware_update_needed":
+{
+    "name": "Firmware Needs to be Updated",
+    "solutions":
+    [
+    "Go to a place with reliable WiFi signal and update the drone's firmware."
+    ]
+},
+"camera_fpv_parameter_update_needed":
+{
+    "name": "FPV Camera Parameters Need to be Updated",
+    "solutions":
+    [
+    "Go to the App's start screen. A message will pop up prompting you to update the FPV camera parameters. Press the 'Update' button and wait for the process to finish."
+    ]
+},
+"generic_esc_state_error":
+{
+    "name": "Generic (Non-indexed) ESC State Error Message",
+    "solutions":
+    [
+    "Read the other error messages to determine which ESC is not working properly."
+    ]
+},
+"sensor_flow_meter_calibration":
+{
+    "name": "Flow Meter Needs Calibration",
+    "solutions":
+    [
+    "Calibrate the flow meter"
+    ]
+},
+"sensor_fwd_vision_calibration":
+{
+    "name": "Front Vision Sensors Needs Calibration",
+    "solutions":
+    [
+    "Calibrate the front vision sensors using the calibration pattern sheet"
+    ]
+}
+}

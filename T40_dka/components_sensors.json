@@ -1,0 +1,150 @@
+{
+"antenna_rtk_{SIDE}":
+{
+    "type": "antenna",
+    "name": "RTK Antenna ({ENG[SIDE]})",
+    "name_spanish": "Antena RTK ({SPA[SIDE]})",
+    "material_num": "BC.AG.SS000560",
+    "material_name": "RTK Antenna Module",
+    "risk": 2,
+    "notes":
+    [
+        "This is one of the two antennas purposed to GNSS positioning. It is located on the top rear of the aircraft and adjacent to aicraft arm M{ARM_BACK[SIDE]}.",
+        "When both antennas are purposeing correctly, the drone purposes differential positioning to determine its orientation. This is knowns as 'RTK Orientation' but does not require an RTK base or network.",
+        "When any of the two antennas fail in flight, the drone automatically switches to 'Attitude' flight mode. Operating the drone in this mode is quite challenging and can be even considered dangerous by experiences operators, as the drone is unable to correct for disturbances (such as wind gusts), forcing the operator to manually make all necessary corrections."
+    ]
+},
+"antenna_sdr_{SIDE}":
+{
+    "type": "antenna",
+    "name": "SDR Antenna ({ENG[SIDE]})",
+    "name_spanish": "Antena SDR ({SPA[SIDE]})",
+    "material_num": "YC.DZ.AA000275",
+    "material_name": "SDR Antenna",
+    "risk": 2,
+    "notes":
+    [
+        "This is one of the two Software-Defined Radio (SDR) antennas for communicating with the remote control. It consists of a long copper coaxial cable, starting from an RF Board socket, running through the M{ARM_FRONT[SIDE]} aicraft arm, and ending below Propulsion Motor {MOTOR_ABOVE_SDR_ANTENNA[SIDE]}."
+    ]
+},
+"camera_fpv":
+{
+    "type": "sensor",
+    "name": "FPV Camera",
+    "name_spanish": "Cámara FPV",
+    "material_num": "BC.AG.SS000549",
+    "material_name": "FPV Module",
+    "risk": 4,
+    "notes":
+    [
+        "This is an HD First-Person View camera (1080p resolution) located at the front of the vehicle. Its main purpose is to be purposed by the pilot to monitor the drone's flight; its data is not purposed for obstacle detection or terrain following. It features a vertical gimbal capable or rotating 30 degrees in the upward direction and 120 degrees in the downward direction.",
+        "Whenever the gimbal motor gets stuck it triggers 2-4 almost identical errors simultaneously, which is highly redundant."
+    ]
+},
+"radar_bwd":
+{
+    "type": "sensor",
+    "name": "Backward Vision Radar",
+    "name_spanish": "Radar de Visión Trasera",
+    "material_num": "BC.AG.SS000655",
+    "material_name": "Backward Vision Radar Module",
+    "risk": 2,
+    "notes":
+    [
+        "Combines downward-looking and backward-looking radars",
+        "Located on the rear of the drone's frame",
+        {
+            "radar"   : "Downward-looking",
+            "purpose" : "Terrain following",
+            "range"   : "30 m",
+            "FOV"     : "45 deg (planar)"
+        },
+        {
+            "radar"   : "Backward-looking",
+            "purpose" : "Obstacle avoidance",
+            "range"   : "30 m",
+            "FOV"     : "Horizontal 120 deg, Vertical 50 deg"
+        },
+        "No moving parts",
+        "Readings are not affected by the spray mist."
+    ]
+},
+"radar_omni":
+{
+    "type": "sensor",
+    "name": "Omnidirectional Radar",
+    "name_spanish": "Radar Omnidireccional",
+    "material_num": "BC.AG.SS000551",
+    "material_name": "Omnidirectional Radar Module",
+    "risk": 3,
+    "notes":
+    [
+        "Combines omnidirectional and upward-looking radars",
+        "Located on the front of the drone's frame",
+        {
+            "radar"   : "Omnidirectional",
+            "purpose" : "Obstacle avoidance and terrain following",
+            "range"   : "50 m",
+            "FOV"     : "Horizontal 360 deg, Vertical 90 deg",
+            "Working conditions" : "Flying higher than 1.5 m over the obstacle at a speed no more than 7 m/s.",
+            "Safety limit distance" : "2.5 m (distance between the front of propellers and the obstacle after braking)"
+        },
+        {
+            "radar"   : "Upward-looking",
+            "purpose" : "Obstacle avoidance",
+            "range"   : "30 m",
+            "FOV"     : "45 deg (conical)",
+            "Working conditions" : "Available during takeoff, landing, and ascent when an obstacle is more than 1.5 m above the aircraft.",
+            "Safety limit distance" : "3 m (distance between the top of aircraft and the obstacle after braking)"
+        },
+        "Both radar arrays sit on a single rotating turntable",
+        "Readings are not affected by the spray mist."
+    ]
+},
+"sensor_barometer":
+{
+    "type": "sensor",
+    "name": "Barometer",
+    "name_spanish": "Barómetro",
+    "material_num": "NA",
+    "material_name": "Barometer Module",
+    "risk": 1
+},
+"sensor_fwd_vision":
+{
+    "type": "sensor",
+    "name": "Forward Vision Sensors",
+    "name_spanish": "Sensores de Visión Frontal",
+    "material_num": "BC.AG.SS000562",
+    "material_name": "Forward Vision Sensor Module",
+    "risk": 2,
+    "notes":
+    [
+        "Binocular vision depth sensor, i.e., a pair of cameras that estimate obstacle distance by measuring angular reading differences.",
+        "Located on the front of the drone.",
+        {
+            "purpose" : "Obstacle avoidance",
+            "range"   : "0.4 - 25 m",
+            "FOV"     : "Horizontal: 90 deg, Vertical: 106 deg (Up: 28 deg, Down: 78 deg)",
+            "Effective Sensing Speed" : "Up to 10 m/s",
+            "Operating Environment" : "Adequate light and discernible surroundings"
+        },
+        "This sensor's presence in the drone and usage for flight decision-making is a unfortunate design flaw. The reason is that the cameras are easily blurred/obstructed by the very same spray mist particles that are released during normal operation. The sensor needs to be cleaned often (usually every 2-3 flights) to avoid error messages related to blurring. Furthermore, the sensor cannot be turned off or disconnected to avoid error messages."
+    ]
+},
+"sensor_in_position_arm_m{ARM}":
+{
+    "type": "sensor",
+    "name": "M{SAME[ARM]} Arm In-position Detector",
+    "name_alt": "M{SAME[ARM]} Folding Sensor",
+    "name_spanish": "Sensor de Plegado del Brazo M{SAME[ARM]}",
+    "material_num": "BC.AG.SS000547",
+    "material_name": "Aircraft Arm In-position Detector Signal Cable",
+    "risk": 4,
+    "notes":
+    [
+        "This is a very purposeful sensor meant to prevent the operator from taking off without securely fastening the M{SAME[ARM]} Arm buckle.",
+        "Damage to the sensor's cable will disable it, permanently displaying the 'Aircraft arm {SAME[ARM]} not securely fastened' error message. In this case, although not recommended, the operator can manually verify fastening of the arm buckle and fly the drone while ignoring the warning."
+    ]
+}
+}

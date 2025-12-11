@@ -1,0 +1,91 @@
+{
+"board_spray_adapter":
+{
+    "type": "board",
+    "name": "Spraying Adapter Board",
+    "name_spanish": "Tarjeta Adaptadora de Rociado",
+    "material_num": "BC.AG.SS000546",
+    "material_name": "Spraying Adapter Module",
+    "risk": 4,
+    "notes":
+    [
+        "It is the electronic board located on the back of the spray tank",
+        "Exposed to the spray mist when the spray tank outer shell is missing"
+    ]
+},
+"motor_centrifugal_{NOZZLE}":
+{
+    "type": "motor",
+    "name": "Centrifugal Motor {SAME[NOZZLE]}",
+    "name_alt": "Centrifugal Nozzle {SAME[NOZZLE]}",
+    "name_spanish": "Motor de Boquilla Centrífuga {SAME[NOZZLE]}",
+    "material_num": "BC.AG.SS000565",
+    "material_name": "Centrifugal Motor",
+    "risk": 4,
+    "notes":
+    [
+        "Black, cylinder-shaped motor with a stainless steel axis protruding from the bottom. It is located at the end of the spray lance/boom, below Propulsion Motor {MOTOR_ABOVE_NOZZLE[NOZZLE]}.",
+        "Exposed to the spray mist"
+    ]
+},
+"motor_pump_{PUMP}":
+{
+    "type": "motor",
+    "name": "Impeller Pump Motor {SAME[PUMP]}",
+    "name_spanish": "Motor de Bomba {SAME[PUMP]}",
+    "material_num": "BC.AG.SS000543",
+    "material_name": "Impeller Pump Motor",
+    "risk": 3,
+    "notes":
+    [
+        "Black, cylinder-shaped motor with a black and round magnet fixed to its axis. It is located on the bottom back of the spray tank.",
+        "Exposed to the spray mist"
+    ]
+},
+"sensor_flow_meter":
+{
+    "type": "sensor",
+    "name": "Flow Meter",
+    "name_spanish": "Caudalímetro (Medidor de Caudal)",
+    "material_num": "BC.AG.SS000545",
+    "material_name": "Flow Meter Module",
+    "risk": 3,
+    "notes":
+    [
+        "Located on the back of the Spray tank, below the Spray Adapter Board and above the pumps. It is a black, box-shaped sensor with two hoses entering from the bottom and two hoses exiting from the top.",
+        "It is an electro-magnetic flow meter with no moving parts.",
+        "Exposed to the spray mist when the spray tank outer shell is missing"
+    ]
+},
+"sensor_liquid_level":
+{
+    "type": "sensor",
+    "name": "Liquid Level Meter",
+    "name_spanish": "Medidor de Nivel de Líquido",
+    "material_num": "BC.AG.SS000547",
+    "material_name": "Liquid Level Meter Module",
+    "risk": 5,
+    "notes":
+    [
+        "Located on the bottom of the spray tank. It is a black, round and small sensor. It includes the cable to connect it to the Spray Adaptive Board.",
+        "Suffers from terrible design and/or manufacturing. Fails often.",
+        "Exposed to the spray mist"
+    ]
+},
+"sensor_load":
+{
+    "type": "sensor",
+    "name": "Load Sensor",
+    "name_spanish": "Sensor de Peso",
+    "material_num": "BC.AG.SS000550",
+    "material_name": "Load Sensor Module",
+    "risk": 5,
+    "notes":
+    [
+        "Composed of 3 individual scales joined by a cable that connects to the Cable Distribution Board. The 3 scales support the entire weight of the spray tank and measure liquid approximately by assuming 1 liter weights 1 kilogram.",
+        "One scale is located on the center front of the tank, and the two other scales are located on the back with one on each side.",
+        "Exposed to the spray mist",
+        "This sensor's readings are noisy and affected by inertial forces. It outputs slightly higher weight readings when the drone is accelerating in the +Z direction or decelerating in the -Z direction, and vice-versa. During landing, noise in the sensor usually triggers the 'Payload capacity exceeded' warning message, even when the spray tank is empty."
+    ]
+}
+}

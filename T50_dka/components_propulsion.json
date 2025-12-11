@@ -1,0 +1,20 @@
+{
+"board_esc_{MOTOR}":
+{
+    "type": "esc",
+    "name": "ESC {SAME[MOTOR]}",
+    "name_spanish": "ESC {SAME[MOTOR]}",
+    "material_num": "BC.AG.SS000700",
+    "material_name": "ESC Module",
+    "risk": 2
+},
+"motor_propulsion_{MOTOR}":
+{
+    "type": "motor",
+    "name": "Propulsion Motor {SAME[MOTOR]}",
+    "name_spanish": "Motor de Propulsión {SAME[MOTOR]}",
+    "material_num": "BC.AG.SS000668",
+    "material_name": "10033 Propulsion Motor",
+    "risk": 3
+}
+}

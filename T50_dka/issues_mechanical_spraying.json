@@ -1,0 +1,143 @@
+{
+"centrifugal_nozzle_arm_{ARM_BACK}_overheated":
+{
+    "name": "Arm {SAME[ARM_BACK]} Centrifugal Nozzle Overheated",
+    "solutions":
+    [
+    "Verify that the centrifugal nozzle motor feels hot. If so, let the motor cool down for 10 minutes before resuming operations.",
+    "If overheating persists and affects only one of the two nozzle motors, try swap tests."
+    ]
+},
+"centrifugal_nozzle_arm_{ARM_BACK}_stuck":
+{
+    "name": "Arm {SAME[ARM_BACK]} Centrifugal Nozzle Stuck",
+    "solutions":
+    [
+    "Check if the centrifugal nozzle motor is stuck."
+    ]
+},
+"check_valve_{PUMP}_stuck":
+{
+    "name": "Check Valve {SAME[PUMP]} is Stuck",
+    "solutions":
+    [
+    "Disassemble the check valve, clean its componentes, and reassemble it."
+    ]
+},
+"pump_{PUMP}_impeller_stuck":
+{
+    "name": "Pump {SAME[PUMP]} Impeller is Stuck",
+    "solutions":
+    [
+    "Open the pump casing and clean the impeller."
+    ]
+},
+"pump_{PUMP}_motor_magnet_loose":
+{
+    "name": "Pump {SAME[PUMP]} Motor Magnet is Loose",
+    "solutions":
+    [
+    "Replace the pump motor."
+    ]
+},
+"pump_{PUMP}_overheated":
+{
+    "name": "Pump {SAME[PUMP]} Overheated",
+    "solutions":
+    [
+    "Verify that the pump motor feels hot. If so, let the motor cool down for 10 minutes before resuming operations.",
+    "If overheating persists and affects only one of the two pump motors, try swap tests."
+    ]
+},
+"sensor_flow_meter_input_hoses_swapped":
+{
+    "name": "Flow Meter Input Hoses Swapped",
+    "solutions":
+    [
+    "Look for the words 'IN' and 'OUT' embossed on the upper and lower surfaces of the flow meter, respectively. They should be next to the numbers '1' and '2', also embossed, which indicate the water input/output channels.",
+    "The word 'OUT' must be facing upwards. If the word 'OUT' is facing downwards then the flow meter is incorrectly installed.",
+    "The word 'IN' must be facing downwards. If the word 'IN' is facing upwards then the flow meter is incorrectly installed.",
+    "The hose coming from pump 1 (left side) must feed into 'IN 1'.",
+    "The hose coming from pump 2 (right side) must feed into 'IN 2'.",
+    "The hose coming out of 'OUT 1' must feed into check valve 1 (left side).",
+    "The hose coming out of 'OUT 2' must feed into check valve 2 (right side)."
+    ]
+},
+"sensor_liquid_level_gauge_misalignment":
+{
+    "name": "Liquid Level Gauge Out Misalignment",
+    "solutions":
+    [
+    "Check if the liquid level gauge is misaligned or misplaced."
+    ]
+},
+"solenoid_valve_arm_{ARM_BACK}_stuck":
+{
+    "name": "Arm {SAME[ARM_BACK]} Solenoid Valve is Stuck",
+    "solutions":
+    [
+    "Check whether the valve cable is disconnected or damaged.",
+    "Take the part to a service center for disassembly and cleanup. If cleanup does not resolve the problem then replace the part."
+    ]
+},
+"thick_mixture":
+{
+    "name": "Pesticide Mixture is Too Thick",
+    "solutions":
+    [
+        "Try a lighter mixture and avoid using wettable powders (WP) or thick suspension concentrates (SC) whenever possible.",
+        {
+            "suggestion": "Avoid the following products in powder or suspension concentrate presentations. If needed, prefer soluble liquid (SL) or pre-diluted formulations.",
+            "products":
+            [
+                {
+                    "name": "Algae extracts (crystallized, powdered)",
+                    "formulations": ["WP"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Ametryn",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Atrazine",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "2,4-D (amine salts safer; poor-quality or WP versions problematic)",
+                    "formulations": ["SL (amine salt)", "WP"],
+                    "risk": "Medium"
+                },
+                {
+                    "name": "Mancozeb",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Sulphur (wettable sulphur)",
+                    "formulations": ["WP"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Copper compounds (oxychloride, hydroxide, sulphate)",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Kaolin clay (particle film protectants)",
+                    "formulations": ["WP"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Micronutrient powders (zinc oxide, manganese oxide, borax, etc.)",
+                    "formulations": ["WP", "Dispersible powder"],
+                    "risk": "Medium"
+                }
+            ]
+        },
+        "Apply the secondary dilution method, also known as the two-step dilution method. That is, pre-dilute each product alone (by itself) in a small to medium-sized container before adding it to the main mixture tank."
+    ]
+}
+}

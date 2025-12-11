@@ -1,0 +1,104 @@
+{
+"ambient_light":
+{
+    "name": "Ambient Light is Too Low",
+    "notes":
+    [
+    "You are probably trying to operate either before dawn or after sunset. Getting this warning at night is totally normal."
+    ],
+    "solutions":
+    [
+    "Avoid flying at night.",
+    "If flying at night, avoid flying the drone at speeds above 7 meters per second or 25.2 kilometers per hour."
+    ]
+},
+"arm_{ARM}_not_secured":
+{
+    "name": "Forgot to Securely Fasten the Arm {SAME[ARM]} Locking Piece Handle",
+    "solutions":
+    [
+    "Do not forget to secure the arm {SAME[ARM]} locking piece handle"
+    ]
+},
+"battery_level_too_low":
+{
+    "name": "Operator Allowed Battery Level to Fall Below 5% During Flight",
+    "solutions":
+    [
+    "Avoid operating the aicraft at battery levels below 15%.",
+    "Configure the drone to perform an automatic RTH (Return to Home) when the battery level reaches 30%. Increase the RTH threshold if operating the aircraft at distances greater than 800 meters from the landing location."
+    ]
+},
+"excessive_loading":
+{
+    "name": "Excessive Loading",
+    "solutions":
+    [
+    "Do not load the aircraft with more than 35 liters."
+    ]
+},
+"kp_factor_too_high":
+{
+    "name": "KP Factor Too High",
+    "solutions":
+    [
+    "Check the KP factor using an app like UAV Forecast. If it is above 7, suspend operations and wait for the KP factor to decrease."
+    ]
+},
+"large_iron_structures_near_takeoff_area":
+{
+    "name": "Large Iron Structures Near Takeoff Area",
+    "solutions":
+    [
+    "Check the surroundings of the takeoff area for large iron structures such as antenna towers, factories or industrial structures, power line towers, warehouses, water towers and/or zinc-plated roofs.",
+    "If any of the aforementioned structures are present, move the takeoff area to a location where they are far enough for the error message to disappear."
+    ]
+},
+"mission_radius_too_high":
+{
+    "name": "Mission Radius Too High",
+    "notes":
+    [
+    "The mission radius is the maximum distance between the takeoff point and any point where the aircraft is supposed to fly. You are probably trying to send the aircraft to fly too far from the takeoff point."
+    ],
+    "solutions":
+    [
+    "Reduce the field (map) size.",
+    "Move the takeoff point to a place where the mission radius is smaller."
+    ]
+},
+"rtk_positioning_on":
+{
+    "name": "RTK Positioning is On",
+    "solutions":
+    [
+    "If you are not using an RTK antenna, turn off RTK positioning.",
+    "If you are using an RTK antenna, check that it is on and working properly."
+    ]
+},
+"takeoff_area_too_tight":
+{
+    "name": "Takeoff Area is Too Tight",
+    "solutions":
+    [
+    "Turn the aircraft off, rotate it 90 degrees, and restart it.",
+    "Move the takeoff point to an area with more clearance, where the GNSS antennas can acquire more satellites."
+    ]
+},
+"zone_altitude":
+{
+    "name": "Takeoff Area is In a Restricted Altitude Zone (150 meters)",
+    "solutions":
+    [
+    "Obey the warning and do not fly above 150 meter from the ground."
+    ]
+},
+"zone_restricted_or_warning":
+{
+    "name": "Takeoff Area is In a Restricted or Warning Zone",
+    "solutions":
+    [
+    "Contact your DJI dealer for information on how to unblock flight in this area."
+    ]
+}
+}

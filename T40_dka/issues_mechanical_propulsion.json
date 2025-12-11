@@ -1,0 +1,41 @@
+{
+"arm_{ARM}_locking_piece_handle":
+{
+    "name": "Arm {SAME[ARM]} Locking Piece Handle is Loose or Damaged",
+    "solutions":
+    [
+    "If the arm locking piece handle is loose, then tighten it up by rotating the locking piece connection rod in the counterclockwise direction (use a 6 mm wrench).",
+    "If the arm locking piece handle is damaged, then replace it"
+    ]
+},
+"motor_propulsion_{MOTOR}_dirty_damaged":
+{
+    "name": "Propulsion Motor {SAME[MOTOR]} Dirty or Damaged",
+    "solutions":
+    [
+    "Check whether the motor makes scratching noises when turned.",
+    "If motor makes scratching noises, attempt to clean it using a PTFE-based lubricant spray (such as WD-40 Specialist Dry Lubricant) and compressed air. Avoid usage of regular lubricant spray (such as regular Wd-40) because dust particules will stick to the residual protective oil layer.",
+    "If motor continues to make scratching noises after thorough cleanup, replace the motor."
+    ]
+},
+"motor_propulsion_{MOTOR}_stuck":
+{
+    "name": "Propulsion Motor {SAME[MOTOR]} Stuck",
+    "solutions":
+    [
+    "Check whether motor or propeller are stuck."
+    ]
+},
+"something_loose":
+{
+    "name": "Some Propeller, Motor, or Aircraft Arm is Loose",
+    "solutions":
+    [
+    "Make sure the propeller screws are tight",
+    "Look at the propeller gaskets/spacers and replace them if they are worn out or too soft",
+    "Check if any propeller looks bent or feels weak",
+    "Hold the motor and see if the shaft wobbles or feels loose. Do this with the motor and propellers installed, because it is much easier to detect the wobble this way than by holding the motor alone",
+    "Gently move the aircraft arm and check if it is loose where it connects to the frame"
+    ]
+}
+}

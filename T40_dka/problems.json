@@ -1,0 +1,62 @@
+{
+"problem_cannot_turn_on_aircraft":
+{
+    "name": "Cannot turn on aircraft",
+    "name_spanish": "No se puede encender la aeronave"
+},
+"problem_cannot_link_to_aircraft":
+{
+    "name": "Cannot link to aircraft",
+    "name_spanish": "No se puede vincular a la aeronave"
+},
+"problem_rth_mission_end":
+{
+    "name": "Aircraft does not execute RTH at mission end (despite being programmed to do so)",
+    "name_spanish": "El dron no ejecuta el RPO al finalizar la misión (a pesar de estar programado para hacerlo)."
+},
+"problem_rth_tank_empty":
+{
+    "name": "Aircraft does not execute RTH when tank is empty (despite being programmed to do so)",
+    "name_spanish": "El dron no ejecuta el RPO al acabar el líquido del tanque (a pesar de estar programado para hacerlo)."
+},
+"problem_rth_low_battery":
+{
+    "name": "Aircraft does not execute RTH at low battery (despite being programmed to do so)",
+    "name_spanish": "El dron no ejecuta el RPO al llegar al nivel de batería baja (a pesar de estar programado para hacerlo)."
+},
+"problem_aircraft_flight_unstable":
+{
+    "name": "Aircraft flight is unstable",
+    "name_spanish": "El vuelo de la aeronave es inestable"
+},
+"problem_incorrect_spray_tank_volume":
+{
+    "name": "Incorrect spray tank volume",
+    "name_spanish": "Volumen incorrecto del tanque de rociado"
+},
+"problem_calibration_result_pump_{PUMP}_fail":
+{
+    "name": "Calibration result pump {SAME[PUMP]} fail",
+    "name_spanish": "Resultado de calibración de la bomba {SAME[PUMP]} fallido"
+},
+"problem_calibration_result_flow_meter_fail":
+{
+    "name": "Calibration result flow meter fail",
+    "name_spanish": "Resultado de calibración del caudímetro fallido"
+},
+"problem_flow_meter_zero_pumps_running":
+{
+    "name": "Flow meter displays zero liters per minute even though the pumps are running",
+    "name_spanish": "El caudímetro marca cero litros por minuto a pesar de que las bombas estan funcionando"
+},
+"problem_flow_meter_exceeds_12_liters_per_minute":
+{
+    "name": "Flow meter exceeds 12 liters per minute",
+    "name_spanish": "El caudímetro marca más de 12 litros por minuto"
+},
+"problem_load_capacity_exceeded":
+{
+    "name": "Load capacity exceeded error is displayed even though the load is less than 40 liters",
+    "name_spanish": "El error de capacidad de carga aparece muestra a pesar de que la carga se encuentra por debajo de 40 litros"
+}
+}

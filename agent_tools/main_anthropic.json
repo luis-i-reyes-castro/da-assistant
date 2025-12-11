@@ -1,0 +1,34 @@
+[
+{
+"name"         : "get_component_data",
+"description"  : "DKDB: Get detailed data for one or more component keys",
+"input_schema" :
+    {
+    "type"       : "object",
+    "properties" :
+        {
+        "component_keys" :
+            {
+            "type"  : "array",
+            "items" :
+                {
+                "type" : "string"
+                },
+            "description" : "List of component keys. If component keys are associated with motors, ESCs, pumps or nozzles then keys must be indexed and cannot have placeholders. Examples:\n* Correct: ['motor_centrifugal_2','board_esc_6']\n* Incorrect: ['motor_centrifugal_{NOZZLE}','board_esc_{MOTOR}']"
+            }
+        },
+    "required"             : ["component_keys"],
+    "additionalProperties" : false
+    }
+},
+{
+"name"         : "mark_as_resolved",
+"description"  : "Mark the current case as resolved and close it",
+"input_schema" :
+    {
+    "type"       : "object",
+    "properties" : {},
+    "additionalProperties" : false
+    }
+}
+]

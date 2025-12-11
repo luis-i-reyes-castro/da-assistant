@@ -1,0 +1,86 @@
+{
+"sides":
+[
+    "cdb",
+    "board_spray"
+],
+"bridges":
+{
+    "cable_comm" :
+    [
+        ["cdb", "cable_comm"],
+        ["cable_comm", "board_spray"]
+    ],
+    "cable_throttle" :
+    [
+        ["cdb", "cable_throttle"],
+        ["cable_throttle", "board_spray"]
+    ],
+    "cable_front_nozzle_power" :
+    [
+        ["cdb", "cable_front_nozzle_power"],
+        ["cable_front_nozzle_power", "board_spray"]
+    ],
+    "cable_esc_front_power_{SIDE}" :
+    [
+        ["pdb", "cable_esc_front_power_{SAME[SIDE]}"],
+        ["cable_esc_front_power_{SAME[SIDE]}", "cable_esc_arm_m{ARM_FRONT[SIDE]}"]
+    ]
+},
+"edges":
+{
+    "cdb":
+    [
+    
+        ["cdb", "board_avionics"],
+        ["board_avionics", "cable_camera_fpv"],
+        ["cable_camera_fpv", "camera_fpv"],
+        ["board_avionics", "sensor_barometer"],
+        ["cdb", "cable_sensor_fwd_vision_{UL}"],
+        ["cable_sensor_fwd_vision_{UL}", "sensor_fwd_vision_{SAME[UL]}"],
+        ["cdb", "cable_radar_fwd"],
+        ["cable_radar_fwd", "radar_fwd"],
+        
+        ["cdb", "board_RF"],
+        ["board_RF", "antenna_sdr_front_{SIDE}"],
+        ["board_RF", "antenna_sdr_rear_{SIDE}"],
+        ["board_RF", "cable_rtk_{RTK}"],
+        ["cable_rtk_{RTK}", "antenna_rtk_{SAME[RTK]}"],
+        
+        ["cdb", "cable_light"],
+        ["cable_light", "light_{SIDE}"],
+        
+        ["cdb", "cable_esc_arm_m{ARM_FRONT}"],
+        ["board_esc_{MOTOR_FRONT}", "cable_esc_arm_m{ARM[MOTOR_FRONT]}"],
+        ["board_esc_{MOTOR_FRONT}", "motor_propulsion_{SAME[MOTOR_FRONT]}"]
+        
+    ],
+    "board_spray":
+    [
+    
+        ["pdb", "battery"],
+        ["pdb", "board_spray"],
+        
+        ["board_spray", "cable_radar_rear"],
+        ["cable_radar_rear", "radar_rear"],
+        
+        ["board_spray", "sensor_weight"],
+        ["board_spray", "cable_spray_adaptive"],
+        ["cable_spray_adaptive", "cable_spray_signal"],
+        ["cable_spray_signal", "cable_flow_meter"],
+        ["cable_flow_meter", "sensor_flow_meter"],
+        ["cable_spray_signal", "sensor_liquid_level"],
+        ["cable_spray_signal", "motor_pump_{PUMP}"],
+        
+        ["pdb", "cable_esc_arm_m{ARM_BACK}"],
+        ["board_spray", "cable_esc_arm_m{ARM_BACK}"],
+        ["board_esc_{MOTOR_BACK}", "cable_esc_arm_m{ARM[MOTOR_BACK]}"],
+        ["board_esc_{MOTOR_BACK}", "motor_propulsion_{SAME[MOTOR_BACK]}"],
+        
+        ["cable_esc_arm_m{ARM_BACK}", "cable_centrifugal_arm_{SAME[ARM_BACK]}"],
+        ["cable_centrifugal_arm_{ARM_BACK}", "motor_centrifugal_arm_{SAME[ARM_BACK]}"],
+        ["cable_centrifugal_arm_{ARM_BACK}", "solenoid_valve_arm_{SAME[ARM_BACK]}"]
+    
+    ]
+}
+}

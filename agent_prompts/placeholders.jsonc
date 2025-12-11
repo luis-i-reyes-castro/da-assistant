@@ -1,0 +1,46 @@
+{
+"sets":
+{
+    "MODEL":  [ "T40", "T50"]
+},
+"subsets":
+{},
+"functions":
+{
+    "CHANNEL_1[MODEL]":
+    {
+        "T40": "Check Valve 1 → Centrifugal Nozzle 1",
+        "T50": "Check Valve 1 → Arm 3 Solenoid Valve → Arm 3 Centrifugal Nozzle"
+    },
+    "CHANNEL_2[MODEL]":
+    {
+        "T40": "Check Valve 2 → Centrifugal Nozzle 2",
+        "T50": "Check Valve 2 → Arm 4 Solenoid Valve → Arm 4 Centrifugal Nozzle"
+    },
+    "SPRAY_BOARD[MODEL]":
+    {
+        "T40": "  * Spray Board: spray system sensors/actuators",
+        "T50": "* Spray Power Board: spray system sensors/actuators"
+    },
+    "MOS_ERROR_RECTANGLE_COLORS[MODEL]":
+    {
+        "T40": "red",
+        "T50": "red/yellow/white"
+    },
+    "HMS_BACKGROUND[MODEL]":
+    {
+        "T40": "Black",
+        "T50": "White"
+    },
+    "HMS_ERROR_INDICATORS_1[MODEL]":
+    {
+        "T40": "rectangles with white border",
+        "T50": "displayed next to red/yellow dots"
+    },
+    "HMS_ERROR_INDICATORS_2[MODEL]":
+    {
+        "T40": "white-bordered error rectangles",
+        "T50": "each error listed next of a red/yellow dot"
+    }
+}
+}

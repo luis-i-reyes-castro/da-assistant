@@ -1,0 +1,52 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_gnss_trajectory",
+    "name"         : "Manual trajectory (GNSS)",
+    "name_spanish" : "Trayectoria manual (GNSS)"
+    },
+    {
+    "key"          : "ribbon_health_management_system",
+    "name"         : "Health management system",
+    "name_spanish" : "Sistema de gestión de salud"
+    }
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_cannot_takeoff",
+    "name"         : "Cannot takeoff. - Potential safety risks in current area.",
+    "name_spanish" : "No se puede despegar. - Posibles riesgos de seguridad en el área."
+    },
+    {
+    "key"          : "ribbon_fly_with_caution",
+    "name"         : "Fly with caution",
+    "name_spanish" : "Vuele con cuidado"
+    },
+    {
+    "key"          : "ribbon_rth",
+    "name"         : "RTH immediately",
+    "name_spanish" : "Realice un RPO inmediatamente"
+    }
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_motor_stuck",
+    "name"         : "Motor stuck",
+    "name_spanish" : "El motor está obstruido"
+    },
+    {
+    "key"          : "ribbon_power_error",
+    "name"         : "Power error",
+    "name_spanish" : "Error de potencia"
+    }
+    ]
+}
+]

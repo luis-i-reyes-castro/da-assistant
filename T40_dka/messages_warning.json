@@ -1,0 +1,152 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_battery_level_1",
+    "name"         : "Level 1 low battery warning",
+    "name_spanish" : "Advertencia de nivel de batería bajo de nivel 1"
+    },
+    {
+    "key"          : "warning_battery_level_2",
+    "name"         : "Level 2 low battery warning",
+    "name_spanish" : "Advertencia de nivel de batería bajo de nivel 2"
+    },
+    {
+    "key"          : "warning_remote_control_battery_level_low",
+    "name"         : "Remote control battery level low",
+    "name_spanish" : "Nivel de batería del control remoto bajo"
+    }
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_emergency_collision_avoidance",
+    "name"         : "Emergency collision avoidance system. Move the control stick back/forward/left/right to cancel. Fly with caution.",
+    "name_spanish" : "Sistema anticolisión de emergencia. Mueva la palanca de control hacia atrás/adelante/izquierda/derecha para cancelar. Vuele con precaución."
+    }
+    ],
+    "notes":
+    [
+    "Triggered when the drone flies too close to obstacles such as trees, power lines, etc. Can also be triggered by highly uneven terrain, especially when the slope angles exceeds 30 degrees."
+    ],
+    "more_info":
+    {
+        "components": [ "radar_omni" ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_motors_started",
+    "name"         : "Motors started",
+    "name_spanish" : "Motores arrancados"
+    }
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_no_liquid_payload",
+    "name"         : "No more liquid payload. Land and refill.",
+    "name_spanish" : "Se ha quedado sin pesticida. Aterrice y rellene el tanque."
+    }
+    ],
+    "notes":
+    [
+    "Predictable warning to be expected near the end of every flight when you run out of pesticide."
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_obstacle_above",
+    "name"         : "Obstacle above aircraft. Fly with caution.",
+    "name_spanish" : "Obstáculo por encima de la aeronave. Vuele con precaución."
+    }
+    ],
+    "notes":
+    [
+    "Triggered when the drone flies below obstacles, such as very tall trees or power lines."
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_obstacle_below",
+    "name"         : "Obstacle below aircraft. Fly with caution.",
+    "name_spanish" : "Obstáculo inferior detectado. Vuele con precaución."
+    }
+    ],
+    "notes":
+    [
+    "Triggered when the drone flies above hard objects or surfaces, such as those made out of concrete or metal. Can also be triggered by highly uneven terrain."
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_payload_capacity",
+    "name"         : "Payload capacity exceeded. Ensure sure payload added is within...",
+    "name_spanish" : "Se ha superado la capacidad de carga. Asegúrese de que la carga especificada se encuenta dentro..."
+    }
+    ],
+    "notes":
+    [
+    "Usually harmless warning triggered by noise in the load/weight sensors during landings. Can also be triggered if the drone is turned on during pesticide refill."
+    ],
+    "more_info":
+    {
+        "components": [ "sensor_load" ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_takeoff",
+    "name"         : "The drone is about to takeoff.",
+    "name_spanish" : "El dron está a punto de despegar."
+    }
+    ],
+    "notes":
+    [
+    "Predictable warning to be expected right before taking off."
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_takeoff_aborted",
+    "name"         : "Takeoff aborted.",
+    "name_spanish" : "Abortar despegue."
+    }
+    ],
+    "notes":
+    [
+    "Predictable warning to be expected when aborting a takeoff."
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "warning_task_paused",
+    "name"         : "Task paused. Aircraft waiting for command.",
+    "name_spanish" : "Tarea en pausa. Aeronave en espera de comando."
+    }
+    ],
+    "notes":
+    [
+    "Triggered at the end of a spray mission or when the pilot presses the pause button. If you do nothing the drone will hover until it runs out of battery, so do not forget to order an RTH (Return to Home) or to land the drone manually."
+    ]
+}
+]

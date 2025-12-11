@@ -1,0 +1,36 @@
+{
+"barometer_absorbed_humidity":
+{
+    "name": "Barometer has Absorbed Humidity",
+    "solutions":
+    [
+    "Remove the barometer. Let it dry inside a sealed bag with silica gel packs for at least 24 hours before reinstalling.",
+    "If problem persists, seek to replace barometer."
+    ]
+},
+"camera_fpv_gimbal_stuck":
+{
+    "name": "FPV Camera Gimbal Stuck",
+    "solutions":
+    [
+    "Clean the FPV camera gimbal and make sure it can move freely."
+    ]
+},
+"radar_omni_bearing_damaged":
+{
+    "name": "Omnidirectional Radar Bearing is Damaged",
+    "solutions":
+    [
+    "Replace the omnidirectional radar's bearing.",
+    "If replacement of the omnidirectional radar's bearing is not available, replace entire radar module."
+    ]
+},
+"sensor_fwd_vision_dirty":
+{
+    "name": "Front Vision Sensors Dirty",
+    "solutions":
+    [
+    "Clean the front vision sensors."
+    ]
+}
+}

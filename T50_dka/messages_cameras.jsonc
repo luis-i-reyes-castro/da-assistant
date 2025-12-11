@@ -1,0 +1,125 @@
+[
+// ----------------------------------------------------------------------------------------
+// FPV Camera
+{
+    "messages":
+    [
+    {
+    "key"          : "error_gimbal_motor_data",
+    "name"         : "Gimbal motor data error",
+    "name_spanish" : "Error de datos del motor del estabilizador"
+    },
+    {
+    "key"          : "error_gimbal_motor_overload",
+    "name"         : "Error initializing gimbal. Motor overload.",
+    "name_spanish" : "Error al inicial el estabilizador. Sobrecarga de motor."
+    },
+    {
+    "key"          : "error_gimbal_position_init",
+    "name"         : "Error initializing gimbal position",
+    "name_spanish" : "Error al iniciar la posición del estabilizador"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "camera_fpv_gimbal_stuck"
+    ],
+    "signals":
+    [
+        "camera_fpv_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// Forward vision sensors: either U or D
+{
+    "messages":
+    [
+    {
+    "key"          : "error_front_ambient_light_too_weak",
+    "name"         : "Front ambient light too weak. Obstacle avoidance system not available. Fly with caution.",
+    "name_spanish" : "Luz ambiental delantera demasiado débil. Sistema de superación de obstáculos no disponible. Vuele con cuidado."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "ambient_light"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_fwd_vision_{UL}_calibration",
+    "name"         : "{ENG[UL]} vision sensor calibration error. Binocular detection unavailable",
+    "name_spanish" : "Error de calibración del sensor de visión {SPA_LOWER[UL]}. Detección binocular no disponible"
+    },
+    {
+    "key"          : "error_sensor_fwd_vision_{SAME[UL]}_dirty",
+    "name"         : "{ENG[UL]} vision sensor may be dirty. Binocular detection unavailable",
+    "name_spanish" : "Los sensores de visión {SPA_LOWER[UL]} pueden estar sucios. Detección binocular no disponible."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving",
+        "sensor_fwd_vision_{SAME[UL]}_calibration",
+        "sensor_fwd_vision_{SAME[UL]}_dirty"
+    ],
+    "signals": []
+    }
+},
+// ----------------------------------------------------------------------------------------
+// Forward vision sensors: unknown
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_fwd_vision_calibration",
+    "name"         : "Front vision sensor calibration error. Binocular detection unavailable",
+    "name_spanish" : "Error de calibración del sensor visual frontal. Detección binocular no disponible"
+    },
+    {
+    "key"          : "error_sensor_fwd_vision_dirty",
+    "name"         : "Front vision sensor may be dirty. Binocular detection unavailable",
+    "name_spanish" : "El sensor visual frontal puede estar sucio. Detección binocular no disponible."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving",
+        "sensor_fwd_vision_{UL}_calibration",
+        "sensor_fwd_vision_{UL}_dirty"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_fwd_vision_{SIDE}_connection",
+    "name"         : "{ENG[SIDE]} front vision sensor connection error. Binocular detection unavailable",
+    "name_spanish" : "Error de conexión del sensor de visión frontal {SPA_LOWER[SIDE]}. Detección binocular no disponible"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "sensor_fwd_vision_{UL}_power_and_data"
+    ]
+    }
+}
+]

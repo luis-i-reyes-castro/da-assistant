@@ -1,0 +1,148 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_disconnected",
+    "name"         : "Radar disconnected",
+    "name_spanish" : "Radar desconectado"
+    },
+    {
+    "key"          : "error_radar_esc_disconnected",
+    "name"         : "Radar ESC disconnected",
+    "name_spanish" : "ESC de radar desconectado"
+    },
+    {
+    "key"          : "error_radar_esc_self_check",
+    "name"         : "Radar ESC self-check error",
+    "name_spanish" : "Error de autocomprobación del ESC del radar"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "radar_omni_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar",
+    "name"         : "Radar error. Obstacle detection may not be available. Execute piloting and landing manually.",
+    "name_spanish" : "Error de radar. La detección de obstáculos podría no estar disponible. Ejecute el pilotaje y el aterrizaje manualmente."
+    },
+    {
+    "key"          : "error_radar_downlink_1",
+    "name"         : "Radar downlink communication exception I",
+    "name_spanish" : "Excepción de comunicación de bajada de radar I"
+    },
+    {
+    "key"          : "error_radar_downlink_2",
+    "name"         : "Radar downlink communication exception II",
+    "name_spanish" : "Excepción de comunicación de bajada de radar II"
+    },
+    {
+    "key"          : "error_radar_internal_comm_1",
+    "name"         : "Radar internal communication exception I",
+    "name_spanish" : "Excepción de comunicación interna de radar I"
+    },
+    {
+    "key"          : "error_radar_internal_comm_2",
+    "name"         : "Radar internal communication exception II",
+    "name_spanish" : "Excepción de comunicación interna de radar II"
+    },
+    {
+    "key"          : "error_radar_nav_communication",
+    "name"         : "Communication between radar and navigation system failed",
+    "name_spanish" : "Ha fallado la comunicación entre el radar y el sistema de navegación."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving"
+    ],
+    "signals":
+    [
+        "radar_omni_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downlink_3",
+    "name"         : "Radar downlink communication exception III",
+    "name_spanish" : "Excepción de comunicación de bajada de radar III"
+    },
+    {
+    "key"          : "error_radar_downlink_4",
+    "name"         : "Radar downlink communication exception IV",
+    "name_spanish" : "Excepción de comunicación de bajada de radar IV"
+    },
+    {
+    "key"          : "error_radar_internal_comm_3",
+    "name"         : "Radar internal communication exception III",
+    "name_spanish" : "Excepción de comunicación interna de radar III"
+    },
+    {
+    "key"          : "error_radar_internal_comm_4",
+    "name"         : "Radar internal communication exception IV",
+    "name_spanish" : "Excepción de comunicación interna de radar IV"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving"
+    ],
+    "signals":
+    [
+        "radar_bwd_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_raster",
+    "name"         : "Radar raster error",
+    "name_spanish" : "Error de ráster de radar"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "radar_omni_bearing_damaged"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_rf_clock",
+    "name"         : "Radar RF clock exception",
+    "name_spanish" : "Excepción de reloj RF de radar"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_radar_RF_board"
+    ],
+    "signals": []
+    }
+}
+]

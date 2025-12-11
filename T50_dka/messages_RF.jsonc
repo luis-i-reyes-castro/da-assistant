@@ -1,0 +1,100 @@
+[
+// ----------------------------------------------------------------------------------------
+// RTK
+{
+    "messages":
+    [
+    {
+    "key"          : "error_rtk_antennas_not_ready",
+    "name"         : "Cannot take off. Dual RTK antennas not ready",
+    "name_spanish" : "No se puede despegar. Las antenas duales RTK no están listas."
+    },
+    {
+    "key"          : "error_rtk_orientation",
+    "name"         : "RTK orientation error. Cannot take off",
+    "name_spanish" : "Error de orientación de RTK. No se puede despegar"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "kp_factor_too_high",
+        "takeoff_area_too_tight"
+    ],
+    "signals":
+    [
+        "antenna_rtk_{RTK}_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_rtk_{RTK}_antenna_signal",
+    "name"         : "RTK {SAME[RTK]} antenna signal error (aircraft arm {ARM_BACK[RTK]}). RTK Positioning and orientation not available.",
+    "name_spanish" : "Error de señal de antena RTK {SAME[RTK]} en brazo de bastidor {ARM_BACK[RTK]}. Posicionamiento y orientación RTK no disponibles"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "antenna_rtk_{SAME[RTK]}_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_rtk_source_not_selected",
+    "name"         : "RTK signal source not selected. Cannot start.",
+    "name_spanish" : "Fuente de señal RTK no seleccionada. No se puede iniciar."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "rtk_positioning_on"
+    ],
+    "signals": []
+    }
+},
+// ----------------------------------------------------------------------------------------
+// SDR
+{
+    "messages":
+    [
+    {
+    "key"          : "error_linking",
+    "name"         : "Aircraft unlinked",
+    "name_spanish" : "Aeronave desvinculada"
+    },
+    {
+    "key"          : "error_linking_abnormal",
+    "name"         : "Aircraft linking was abnormal and could not be unlocked. Never take off...",
+    "name_spanish" : "La vinculación de la aeronave era anormal y no ha podido ser desbloqueada. Nunca despegue..."
+    },
+    {
+    "key"          : "error_linking_unstable",
+    "name"         : "Unstable linking, app could not unlock aircraft.",
+    "name_spanish" : "Vinculación inestable, la aplicación no ha podido desbloquear la aeronave."
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "antenna_sdr_front_{SIDE}_power_and_data",
+        "antenna_sdr_rear_{SIDE}_power_and_data",
+        "board_avionics_power",
+        "board_RF_power"
+    ]
+    }
+}
+]

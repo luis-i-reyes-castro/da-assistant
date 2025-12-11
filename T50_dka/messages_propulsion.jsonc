@@ -1,0 +1,184 @@
+[
+// ----------------------------------------------------------------------------------------
+// errors related to structural integrity
+{
+    "messages":
+    [
+    {
+    "key"          : "error_abnormal_vibration",
+    "name"         : "Abnormal vibration on the aircraft arms. Crash risk. Immediate maintenance required.",
+    "name_spanish" : "Vibración anormal en los brazos del bastidor. Riesgo de choque. Se requiere mantenimiento inmediato."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "something_loose"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM}_buckle_not_tightly_fastened",
+    "name"         : "Aircraft arm {SAME[ARM]} buckle not tightly fastened. Cannot take off.Ensure the arm buckle is securely fastened before takeoff",
+    "name_spanish" : "El bloqueo del brazo {SAME[ARM]} no está bien apretado. No se puede despegar. Asegúrese de que el bloqueo del brazo esté apretado antes del despegue"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "arm_{SAME[ARM]}_not_secured",
+        "arm_{SAME[ARM]}_locking_piece_handle"
+    ],
+    "signals":
+    [
+        "sensor_in_position_arm_m{SAME[ARM]}_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_esc
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM_BACK}_motor_and_nozzle_esc_selfcheck",
+    "name"         : "Arm {SAME[ARM_BACK]} motor and centrifugal nozzle ESC self-check error",
+    "name_spanish" : "Error de autocomprobación de los motores y ESC de rociador centrífugo del brazo {SAME[ARM_BACK]}"
+    }
+    ],
+    "disaggregate":
+    [
+        "error_esc_{MOTOR_UPPER[ARM_BACK]}_self_check",
+        "error_esc_{MOTOR_LOWER[ARM_BACK]}_self_check",
+        "error_arm_{SAME[ARM_BACK]}_centrifugal_nozzle_connection"
+    ]
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_communication",
+    "name"         : "ESC {SAME[MOTOR]} communication error",
+    "name_spanish" : "Error de comunicación en ESC {SAME[MOTOR]}"
+    },
+    {
+    "key"          : "error_esc_{MOTOR}_disconnected",
+    "name"         : "ESC {SAME[MOTOR]} disconnected",
+    "name_spanish" : "ESC {SAME[MOTOR]} desconectado"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_data",
+        "esc_{SAME[MOTOR]}_power"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_NTC_overheating",
+    "name"         : "ESC {SAME[MOTOR]} NTC overheating",
+    "name_spanish" : "NTC de ESC {SAME[MOTOR]} sobrecalentada"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_esc_{SAME[MOTOR]}"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_self_check",
+    "name"         : "ESC {SAME[MOTOR]} self-check error",
+    "name_spanish" : "Error de autocomprobación del ESC {SAME[MOTOR]}"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_voltage_low",
+    "name"         : "ESC {SAME[MOTOR]} voltage too low",
+    "name_spanish" : "Voltaje del ESC {SAME[MOTOR]} demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_power"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_motor
+{
+    "messages":
+    [
+    {
+    "key"          : "error_motor_{MOTOR}_power_output_too_high",
+    "name"         : "Motor {SAME[MOTOR]} power output too high. Flight safety may be affected if it continues operating",
+    "name_spanish" : "Potencia de salida del motor {SAME[MOTOR]} demasiado alta. La seguridad del vuelo puede verse afectada si continúa con el vuelo"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "excessive_loading",
+        "motor_propulsion_{SAME[MOTOR]}_stuck",
+        "motor_propulsion_{SAME[MOTOR]}_dirty_damaged"
+    ],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_power"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_motor_{MOTOR}_stuck",
+    "name"         : "Motor {SAME[MOTOR]} stuck. Flight safety may be affected if it continues operating",
+    "name_spanish" : "Motor {SAME[MOTOR]} calado. La seguridad del vuelo puede verse afectada si continúa con el vuelo"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "motor_propulsion_{SAME[MOTOR]}_stuck",
+        "motor_propulsion_{SAME[MOTOR]}_dirty_damaged"
+    ],
+    "signals": []
+    }
+}
+]

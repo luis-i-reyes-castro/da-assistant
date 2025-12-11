@@ -1,0 +1,11 @@
+{
+"light_{SIDE}":
+{
+    "type": "light",
+    "name": "Auxiliary Bottom Light ({ENG[SIDE]})",
+    "name_spanish": "Luz Auxiliar Inferior ({SPA[SIDE]})",
+    "material_num": "BC.AG.SS000677",
+    "material_name": "Auxiliary Bottom Light Module",
+    "risk": 2
+}
+}

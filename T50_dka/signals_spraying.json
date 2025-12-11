@@ -1,0 +1,70 @@
+[
+{
+"signals":
+    [
+    "motor_centrifugal_arm_{ARM_BACK}_esc_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "motor_centrifugal_arm_{SAME[ARM_BACK]}",
+    "bridge": "cable_front_nozzle_power"
+    }
+},
+{
+"signals":
+    [
+    "solenoid_valve_arm_{ARM_BACK}_power"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "solenoid_valve_arm_{SAME[ARM_BACK]}",
+    "bridge": "cable_front_nozzle_power"
+    }
+},
+{
+"signals":
+    [
+    "motor_pump_{PUMP}_esc_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "motor_pump_{SAME[PUMP]}"
+    }
+},
+{
+"signals":
+    [
+    "sensor_flow_meter_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "sensor_flow_meter"
+    }
+},
+{
+"signals":
+    [
+    "sensor_liquid_level_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "sensor_liquid_level"
+    }
+},
+{
+"signals":
+    [
+    "sensor_weight_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "sensor_weight"
+    }
+}
+]

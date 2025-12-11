@@ -1,0 +1,56 @@
+{
+"battery":
+{
+    "type": "battery",
+    "name": "Battery",
+    "name_spanish": "Batería",
+    "material_num": "NA",
+    "material_name": "Battery",
+    "risk": 1
+},
+"board_avionics":
+{
+    "type": "board",
+    "name": "Avionics Board",
+    "name_spanish": "Tarjeta de Aviónica",
+    "material_num": "BC.AG.SS000617",
+    "material_name": "Aerial-electronics Board (FCC)",
+    "risk": 1
+},
+"board_RF":
+{
+    "type": "board",
+    "name": "RF Board",
+    "name_spanish": "Tarjeta RF",
+    "material_num": "BC.AG.SS000552",
+    "material_name": "RF Board",
+    "risk": 1
+},
+"board_spray":
+{
+    "type": "board",
+    "name": "Spraying Board",
+    "name_spanish": "Tarjeta de Rociado",
+    "material_num": "BC.AG.SS000554",
+    "material_name": "Spraying Board",
+    "risk": 1
+},
+"cdb":
+{
+    "type": "board",
+    "name": "Cable Distribution Board",
+    "name_spanish": "Tarjeta de Distribución de Cables",
+    "material_num": "BC.AG.SS000556",
+    "material_name": "Cable Distribution Board",
+    "risk": 1
+},
+"pdb":
+{
+    "type": "board",
+    "name": "Power Distribution Board",
+    "name_spanish": "Tarjeta de Distribución de Potencia",
+    "material_num": "BC.AG.SS000558",
+    "material_name": "Power Distribution Board",
+    "risk": 1
+}
+}

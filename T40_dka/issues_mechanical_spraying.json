@@ -1,0 +1,120 @@
+{
+"centrifugal_nozzle_{NOZZLE}_overheated":
+{
+    "name": "Centrifugal Nozzle {SAME[NOZZLE]} Overheated",
+    "solutions":
+    [
+    "Verify that the centrifugal nozzle motor feels hot. If so, let the motor cool down for 10 minutes before resuming operations.",
+    "If overheating persists and affects only one of the two nozzle motors, try swap tests."
+    ]
+},
+"centrifugal_nozzle_{NOZZLE}_stuck":
+{
+    "name": "Centrifugal Nozzle {SAME[NOZZLE]} Stuck",
+    "solutions":
+    [
+    "Check if the centrifugal nozzle motor is stuck."
+    ]
+},
+"check_valve_{PUMP}_stuck":
+{
+    "name": "M{ARM[PUMP]} Arm Check Valve is Stuck",
+    "solutions":
+    [
+    "Disassemble the check valve, clean its componentes, and reassemble it."
+    ]
+},
+"pump_{PUMP}_impeller_stuck":
+{
+    "name": "Pump {SAME[PUMP]} Impeller is Stuck",
+    "solutions":
+    [
+    "Open the pump casing and clean the impeller."
+    ]
+},
+"pump_{PUMP}_motor_magnet_loose":
+{
+    "name": "Pump {SAME[PUMP]} Motor Magnet is Loose",
+    "solutions":
+    [
+    "Replace the pump motor."
+    ]
+},
+"pump_{PUMP}_overheated":
+{
+    "name": "Pump {SAME[PUMP]} Overheated",
+    "solutions":
+    [
+    "Verify that the pump motor feels hot. If so, let the motor cool down for 10 minutes before resuming operations.",
+    "If overheating persists and affects only one of the two pump motors, try swap tests."
+    ]
+},
+"liquid_level_gauge_misalignment":
+{
+    "name": "Liquid Level Gauge Out Misalignment",
+    "solutions":
+    [
+    "Check if the liquid level gauge is misaligned or misplaced."
+    ]
+},
+"thick_mixture":
+{
+    "name": "Pesticide Mixture is Too Thick",
+    "solutions":
+    [
+        "Try a lighter mixture and avoid using wettable powders (WP) or thick suspension concentrates (SC) whenever possible.",
+        {
+            "suggestion": "Avoid the following products in powder or suspension concentrate presentations. If needed, prefer soluble liquid (SL) or pre-diluted formulations.",
+            "products":
+            [
+                {
+                    "name": "Algae extracts (crystallized, powdered)",
+                    "formulations": ["WP"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Ametryn",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Atrazine",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "2,4-D (amine salts safer; poor-quality or WP versions problematic)",
+                    "formulations": ["SL (amine salt)", "WP"],
+                    "risk": "Medium"
+                },
+                {
+                    "name": "Mancozeb",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Sulphur (wettable sulphur)",
+                    "formulations": ["WP"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Copper compounds (oxychloride, hydroxide, sulphate)",
+                    "formulations": ["WP", "SC"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Kaolin clay (particle film protectants)",
+                    "formulations": ["WP"],
+                    "risk": "High"
+                },
+                {
+                    "name": "Micronutrient powders (zinc oxide, manganese oxide, borax, etc.)",
+                    "formulations": ["WP", "Dispersible powder"],
+                    "risk": "Medium"
+                }
+            ]
+        },
+        "Apply the secondary dilution method, also known as the two-step dilution method. That is, pre-dilute each product alone (by itself) in a small to medium-sized container before adding it to the main mixture tank."
+    ]
+}
+}

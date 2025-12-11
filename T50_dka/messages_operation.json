@@ -1,0 +1,66 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "error_mission_radius",
+    "name"         : "Mission radius exceeds acceptable limit",
+    "name_spanish" : "El radio de la misión es superior al límite acceptable."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "mission_radius_too_high"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_zone_altitude",
+    "name"         : "Aircraft in restricted altitude zone (150 m). Fly with caution.",
+    "name_spanish" : "Aeronave en zona de altitud restringida (150 m). Vuela con cuidado."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "zone_altitude"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_zone_restricted",
+    "name"         : "Restricted zone in the vicinity. Flight restrictions in effect",
+    "name_spanish" : "Zona restringida en las cercanías. Restricciones de vuelo en vigor"
+    },
+    {
+    "key"          : "error_zone_warning",
+    "name"         : "Aircraft in warning zone (0). Fly with caution.",
+    "name_spanish" : "Aeronaves en zona de advertencia (0). Vuela con cuidado."
+    },
+    {
+    "key"          : "error_zone_warning_reinforced",
+    "name"         : "Aircraft in reinforced warning zone (0). Fly with caution.",
+    "name_spanish" : "Aeronaves en zona de advertencia reforzada (0). Vuela con cuidado."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "zone_restricted_or_warning"
+    ],
+    "signals": []
+    }
+}
+]

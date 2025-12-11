@@ -1,0 +1,67 @@
+{
+"firmware_misbehaving":
+{
+    "name": "Firmware Is Misbehaving",
+    "solutions":
+    [
+    "Restart the drone."
+    ]
+},
+"firmware_update_needed":
+{
+    "name": "Firmware Needs to be Updated",
+    "solutions":
+    [
+    "Go to a place with reliable WiFi signal and update the drone's firmware."
+    ]
+},
+"pump_calibration":
+{
+    "name": "Pumps Need Calibration",
+    "solutions":
+    [
+    "Calibrate the pumps"
+    ]
+},
+"sensor_compass_calibration":
+{
+    "name": "Compass Needs Calibration",
+    "solutions":
+    [
+    "Look for the compass calibration option in the remote control, select it and follow the instructions."
+    ]
+},
+"sensor_flow_meter_calibration":
+{
+    "name": "Flow Meter Needs Calibration",
+    "solutions":
+    [
+    "Calibrate the flow meter"
+    ]
+},
+"sensor_fwd_vision_{UL}_calibration":
+{
+    "name": "{ENG[UL]} Front Vision Sensors Needs Calibration",
+    "solutions":
+    [
+    "Calibrate the {ENG_LOWER[UL]} front vision sensors using the calibration pattern sheet"
+    ]
+},
+"sensor_weight_calibration":
+{
+    "name": "Weight Sensor Needs Calibration",
+    "solutions":
+    [
+    "Calibrate the weight sensor"
+    ]
+},
+"using_compass_for_orientation":
+{
+    "name": "Using Compass for Orientation",
+    "solutions":
+    [
+    "Your drone is configured to use the compass for orientation.",
+    "If available, select the 'RTK Orientation' option to ignore the compass data and use the drone's RTK antennae data to determine orientation."
+    ]
+}
+}

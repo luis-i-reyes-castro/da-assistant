@@ -1,0 +1,129 @@
+[
+// Main Operating Screen: GREEN
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_manual_mode",
+    "name"         : "Manual mode",
+    "name_spanish" : "Modo manual"
+    },
+    {
+    "key"          : "ribbon_ready_to_start",
+    "name"         : "Ready to start",
+    "name_spanish" : "Listo para empezar"
+    },
+    {
+    "key"          : "ribbon_self_check",
+    "name"         : "Self-check before starting the task",
+    "name_spanish" : "Autocomprobación antes de ejecutar la tarea"
+    },
+    {
+    "key"          : "ribbon_task_in_progress_manual_mode",
+    "name"         : "Task in progress. Manual mode",
+    "name_spanish" : "Tarea en curso. Modo manual"
+    },
+    {
+    "key"          : "ribbon_task_in_progress_route_mode",
+    "name"         : "Task in progress. Route mode",
+    "name_spanish" : "Tarea en curso. Modo Trayectoria"
+    },
+    {
+    "key"          : "ribbon_task_paused_manual_mode",
+    "name"         : "Task paused. Manual mode",
+    "name_spanish" : "Tarea en pausa. Modo manual"
+    },
+    {
+    "key"          : "ribbon_task_paused_route_mode",
+    "name"         : "Task paused. Route mode",
+    "name_spanish" : "Tarea en pausa. Modo Trayectoria"
+    },
+    {
+    "key"          : "ribbon_task_paused_waiting_for_command",
+    "name"         : "Task paused. Aircraft waiting for command",
+    "name_spanish" : "Tarea en pausa. Aeronave en espera"
+    }
+    ]
+},
+// Main Operating Screen: RED
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_aircraft_disconnected",
+    "name"         : "Aircraft Disconnected",
+    "name_spanish" : "Aeronave desconectada"
+    },
+    {
+    "key"          : "ribbon_cannot_takeoff",
+    "name"         : "Cannot takeoff.",
+    "name_spanish" : "No se puede despegar."
+    },
+    {
+    "key"          : "ribbon_rth",
+    "name"         : "RTH immediately",
+    "name_spanish" : "Realice un RPO inmediatamente"
+    }
+    ]
+},
+// Main Operating Screen: YELLOW
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_no_positioning_atti",
+    "name"         : "No positioning (Atti Mode)",
+    "name_spanish" : "Sin posicionamiento (Atti)"
+    }
+    ]
+},
+// Health Management System Screen
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_health_management_system",
+    "name"         : "Health management system",
+    "name_spanish" : "Sistema de gestión de salud"
+    }
+    ]
+},
+// Firmware Update
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_firmware_update",
+    "name"         : "Firmware Update",
+    "name_spanish" : "Actualizar firmware"
+    }
+    ]
+},
+// Compliance Verification Screen
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_aircraft_compliance_verification",
+    "name"         : "Aircraft Compliance Verification",
+    "name_spanish" : "Verificación del cumplimiento de la aeronave"
+    },
+    {
+    "key"          : "ribbon_components_do_not_comply",
+    "name"         : "Following components do not comply with relevant standards in current region. Flight prohibited. Contact your dealer for assistance",
+    "name_spanish" : "Los siguientes componentes no cumplen las normas pertinentes de la región actual. Vuelo prohibido. Ponte en contacto con el distribuidor para obtener ayuda"
+    }
+    ]
+},
+// Other Screens or Pop-ups
+{
+    "messages":
+    [
+    {
+    "key"          : "ribbon_could_not_load_operation",
+    "name"         : "Could not load operation",
+    "name_spanish" : "No se ha podido cargar la operación."
+    }
+    ]
+}
+]

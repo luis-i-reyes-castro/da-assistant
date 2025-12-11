@@ -1,0 +1,58 @@
+[
+{
+"signals":
+    [
+    "motor_centrifugal_{NOZZLE}_esc_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "motor_centrifugal_{SAME[NOZZLE]}",
+    "bridge": "cable_signal_right"
+    }
+},
+{
+"signals":
+    [
+    "motor_pump_{PUMP}_esc_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "motor_pump_{SAME[PUMP]}"
+    }
+},
+{
+"signals":
+    [
+    "sensor_flow_meter_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "sensor_flow_meter"
+    }
+},
+{
+"signals":
+    [
+    "sensor_liquid_level_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "sensor_liquid_level"
+    }
+},
+{
+"signals":
+    [
+    "sensor_load_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_spray",
+    "comp_B": "sensor_load"
+    }
+}
+]

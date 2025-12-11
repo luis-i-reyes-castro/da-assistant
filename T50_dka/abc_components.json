@@ -1,0 +1,14 @@
+{
+"accessories": 
+    "Lights",
+"cables":
+    "Cables",
+"core":
+    "Main electronic boards",
+"propulsion":
+    "ESCs and motors",
+"sensors" :
+    "SDR and RTK antennas, radars, barometer, forward vision sensors, FPV camera, arm in-position detector sensors",
+"spraying" :
+    "Weight sensor, liquid level sensor, pumps, flow meter, solenoid valves, centrifugal nozzles"
+}

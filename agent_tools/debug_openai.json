@@ -1,0 +1,34 @@
+[
+{
+"type" : "function",
+"name" : "dummy_tool",
+"description" : "Dummy Tool for Debugging Purposes",
+"parameters"  :
+    {
+    "type"       : "object",
+    "properties" : {},
+    "additionalProperties" : false
+    },
+"strict" : true
+},
+{
+"type" : "function",
+"name" : "dummy_tool_with_argument",
+"description" : "Dummy Tool for Debugging Purposes (with argument)",
+"parameters"  :
+    {
+    "type"       : "object",
+    "properties" :
+        {
+        "argument" :
+            {
+            "type"        : "string",
+            "description" : "Argument for the dummy tool"
+            }
+        },
+    "required"             : ["argument"],
+    "additionalProperties" : false
+    },
+"strict" : true
+}
+]

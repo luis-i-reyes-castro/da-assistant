@@ -1,0 +1,174 @@
+{
+"cable_centrifugal_{SIDE}":
+{
+    "type": "cable",
+    "name": "Centrifugal Sprinkler Signal Cable ({ENG[SIDE]})",
+    "name_spanish": "Cable de Boquilla Centrífuga ({SPA[SIDE]})",
+    "material_num": "YC.XC.XX000841",
+    "material_name": "Centrifugal Sprinkler Signal Cable",
+    "risk": 4,
+    "notes":
+    [
+        "Runs through the M{ARM_BACK[SIDE]} arm centrifugal spray boom/lance",
+        "Terminal connecting to centrifugal motor is exposed to spray mist"
+    ]
+},
+"cable_esc_arm_m{ARM_FRONT}":
+{
+    "type": "cable",
+    "name": "M{SAME[ARM_FRONT]} Aircraft Arm ESC Composite Cable",
+    "name_spanish": "Cable de ESC del Brazo M{SAME[ARM_FRONT]}",
+    "material_num": "YC.XC.XS000011",
+    "material_name": "M1 & M2 Aircraft Arm ESC Composite Cable",
+    "risk": 2,
+    "notes":
+    [
+        "Runs through the M{SAME[ARM_FRONT]} arm"
+    ]
+},
+"cable_esc_arm_m{ARM_BACK}":
+{
+    "type": "cable",
+    "name": "M{SAME[ARM_BACK]} Aircraft Arm ESC Composite Cable",
+    "name_spanish": "Cable de ESC del Brazo M{SAME[ARM_BACK]}",
+    "material_num": "YC.XC.XS000012",
+    "material_name": "M3 & M4 Aircraft Arm ESC Composite Cable",
+    "risk": 3,
+    "notes":
+    [
+        "Runs through the M{SAME[ARM_BACK]} arm"
+    ]
+},
+"cable_esc_front_power_{SIDE}":
+{
+    "type": "cable",
+    "name": "Front Aircraft Arm ESC Power Adapter Cable ({ENG[SIDE]})",
+    "name_spanish": "Cable Adaptador de Potencia del Brazo Delantero ({SPA[SIDE]})",
+    "material_num": "YC.XC.DD000501",
+    "material_name": "Front Aircraft Arm ESC Power Adapter Cable",
+    "risk": 1,
+    "notes":
+    [
+        "Runs through the {ENG_LOWER[SIDE]} side of the drone's frame"
+    ]
+},
+"cable_flow_meter":
+{
+    "type": "cable",
+    "name": "Flow Meter Signal Cable",
+    "name_spanish": "Cable del Medidor de Caudal",
+    "material_num": "YC.XC.XX000839",
+    "material_name": "Flow Meter Signal Cable",
+    "risk": 5,
+    "notes":
+    [
+        "Exposed to spray mist"
+    ]
+},
+"cable_light_{SIDE}":
+{
+    "type": "cable",
+    "name": "Auxiliary Bottom Light Signal Cable ({ENG[SIDE]})",
+    "name_spanish": "Cable de Luz Auxiliar ({SPA[SIDE]})",
+    "material_num": "YC.XC.XX000853",
+    "material_name": "Auxiliary Bottom Light Signal Cable",
+    "risk": 2
+},
+"cable_pump":
+{
+    "type": "cable",
+    "name": "Impeller Pump Signal Cable",
+    "name_spanish": "Cable de Bombas",
+    "material_num": "YC.XC.XX000857",
+    "material_name": "Impeller Pump Signal Cable",
+    "risk": 5,
+    "notes":
+    [
+        "Y-shaped cable. Large socket connects to board_spray_adaptive, smaller sockets connect to each of the two pumps.",
+        "Terminals connecting to pumps are exposed to spray mist"
+    ]
+},
+
+"cable_radar_bwd":
+{
+    "type": "cable",
+    "name": "Backward Vision Radar Signal Cable",
+    "name_spanish": "Cable de Radar de Visión Trasera",
+    "material_num": "YC.XC.XX000845",
+    "material_name": "Backward Vision Radar Signal Cable",
+    "risk": 2,
+    "notes":
+    [
+        "Runs through the left side of the drone's frame",
+        "Long USB-C cable with female terminals",
+        "Terminal with rubber cover connects to radar"
+    ]
+},
+"cable_radar_omni":
+{
+    "type": "cable",
+    "name": "Omnidirectional Radar Signal Cable",
+    "name_spanish": "Cable de Radar Omnidireccional",
+    "material_num": "YC.XC.XX000844",
+    "material_name": "Omnidirectional Radar Signal Cable",
+    "risk": 2,
+    "notes":
+    [
+        "Short USB-C cable with female terminals"
+    ]
+},
+"cable_rtk_{SIDE}":
+{
+    "type": "cable",
+    "name": "RTK Coaxial Cable ({ENG[SIDE]})",
+    "name_spanish": "Cable Coaxial RTK ({SPA[SIDE]})",
+    "material_num": "YC.XC.TT000104",
+    "material_name": "RTK Coaxial Cable",
+    "risk": 2,
+    "notes":
+    [
+        "Runs through the {ENG_LOWER[SIDE]} side of the drone's frame"
+    ]
+},
+"cable_signal_{SIDE}":
+{
+    "type": "cable",
+    "name": "Signal Cable ({ENG[SIDE]})",
+    "name_spanish": "Cable de Señal ({SPA[SIDE]})",
+    "material_num": "YC.XC.XX000840",
+    "material_name": "Signal Cable",
+    "risk": 2,
+    "notes":
+    [
+        "Runs through the {ENG_LOWER[SIDE]} side of the drone's frame"
+    ]
+},
+"cable_spray_adaptive":
+{
+    "type": "cable",
+    "name": "Spraying Adaptive Cable",
+    "name_spanish": "Cable Adaptativo de Rociado",
+    "material_num": "YC.XC.XX000842",
+    "material_name": "Spraying Adaptive Cable",
+    "risk": 5,
+    "notes":
+    [
+        "Exposed to spray mist",
+        "Carries the same signals as the Spraying Signal Cable"
+    ]
+},
+"cable_spray_signal":
+{
+    "type": "cable",
+    "name": "Spraying Signal Cable",
+    "name_spanish": "Cable de Señal de Rociado",
+    "material_num": "YC.XC.XX000835",
+    "material_name": "Spraying Signal Cable",
+    "risk": 5,
+    "notes":
+    [
+        "Exposed to spray mist",
+        "Carries the same signals as the Spraying Adaptive Cable"
+    ]
+}
+}

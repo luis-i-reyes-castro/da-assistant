@@ -1,2 +1,2 @@
 # dji-agras-assistant
-DJI Agras Assistant App
+Tecnical Assistant Agents for DJI Agras T40 and T50

@@ -1,0 +1,14 @@
+[
+{
+"signals":
+    [
+    "light_{SIDE}_power"
+    ],
+"path":
+    {
+    "comp_A": "battery",
+    "comp_B": "light_{SAME[SIDE]}",
+    "bridge": "cable_signal_left"
+    }
+}
+]

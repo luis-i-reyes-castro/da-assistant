@@ -1,0 +1,18 @@
+{
+  "en": {
+    "language" : "English",
+    "image_start" : "🔍 Image analysis in progress...",
+    "image_end"   : "✅ Image analysis complete",
+    "match_start" : "🗃️ Searching database for problem...",
+    "match_end"   : "✅ Search complete",
+    "main_start"  : "🤖 Agent thinking..."
+  },
+  "es": {
+    "language" : "Spanish",
+    "image_start" : "🔍 Análisis de imagen en progreso...",
+    "image_end"   : "✅ Análisis de imagen completado",
+    "match_start" : "🗃️ Buscando problema en la base de datos...",
+    "match_end"   : "✅ Búsqueda completada",
+    "main_start"  : "🤖 Agente pensando..."
+  }
+}

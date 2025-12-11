@@ -1,0 +1,62 @@
+{
+"battery_calibration_required":
+{
+    "name": "Battery Calibration Required",
+    "solutions":
+    [
+    "Empty the spray tank.",
+    "Use the battery to do a hover flight at a low altitude (5-10 meters). Let the battery discharge until the drone lands automatically.",
+    "Let the battery rest for 60 minutes.",
+    "Fully charge the battery.",
+    "Let the battery rest for another 60 minutes.",
+    "Restart the battery.",
+    "Repeat all the previous steps once or twice.",
+    "If the problem persists then take the battery to an experienced battery technician."
+    ]
+},
+"battery_cells_damaged":
+{
+    "name": "Battery Cells Damaged",
+    "solutions":
+    [
+    "Replace the battery."
+    ]
+},
+"battery_cells_out_of_balance":
+{
+    "name": "Battery Cells Out of Balance",
+    "solutions":
+    [
+    "Charge the battery to 100%, leave it rest for 24 hours, and discharge it to 15-20% using the drone. Repeat the process two more times, for a total of 3 charge-discharge cycles. Do not forget the 24 hour rest periods between charges and discharges.",
+    "If the previous solution did not work, take the battery to an experienced battery technician and ask for balancing service. DO NOT ATTEMPT TO CARRY OUT THIS REPLACEMENT BY YOURSELF AS THIS PROCESS COULD BE DANGEROUS AND LEAD TO A FIRE."
+    ]
+},
+"battery_control_board_damaged":
+{
+    "name": "Battery Control Board Damaged",
+    "solutions":
+    [
+    "Take the battery to an experienced battery technician and ask for control board replacement. DO NOT ATTEMPT TO CARRY OUT THIS REPLACEMENT BY YOURSELF AS THIS PROCESS COULD BE DANGEROUS AND LEAD TO A FIRE."
+    ]
+},
+"battery_not_properly_mounted":
+{
+    "name": "Battery Not Properly Mounted",
+    "solutions":
+    [
+    "Inspect the battery and make sure it is properly mounted.",
+    "You should hear the battery make a clicking sound when properly seated."
+    ]
+},
+"pins_between_battery_and_pdb_dirty_or_damaged":
+{
+    "name": "Pins Between Battery and PDB are Dirty or Damaged",
+    "solutions":
+    [
+    "Inspect the pins between the battery and PDB.",
+    "If the pins are dirty, turn off the battery and clean them with isopropyl alcohol.",
+    "If the battery pins are damaged, take the battery to an experienced battery technician and ask for pin replacement. DO NOT ATTEMPT TO CARRY OUT THIS REPLACEMENT BY YOURSELF AS THIS PROCESS COULD BE DANGEROUS AND LEAD TO A FIRE.",
+    "If the PDB pins are damaged, replace the entire PDB."
+    ]
+}
+}

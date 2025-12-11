@@ -1,0 +1,198 @@
+[
+{
+    "messages":
+    [
+    {
+    "key"          : "error_abnormal_vibration",
+    "name"         : "Abnormal vibration on the aircraft arms. Crash risk. Immediate maintenance required.",
+    "name_spanish" : "Vibración anormal en los brazos del bastidor. Riesgo de choque. Se requiere mantenimiento inmediato."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "something_loose"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM}_not_securely_fastened",
+    "name"         : "Aircraft arm {SAME[ARM]} not securely fastened",
+    "name_spanish" : "El brazo {SAME[ARM]} no está bien sujeto"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "arm_{SAME[ARM]}_not_secured",
+        "arm_{SAME[ARM]}_locking_piece_handle"
+    ],
+    "signals":
+    [
+        "sensor_in_position_arm_m{SAME[ARM]}_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_state",
+    "name"         : "ESC state error. Turn off the aicraft and restart it. Contact DJI Support if this continues after restarting.",
+    "name_spanish" : "Error de estado ESC. Apague la aeronave y reiníciela. Contacte con DJI Support si esto continua después de reiniciar."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "generic_esc_state_error"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}",
+    "name"         : "ESC {SAME[MOTOR]} error",
+    "name_spanish" : "Error del ESC {SAME[MOTOR]}"
+    },
+    {
+    "key"          : "error_esc_{MOTOR}_disconnected",
+    "name"         : "ESC {SAME[MOTOR]} disconnected",
+    "name_spanish" : "ESC {SAME[MOTOR]} desconectado"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_data",
+        "esc_{SAME[MOTOR]}_power"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_self_check",
+    "name"         : "ESC {SAME[MOTOR]} self-check error",
+    "name_spanish" : "Error de autocomprobación del ESC {SAME[MOTOR]}"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_throttle",
+    "name"         : "Motor {SAME[MOTOR]} throttle signal lost. Stop the flight immediately.",
+    "name_spanish" : "Señal de acelerador del motor {SAME[MOTOR]} perdida. Detenga el vuelo inmediatamente."
+    },
+    {
+    "key"          : "error_esc_{MOTOR}_throttle_cycle_exception",
+    "name"         : "Motor {SAME[MOTOR]} throttle cycle exception",
+    "name_spanish" : "Excepción de ciclo de acelerador del motor {SAME[MOTOR]}"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_throttle"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_throttle_backup",
+    "name"         : "Motor {SAME[MOTOR]} backup throttle signal lost. Stop the flight immediately.",
+    "name_spanish" : "Se ha perdido el acelerador de repuesto del motor {SAME[MOTOR]}. Detenga el vuelo inmediatamente."
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_throttle_backup"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_voltage_low",
+    "name"         : "ESC {SAME[MOTOR]} voltage too low",
+    "name_spanish" : "Voltaje del ESC {SAME[MOTOR]} demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "esc_{SAME[MOTOR]}_power"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_esc_{MOTOR}_NTC_overheating",
+    "name"         : "ESC {SAME[MOTOR]} NTC overheating",
+    "name_spanish" : "NTC de ESC {SAME[MOTOR]} sobrecalentada"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_esc_{SAME[MOTOR]}"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_motor_{MOTOR}_jammed",
+    "name"         : "Motor {SAME[MOTOR]} jammed. Stop the flight immediately.",
+    "name_spanish" : "Motor {SAME[MOTOR]} atascado. Detenga el vuelo inmediatamente."
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "motor_propulsion_{SAME[MOTOR]}_stuck",
+        "motor_propulsion_{SAME[MOTOR]}_dirty_damaged"
+    ],
+    "signals": []
+    }
+}
+]

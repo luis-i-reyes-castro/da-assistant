@@ -1,0 +1,93 @@
+{
+"motor_centrifugal_arm_{ARM_BACK}":
+{
+    "type": "motor",
+    "name": "Centrifugal Motor (Arm {SAME[ARM_BACK]})",
+    "name_alt": "Arm {SAME[ARM_BACK]} Centrifugal Nozzle",
+    "name_spanish": "Motor de Boquilla Centrífuga del Brazo {SAME[ARM_BACK]}",
+    "material_num": "BC.AG.SS000565",
+    "material_name": "Centrifugal Motor",
+    "risk": 4,
+    "notes":
+    [
+        "Black, cylinder-shaped motor with a stainless steel axis protruding from the bottom. It is located at the end of the spray lance/boom, below Propulsion Motor {MOTOR_LOWER[ARM_BACK]}.",
+        "Exposed to the spray mist"
+    ]
+},
+"motor_pump_{PUMP}":
+{
+    "type": "motor",
+    "name": "Impeller Pump Motor {SAME[PUMP]}",
+    "name_spanish": "Motor de Bomba {SAME[PUMP]}",
+    "material_num": "BC.AG.SS000543",
+    "material_name": "Impeller Pump Motor",
+    "risk": 3,
+    "notes":
+    [
+        "Black, cylinder-shaped motor with a black and round magnet fixed to its axis. It is located on the bottom back of the spray tank.",
+        "Exposed to the spray mist"
+    ]
+},
+"sensor_flow_meter":
+{
+    "type": "sensor",
+    "name": "Flow Meter",
+    "name_spanish": "Medidor de Caudal",
+    "material_num": "BC.AG.SS000972",
+    "material_name": "Flow Meter Module",
+    "risk": 3,
+    "notes":
+    [
+        "Located on the back of the Spray tank, below the Spray Adapter Board and above the pumps. It is a black, box-shaped sensor with two hoses entering from the bottom and two hoses exiting from the top.",
+        "It is an electro-magnetic flow meter with no moving parts.",
+        "Exposed to the spray mist"
+    ]
+},
+"sensor_liquid_level":
+{
+    "type": "sensor",
+    "name": "Liquid Level Sensor",
+    "name_spanish": "Sensor de Nivel de Líquido",
+    "material_num": "BC.AG.SS000709",
+    "material_name": "Liquid Level Gauge Sensor Module",
+    "risk": 5,
+    "notes":
+    [
+        "Located on the bottom of the spray tank. It is a black, round and small sensor. It includes the cable to connect it to the Spray Adaptive Board.",
+        "Exposed to the spray mist"
+    ]
+},
+"sensor_weight":
+{
+    "type": "sensor",
+    "name": "Weighing Sensor",
+    "name_spanish": "Sensor de Peso",
+    "material_num": "BC.AG.SS000673",
+    "material_name": "Weighing Sensor Module",
+    "risk": 5,
+    "notes":
+    [
+        "Composed of 3 individual scales joined by a cable that connects to the Cable Distribution Board. The 3 scales support the entire weight of the spray tank and measure liquid approximately by assuming 1 liter weights 1 kilogram.",
+        "One scale is located on the center front of the tank, and the two other scales are located on the back with one on each side.",
+        "Exposed to the spray mist"
+    ]
+},
+"solenoid_valve_arm_{ARM_BACK}":
+{
+    "type": "actuator",
+    "name": "Solenoid Valve (Arm {SAME[ARM_BACK]})",
+    "name_alt": "Arm {SAME[ARM_BACK]} Solenoid Valve",
+    "name_spanish": "Válvula Solenoide del Brazo {SAME[ARM_BACK]}",
+    "material_num": "BC.AG.SS000707",
+    "material_name": "Solenoid Valve Module",
+    "risk": 4,
+    "notes":
+    [
+        "Solenoid valve located at the end of the spray lance/boom, right before the centrifugal nozzle (below Propulsion Motor {MOTOR_LOWER[ARM_BACK]}).",
+        "Exposed to the spray mist",
+        "It is a binary valve, i.e., it only admits open/close states.",
+        "It is an NC (normally closed) valve.",
+        "It has no associated sensor, so the drone can control it but it has no way of telling whether the commands are being followed. Hence a failure of this valve could trigger errors related to pump or nozzle flow."
+    ]
+}
+}

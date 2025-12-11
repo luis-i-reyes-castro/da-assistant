@@ -1,0 +1,275 @@
+[
+// ----------------------------------------------------------------------------------------
+// error_radar_fwd
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar",
+    "name"         : "Radar error",
+    "name_spanish" : "Error de radar"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving"
+    ],
+    "signals":
+    [
+        "radar_fwd_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_fwd_disconnected",
+    "name"         : "Forward radar disconnected",
+    "name_spanish" : "Radar hacia adelante desconectado"
+    },
+    {
+    "key"          : "error_radar_fwd_esc_disconnected",
+    "name"         : "Forward radar ESC disconnected",
+    "name_spanish" : "ESC de radar hacia adelante desconectado"
+    },
+    {
+    "key"          : "error_radar_fwd_esc_self_check",
+    "name"         : "Forward radar ESC self-check error",
+    "name_spanish" : "Error de autocomprobación del ESC del radar hacia adelante"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "radar_fwd_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_radar_upward
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_upward",
+    "name"         : "Upward radar error. Obstacle avoidance and altitude stabilization unavailable",
+    "name_spanish" : "Error de radar hacia arriba. Superación de obstáculos y estabilización de altitud no disponibles"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving"
+    ],
+    "signals":
+    [
+        "radar_fwd_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_upward_connection",
+    "name"         : "Upward radar connection error. Obstacle detection unavailable. Altitude stabilization performance affected. Fly with caution",
+    "name_spanish" : "Error de conexión del radar ascendente. Detección de obstáculos no disponible. Rendimiento de estabilización de altitud afectado. Vuele con cuidado"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "radar_fwd_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_upward_overheated",
+    "name"         : "Upward radar overheated. Obstacle avoidance and altitude stabilization unstable",
+    "name_spanish" : "Radar hacia arriba sobrecalentado. Superación de obstáculos y rendimiento de estabilización de altitud inestables"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_radar_fwd_RF_board"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_upward_RF_initialization",
+    "name"         : "Upward radar radio frequency initialization error. Obstacle avoidance and altitude stabilization unavailable",
+    "name_spanish" : "Error de inicialización de radiofrecuencia del radar hacia arriba. Sistema anticolisión y estabilización de altitud no disponibles"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving",
+        "e_damage_radar_fwd_RF_board"
+    ],
+    "signals":
+    [
+        "radar_fwd_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_upward_turntable_communication",
+    "name"         : "Upward radar turntable communication error. Obstacle avoidance and altitude stabilization affected",
+    "name_spanish" : "Error de comunicación de la mesa giratoria del radar hacia arriba. Superación de obstáculos y estabilización de la altitud afectados"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "radar_fwd_bearing_damaged"
+    ],
+    "signals":
+    [
+        "radar_fwd_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_radar_downward
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downward_installation",
+    "name"         : "Downward radar installed incorrectly. Obstacle avoidance and altitude stabilization affected",
+    "name_spanish" : "Radar hacia abajo instalado incorrectamente. Error del sistema anticolisión y de la estabilización de la altitud"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "radar_rear_incorrectly_installed_or_misaligned"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downward",
+    "name"         : "Downward radar error. Obstacle avoidance and altitude stabilization unavailable",
+    "name_spanish" : "Error de radar hacia abajo. Superación de obstáculos y estabilización de altitud no disponibles"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving"
+    ],
+    "signals":
+    [
+        "radar_rear_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downward_connection",
+    "name"         : "Downward radar connection error. Obstacle detection unavailable. Altitude stabilization performance affected. Fly with caution",
+    "name_spanish" : "Error de conexión del radar hacia abajo. Detección de obstáculos no disponible. Rendimiento de estabilización de altitud afectado. Vuele con cuidado"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "radar_rear_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downward_overheated",
+    "name"         : "Downward radar overheated. Obstacle avoidance and altitude stabilization unstable",
+    "name_spanish" : "Radar hacia abajo sobrecalentado. Superación de obstáculos y rendimiento de estabilización de altitud inestables"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "e_damage_radar_rear_RF_board"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downward_RF_initialization",
+    "name"         : "Downward radar radio frequency initialization error. Obstacle avoidance and altitude stabilization unavailable",
+    "name_spanish" : "Error de inicialización de radiofrecuencia del radar hacia abajo. Sistema anticolisión y estabilización de altitud no disponibles"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "firmware_misbehaving",
+        "e_damage_radar_rear_RF_board"
+    ],
+    "signals":
+    [
+        "radar_rear_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_radar_downward_turntable_communication",
+    "name"         : "Downward radar turntable communication error. Obstacle avoidance and altitude stabilization affected",
+    "name_spanish" : "Error de comunicación de la mesa giratoria del radar hacia abajo. Superación de obstáculos y estabilización de la altitud afectados"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "radar_rear_bearing_damaged"
+    ],
+    "signals":
+    [
+        "radar_rear_power_and_data"
+    ]
+    }
+}
+]

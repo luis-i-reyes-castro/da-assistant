@@ -1,0 +1,86 @@
+{
+  "en": {
+    "language": "English",
+    "body": "I am sorry but *I can only process text* 📝 *and images* 🖼️. I cannot process voicenotes or video."
+  },
+  "es": {
+    "language": "Spanish",
+    "body": "Lo siento, *solo puedo procesar texto* 📝 *e imágenes* 🖼️. No puedo procesar notas de voz ni videos."
+  },
+  "am": {
+    "language": "Amharic",
+    "body": "እባኮትን ይቅርታ፣ *ጽሑፍ ብቻ ማስኬድ እችላለሁ* 📝 *እና ምስሎችን* 🖼️ መስኬድ እችላለሁ። ድምጽ መልዕክቶች ወይም ቪዲዮን ማስኬድ አልችልም።"
+  },
+  "ar": {
+    "language": "Arabic",
+    "body": "عذرًا، *يمكنني معالجة النص فقط* 📝 *والصور* 🖼️. لا يمكنني معالجة الرسائل الصوتية أو الفيديو."
+  },
+  "bn": {
+    "language": "Bengali",
+    "body": "দুঃখিত, *আমি শুধু টেক্সট প্রক্রিয়াকরণ করতে পারি* 📝 *এবং ছবি* 🖼️। আমি ভয়েস নোট বা ভিডিও প্রক্রিয়াকরণ করতে পারি না।"
+  },
+  "de": {
+    "language": "German",
+    "body": "Es tut mir leid, *ich kann nur Text* 📝 *und Bilder verarbeiten* 🖼️. Sprachnachrichten oder Videos kann ich nicht verarbeiten."
+  },
+  "nl": {
+    "language": "Dutch",
+    "body": "Sorry, *ik kan alleen tekst* 📝 *en afbeeldingen verwerken* 🖼️. Ik kan geen spraakberichten of video verwerken."
+  },
+  "fr": {
+    "language": "French",
+    "body": "Je suis désolé, *je peux uniquement traiter le texte* 📝 *et les images* 🖼️. Je ne peux pas traiter les messages vocaux ni les vidéos."
+  },
+  "el": {
+    "language": "Greek",
+    "body": "Λυπάμαι, *μπορώ να επεξεργαστώ μόνο κείμενο* 📝 *και εικόνες* 🖼️. Δεν μπορώ να επεξεργαστώ φωνητικά μηνύματα ή βίντεο."
+  },
+  "hi": {
+    "language": "Hindi",
+    "body": "माफ़ कीजिए, *मैं केवल टेक्स्ट* 📝 *और इमेज* 🖼️ प्रोसेस कर सकता हूँ। मैं वॉइस नोट्स या वीडियो प्रोसेस नहीं कर सकता।"
+  },
+  "id": {
+    "language": "Indonesian",
+    "body": "Maaf, *saya hanya dapat memproses teks* 📝 *dan gambar* 🖼️. Saya tidak dapat memproses pesan suara atau video."
+  },
+  "it": {
+    "language": "Italian",
+    "body": "Mi dispiace, *posso elaborare solo testo* 📝 *e immagini* 🖼️. Non posso elaborare messaggi vocali o video."
+  },
+  "ja": {
+    "language": "Japanese",
+    "body": "申し訳ありませんが、*私はテキスト* 📝 *と画像のみ* 🖼️ 処理できます。ボイスメッセージや動画は処理できません。"
+  },
+  "ko": {
+    "language": "Korean",
+    "body": "죄송하지만 *텍스트* 📝 *와 이미지* 🖼️만 처리할 수 있습니다. 음성 메시지나 동영상은 처리할 수 없습니다."
+  },
+  "pl": {
+    "language": "Polish",
+    "body": "Przepraszam, *mogę przetwarzać tylko tekst* 📝 *oraz obrazy* 🖼️. Nie mogę przetwarzać wiadomości głosowych ani wideo."
+  },
+  "pt": {
+    "language": "Portuguese",
+    "body": "Sinto muito, *só posso processar texto* 📝 *e imagens* 🖼️. Não consigo processar mensagens de voz nem vídeos."
+  },
+  "pa": {
+    "language": "Punjabi",
+    "body": "ਮਾਫ਼ ਕਰਨਾ, *ਮੈਂ ਸਿਰਫ਼ ਟੈਕਸਟ* 📝 *ਅਤੇ ਤਸਵੀਰਾਂ* 🖼️ ਪ੍ਰੋਸੈਸ ਕਰ ਸਕਦਾ ਹਾਂ। ਮੈਂ ਵਾਇਸ ਨੋਟਾਂ ਜਾਂ ਵੀਡੀਓ ਪ੍ਰੋਸੈਸ ਨਹੀਂ ਕਰ ਸਕਦਾ।"
+  },
+  "ru": {
+    "language": "Russian",
+    "body": "Извините, *я могу обрабатывать только текст* 📝 *и изображения* 🖼️. Я не могу обрабатывать голосовые сообщения или видео."
+  },
+  "tr": {
+    "language": "Turkish",
+    "body": "Üzgünüm, *yalnızca metin* 📝 *ve görselleri* 🖼️ işleyebilirim. Sesli notları veya videoları işleyemiyorum."
+  },
+  "uk": {
+    "language": "Ukrainian",
+    "body": "Вибачте, *я можу обробляти лише текст* 📝 *та зображення* 🖼️. Я не можу обробляти голосові повідомлення чи відео."
+  },
+  "vi": {
+    "language": "Vietnamese",
+    "body": "Xin lỗi, *tôi chỉ có thể xử lý văn bản* 📝 *và hình ảnh* 🖼️. Tôi không thể xử lý ghi âm giọng nói hoặc video."
+  }
+}

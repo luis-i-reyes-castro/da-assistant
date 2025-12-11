@@ -1,0 +1,402 @@
+[
+// ----------------------------------------------------------------------------------------
+// errors related to the Spray Power Board
+{
+    "messages":
+    [
+    {
+    "key"          : "error_centrifugal_nozzle_power_source",
+    "name"         : "Centrifugal Nozzle Power Source Error. Cannot function correctly",
+    "name_spanish" : "Error de la fuente de alimentación del rociador centrífugo. No puede funcionar correctamente"
+    },
+    {
+    "key"          : "error_payload_connection",
+    "name"         : "Payload connection error",
+    "name_spanish" : "Error de conexión de carga útil"
+    },
+    {
+    "key"          : "error_pump_power_source",
+    "name"         : "Pump Power Source Error. Cannot function correctly",
+    "name_spanish" : "Error de la fuente de alimentación de la bomba o del sistema de distribución. No puede funcionar correctamente"
+    },
+    {
+    "key"          : "error_spray_board_disconnected",
+    "name"         : "Spray Board disconnected from Avionics Board. Cannot function correctly.",
+    "name_spanish" : "Placa de rociado desconectada de la placa de aviónica. No puede funcionar correctamente."
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "board_spray_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_power_source_15V",
+    "name"         : "Power Source (15 V) Error",
+    "name_spanish" : "Error de la fuente de alimentación (15 V)"
+    },
+    {
+    "key"          : "error_power_source_58V",
+    "name"         : "Power Source (58 V) Error",
+    "name_spanish" : "Error de la fuente de alimentación (58 V)"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "board_spray_data",
+        "board_spray_power"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_arm_{ARM_BACK}_centrifugal_nozzle
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM_BACK}_centrifugal_nozzle_connection",
+    "name"         : "Arm {SAME[ARM_BACK]} centrifugal nozzle connection error",
+    "name_spanish" : "Error de conexión del rociador centrífugo del brazo {SAME[ARM_BACK]}"
+    },
+    {
+    "key"          : "error_arm_{SAME[ARM_BACK]}_centrifugal_nozzle_self_check",
+    "name"         : "Arm {SAME[ARM_BACK]} centrifugal nozzle automatic self-check error",
+    "name_spanish" : "Error de comprobación automática del rociador centrífugo del brazo {SAME[ARM_BACK]}"
+    },
+    {
+    "key"          : "error_arm_{SAME[ARM_BACK]}_centrifugal_nozzle_voltage_low",
+    "name"         : "Arm {SAME[ARM_BACK]} centrifugal nozzle voltage low",
+    "name_spanish" : "Voltaje del rociador centrífugo del brazo {SAME[ARM_BACK]} demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "motor_centrifugal_arm_{SAME[ARM_BACK]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM_BACK}_centrifugal_nozzle_stuck",
+    "name"         : "Arm {SAME[ARM_BACK]} centrifugal nozzle stuck",
+    "name_spanish" : "El rociador centrífugo del brazo {SAME[ARM_BACK]} está calado"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{PUMP[ARM_BACK]}_impeller_stuck",
+        "check_valve_{PUMP[ARM_BACK]}_stuck",
+        "solenoid_valve_arm_{SAME[ARM_BACK]}_stuck",
+        "centrifugal_nozzle_arm_{SAME[ARM_BACK]}_stuck"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM_BACK}_centrifugal_nozzle_spinning_slow",
+    "name"         : "Arm {SAME[ARM_BACK]} centrifugal nozzle spinning slower than expected or nozzle disk error",
+    "name_spanish" : "El brazo {SAME[ARM_BACK]} del rociador centrífugo gira al ralentí o error del disco giratorio"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{PUMP[ARM_BACK]}_impeller_stuck",
+        "check_valve_{PUMP[ARM_BACK]}_stuck",
+        "solenoid_valve_arm_{SAME[ARM_BACK]}_stuck",
+        "centrifugal_nozzle_arm_{SAME[ARM_BACK]}_stuck"
+    ],
+    "signals":
+    [
+        "motor_centrifugal_arm_{SAME[ARM_BACK]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_arm_{ARM_BACK}_centrifugal_nozzle_temperature_high",
+    "name"         : "Arm {SAME[ARM_BACK]} centrifugal nozzle temperature too high",
+    "name_spanish" : "La temperatura del rociador centrífugo del brazo {SAME[ARM_BACK]} es demasiado alta"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "centrifugal_nozzle_arm_{SAME[ARM_BACK]}_overheated"
+    ],
+    "signals":
+    [
+        "motor_centrifugal_arm_{SAME[ARM_BACK]}_esc_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_pump_{PUMP}
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_connection",
+    "name"         : "Pump {SAME[PUMP]} connection error",
+    "name_spanish" : "Error de conexión de la bomba {SAME[PUMP]}"
+    },
+    {
+    "key"          : "error_pump_{PUMP}_motor_and_esc_self_check",
+    "name"         : "Water pump {SAME[PUMP]} motor and ESC automatic self-check error. Cannot function correctly",
+    "name_spanish" : "Error de comprobación automática del motor de la bomba de agua {SAME[PUMP]} y del ESC. No puede funcionar correctamente"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "motor_pump_{SAME[PUMP]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_large_difference",
+    "name"         : "Large difference between calibrated and real flow levels of pump {SAME[PUMP]}. Calibrate the pump",
+    "name_spanish" : "Gran diferencia entre los niveles de flujo calibrado y real de la bomba {SAME[PUMP]}. Calibra la bomba"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "pump_calibration",
+        "thick_mixture",
+        "pump_{SAME[PUMP]}_motor_magnet_loose",
+        "check_valve_{SAME[PUMP]}_stuck",
+        "solenoid_valve_arm_{ARM_BACK[PUMP]}_stuck",
+        "centrifugal_nozzle_arm_{ARM_BACK[PUMP]}_stuck"
+    ],
+    "signals":
+    [
+        "motor_pump_{SAME[PUMP]}_esc_power_and_data",
+        "sensor_flow_meter_power_and_data",
+        "solenoid_valve_arm_{ARM_BACK[PUMP]}_power",
+        "motor_centrifugal_arm_{ARM_BACK[PUMP]}_esc_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_motor_stuck",
+    "name"         : "Pump {SAME[PUMP]} motor stuck",
+    "name_spanish" : "Motor de la bomba {SAME[PUMP]} calado"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{SAME[PUMP]}_impeller_stuck",
+        "check_valve_{SAME[PUMP]}_stuck",
+        "solenoid_valve_arm_{ARM_BACK[PUMP]}_stuck",
+        "centrifugal_nozzle_arm_{ARM_BACK[PUMP]}_stuck"
+    ],
+    "signals": []
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_pump_{PUMP}_temperature_high",
+    "name"         : "Pump {SAME[PUMP]} motor temperature too high",
+    "name_spanish" : "La temperatura del motor de la bomba {SAME[PUMP]} es demasiado alta"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "thick_mixture",
+        "pump_{SAME[PUMP]}_overheated"
+    ],
+    "signals":
+    [
+        "motor_pump_{SAME[PUMP]}_esc_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_sensor_flow_meter
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_flow_meter_connection",
+    "name"         : "Flow meter connection error",
+    "name_spanish" : "Error de conexión del caudalímetro"
+    },
+    {
+    "key"          : "error_sensor_flow_meter_voltage_high",
+    "name"         : "Flow meter voltage too high",
+    "name_spanish" : "Voltaje de carga del caudalímetro demasiado alto"
+    },
+    {
+    "key"          : "error_sensor_flow_meter_voltage_low",
+    "name"         : "Flow meter voltage too low",
+    "name_spanish" : "Voltaje de carga del caudalímetro demasiado bajo"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "sensor_flow_meter_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_flow_meter_installation",
+    "name"         : "Ensure the flow meter is installed correctly and restart the aircraft",
+    "name_spanish" : "Asegúrese de que el caudalímetro esté instalado correctamente y reinicie la aeronave"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "sensor_flow_meter_input_hoses_swapped",
+        "sensor_flow_meter_calibration"
+    ],
+    "signals":
+    [
+        "sensor_flow_meter_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_flow_meter_zero_calibration_exception",
+    "name"         : "Flow meter zero calibration exception",
+    "name_spanish" : "Excepción de puesta a cero del caudalímetro"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "sensor_flow_meter_calibration"
+    ],
+    "signals": []
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_sensor_liquid_level
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_liquid_level",
+    "name"         : "Liquid level sensor error",
+    "name_spanish" : "Error en sensor de nivel de líquido"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "sensor_liquid_level_gauge_misalignment"
+    ],
+    "signals":
+    [
+        "sensor_liquid_level_power_and_data"
+    ]
+    }
+},
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_liquid_level_connection",
+    "name"         : "Liquid level sensor connection error",
+    "name_spanish" : "Error de conexión del medidor de nivel de líquido"
+    }
+    ],
+    "causes":
+    {
+    "issues": [],
+    "signals":
+    [
+        "sensor_liquid_level_power_and_data"
+    ]
+    }
+},
+// ----------------------------------------------------------------------------------------
+// error_sensor_weight
+{
+    "messages":
+    [
+    {
+    "key"          : "error_sensor_weight_damaged_or_not_connected",
+    "name"         : "Load sensor damaged or not connected. Check or repair the load sensor",
+    "name_spanish" : "Sensor de peso dañado o no conectado. Comprobar o reparar el sensor de peso"
+    },
+    {
+    "key"          : "error_sensor_weight_cable_connection",
+    "name"         : "Load sensor cable connection error",
+    "name_spanish" : "Error de conexión del cable del sensor de peso"
+    },
+    {
+    "key"          : "error_sensor_weight_imprecise",
+    "name"         : "Load sensor error. Weight readings may be imprecise",
+    "name_spanish" : "Error del sensor de peso. El pesaje puede ser impreciso"
+    }
+    ],
+    "causes":
+    {
+    "issues":
+    [
+        "sensor_weight_calibration"
+    ],
+    "signals":
+    [
+        "sensor_weight_power_and_data"
+    ]
+    }
+}
+]

@@ -1,0 +1,86 @@
+{
+  "en": {
+    "language": "English",
+    "body": "Thank you for selecting the drone model. To continue the diagnostic process please send a *photo of your remote control screen* so that I can read the error messages that appear."
+  },
+  "es": {
+    "language": "Spanish",
+    "body": "Gracias por seleccionar el modelo de tu dron. Para continuar con el proceso de diagnóstico, por favor envíame una *foto de la pantalla de tu control remoto* para que pueda leer los mensajes de error que aparecen."
+  },
+  "am": {
+    "language": "Amharic",
+    "body": "የድሮኑን ሞዴል ስለመረጡ እናመሰግናለን። የምርመራውን ሂደት ለመቀጠል እባክዎ *የሩቅ መቆጣጠሪያዎ ማያ ገጽ ፎቶ* ይላኩልኝ እንዲሁም የሚታዩ የስህተት መልእክቶችን እንችላለን እንድንነብብ።"
+  },
+  "ar": {
+    "language": "Arabic",
+    "body": "شكرًا لاختيارك طراز الطائرة بدون طيار. لمتابعة عملية التشخيص، يُرجى إرسال *صورة لشاشة وحدة التحكّم عن بُعد* حتى أتمكّن من قراءة رسائل الخطأ الظاهرة."
+  },
+  "bn": {
+    "language": "Bengali",
+    "body": "ড্রোনের মডেল নির্বাচন করার জন্য ধন্যবাদ। ডায়াগনস্টিক প্রক্রিয়া চালিয়ে যেতে অনুগ্রহ করে *আপনার রিমোট কন্ট্রোলের স্ক্রিনের একটি ছবি* পাঠান, যাতে আমি প্রদর্শিত ত্রুটি বার্তাগুলি পড়তে পারি।"
+  },
+  "de": {
+    "language": "German",
+    "body": "Vielen Dank, dass Sie das Drohnenmodell ausgewählt haben. Um mit der Diagnose fortzufahren, senden Sie mir bitte *ein Foto des Bildschirms Ihrer Fernsteuerung*, damit ich die angezeigten Fehlermeldungen lesen kann."
+  },
+  "nl": {
+    "language": "Dutch",
+    "body": "Bedankt dat u het dronemodel hebt geselecteerd. Om het diagnoseproces voort te zetten, stuurt u alstublieft *een foto van het scherm van uw afstandsbediening* zodat ik de weergegeven foutmeldingen kan lezen."
+  },
+  "fr": {
+    "language": "French",
+    "body": "Merci d’avoir sélectionné le modèle de drone. Pour poursuivre le diagnostic, veuillez envoyer *une photo de l’écran de votre télécommande* afin que je puisse lire les messages d’erreur affichés."
+  },
+  "el": {
+    "language": "Greek",
+    "body": "Σας ευχαριστώ που επιλέξατε το μοντέλο του drone. Για να συνεχίσουμε τη διαδικασία διάγνωσης, παρακαλώ στείλτε μου *μια φωτογραφία της οθόνης του χειριστηρίου* ώστε να μπορώ να διαβάσω τα μηνύματα σφάλματος που εμφανίζονται."
+  },
+  "hi": {
+    "language": "Hindi",
+    "body": "ड्रोन मॉडल चुनने के लिए धन्यवाद। निदान प्रक्रिया जारी रखने के लिए कृपया *अपने रिमोट कंट्रोल की स्क्रीन की एक फोटो* भेजें ताकि मैं दिखाई देने वाले त्रुटि संदेश पढ़ सकूँ।"
+  },
+  "id": {
+    "language": "Indonesian",
+    "body": "Terima kasih telah memilih model drone. Untuk melanjutkan proses diagnosis, silakan kirim *foto layar remote control Anda* agar saya dapat membaca pesan kesalahan yang muncul."
+  },
+  "it": {
+    "language": "Italian",
+    "body": "Grazie per aver selezionato il modello del drone. Per continuare la procedura di diagnosi, invia per favore *una foto dello schermo del tuo radiocomando* così posso leggere i messaggi di errore visualizzati."
+  },
+  "ja": {
+    "language": "Japanese",
+    "body": "ドローンの機種を選択していただきありがとうございます。診断を続けるため、*リモートコントローラーの画面の写真*を送ってください。表示されているエラーメッセージを読み取ります。"
+  },
+  "ko": {
+    "language": "Korean",
+    "body": "드론 모델을 선택해 주셔서 감사합니다. 진단을 계속하려면 *리모트 컨트롤러 화면의 사진*을 보내 주세요. 표시되는 오류 메시지를 읽을 수 있어야 합니다."
+  },
+  "pl": {
+    "language": "Polish",
+    "body": "Dziękujemy za wybranie modelu drona. Aby kontynuować proces diagnostyczny, proszę wysłać *zdjęcie ekranu kontrolera zdalnego sterowania*, abym mógł odczytać wyświetlane komunikaty o błędach."
+  },
+  "pt": {
+    "language": "Portuguese",
+    "body": "Obrigado por selecionar o modelo do drone. Para continuar o processo de diagnóstico, por favor envie *uma foto da tela do seu controle remoto* para que eu possa ler as mensagens de erro exibidas."
+  },
+  "pa": {
+    "language": "Punjabi",
+    "body": "ਡਰੋਨ ਮਾਡਲ ਚੁਣਨ ਲਈ ਧੰਨਵਾਦ। ਨਿਰਧਾਰਨ ਪ੍ਰਕਿਰਿਆ ਜਾਰੀ ਰੱਖਣ ਲਈ ਕਿਰਪਾ ਕਰਕੇ *ਆਪਣੇ ਰਿਮੋਟ ਕੰਟਰੋਲ ਦੀ ਸਕ੍ਰੀਨ ਦੀ ਇੱਕ ਤਸਵੀਰ* ਭੇਜੋ ਤਾਂ ਜੋ ਮੈਂ ਦਿਖ ਰਹੇ ਗਲਤੀ ਸੁਨੇਹੇ ਪੜ੍ਹ ਸਕਾਂ।"
+  },
+  "ru": {
+    "language": "Russian",
+    "body": "Спасибо за выбор модели дрона. Чтобы продолжить диагностику, пожалуйста, отправьте *фото экрана пульта дистанционного управления*, чтобы я мог прочитать отображаемые сообщения об ошибках."
+  },
+  "tr": {
+    "language": "Turkish",
+    "body": "Drone modelini seçtiğiniz için teşekkürler. Tanılama sürecine devam etmek için lütfen *uzaktan kumandanızın ekranının bir fotoğrafını* gönderin; böylece görüntülenen hata iletilerini okuyabilirim."
+  },
+  "uk": {
+    "language": "Ukrainian",
+    "body": "Дякуємо, що обрали модель дрона. Щоб продовжити діагностику, будь ласка, надішліть *фото екрана пульта дистанційного керування*, щоб я міг прочитати відображені повідомлення про помилки."
+  },
+  "vi": {
+    "language": "Vietnamese",
+    "body": "Cảm ơn bạn đã chọn mẫu máy bay. Để tiếp tục quá trình chẩn đoán, vui lòng gửi *ảnh màn hình bộ điều khiển từ xa* để tôi có thể đọc các thông báo lỗi hiển thị."
+  }
+}

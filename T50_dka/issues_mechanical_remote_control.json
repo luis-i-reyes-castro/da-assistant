@@ -1,0 +1,26 @@
+{
+"rc_sticks_calibration":
+{
+    "name": "Remote Control Sticks Need Calibration",
+    "solutions":
+    [
+    "Calibrate the remote control sticks 5 times in a row."
+    ]
+},
+"rc_stick_left_worn_or_damaged":
+{
+    "name": "Remote Control Left Stick Potentiometer Worn Out or Damaged",
+    "solutions":
+    [
+    "Replace the remote control left stick."
+    ]
+},
+"rc_stick_right_worn_or_damaged":
+{
+    "name": "Remote Control Right Stick Potentiometer Worn Out or Damaged",
+    "solutions":
+    [
+    "Replace the remote control right stick."
+    ]
+}
+}

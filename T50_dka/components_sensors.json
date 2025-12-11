@@ -1,0 +1,142 @@
+{
+"antenna_rtk_{RTK}":
+{
+    "type": "antenna",
+    "name": "RTK Antenna {SAME[RTK]}",
+    "name_spanish": "Antena RTK {SAME[RTK]}",
+    "material_num": "BC.AG.SS000694",
+    "material_name": "RTK Antenna Module",
+    "risk": 2,
+    "notes":
+    [
+        "This is one of the two antennas used to GNSS positioning. It is located on the top rear of the aircraft and adjacent to aicraft arm M{ARM_BACK[RTK]}.",
+        "When both antennas are functioning correctly, the drone uses differential positioning to determine its orientation. This is knowns as 'RTK Orientation' but does not require an RTK base or network.",
+        "When any of the two antennas fail in flight, the drone automatically switches to 'Attitude' flight mode. Operating the drone in this mode is quite challenging and can be even considered dangerous by experiences operators, as the drone is unable to correct for disturbances (such as wind gusts), forcing the operator to manually make all necessary corrections."
+    ]
+},
+"antenna_sdr_front_{SIDE}":
+{
+    "type": "antenna",
+    "name": "SDR Antenna (Front-{ENG[SIDE]})",
+    "name_spanish": "Antena SDR (Frontal-{SPA[SIDE]})",
+    "material_num": "YC.DZ.AA000326",
+    "material_name": "SDR Antenna (Front)",
+    "risk": 2,
+    "notes":
+    [
+        "This is one of the four Software-Defined Radio (SDR) antennas for communicating with the remote control. It is located on the front {ENG_LOWER[SIDE]} side of the drone's frame near the landing gear fixing bases."
+    ]
+},
+"antenna_sdr_rear_{SIDE}":
+{
+    "type": "antenna",
+    "name": "SDR Antenna (Rear-{ENG[SIDE]})",
+    "name_spanish": "Antena SDR (Trasera-{SPA[SIDE]})",
+    "material_num": "YC.DZ.AA000325",
+    "material_name": "SDR Antenna (Rear)",
+    "risk": 2,
+    "notes":
+    [
+        "This is one of the two Software-Defined Radio (SDR) antennas for communicating with the remote control. It consists of a long copper coaxial cable, starting from an RF Board socket, running through the {ENG_LOWER[SIDE]} side of the drone's frame, and ending in a rubber-coated antenna located on the rear {ENG_LOWER[SIDE]} side of the drone's frame (near the landing gear fixing bases)."
+    ]
+},
+"camera_fpv":
+{
+    "type": "sensor",
+    "name": "FPV Camera",
+    "name_spanish": "Cámara FPV",
+    "material_num": "BC.AG.SS000681",
+    "material_name": "FPV Camera Module",
+    "risk": 4,
+    "notes":
+    [
+        "This is an HD First-Person View camera (1080p resolution) located at the front of the vehicle. Its main purpose is to be used by the pilot to monitor the drone's flight; its data is not used for obstacle detection or terrain following. It features a vertical gimbal capable or rotating 30 degrees in the upward direction and 120 degrees in the downward direction."
+    ]
+},
+"radar_fwd":
+{
+    "type": "sensor",
+    "name": "Forward Radar Module ",
+    "name_spanish": "Radar Delantero",
+    "material_num": "BC.AG.SS000939.02.F",
+    "material_name": "Forward Radar Module ",
+    "risk": 3,
+    "notes":
+    [
+        "Combines omnidirectional and upward-looking radars",
+        "Located on the front of the drone's frame",
+        {
+            "radar"   : "Omnidirectional",
+            "purpose" : "Obstacle avoidance and terrain following",
+            "range"   : "50 m",
+            "FOV"     : "Horizontal 360 deg, Vertical 90 deg",
+            "Working conditions" : "Flying higher than 1.5 m over the obstacle at a horizontal speed no more than 10 m/s and vertical speed no more than 3 m/s",
+            "Safety limit distance" : "2.5 m (distance between the front of propellers and the obstacle after braking)"
+        },
+        {
+            "radar"   : "Upward-looking",
+            "purpose" : "Obstacle avoidance",
+            "range"   : "30 m",
+            "FOV"     : "45 deg (conical)",
+            "Working conditions" : "Available during takeoff, landing, and ascent when an obstacle is more than 1.5 m above the aircraft.",
+            "Safety limit distance" : "3 m (distance between the top of aircraft and the obstacle after braking)"
+        },
+        "Both radars arrays sit on a single rotating turntable",
+        "Readings are not affected by the spray mist."
+    ]
+},
+"radar_rear":
+{
+    "type": "sensor",
+    "name": "Rear Radar Module ",
+    "name_spanish": "Radar Trasero",
+    "material_num": "BC.AG.SS000940.02.F",
+    "material_name": "Rear Radar Module ",
+    "risk": 3,
+    "notes":
+    [
+        "Located on the rear bottom of the drone's frame.",
+        "Mounted on the rear landing gear crossbeam.",
+        "Rotates about the Y-axis",
+        {
+            "purpose" : "Obstacle avoidance and terrain following",
+            "range"   : "50 m",
+            "FOV"     : "Vertical 360 deg, Horizontal 90 deg",
+            "Working conditions" : "Flying higher than 1.5 m over the obstacle at a horizontal speed no more than 10 m/s and vertical speed no more than 3 m/s",
+            "Safety limit distance" : "2.5 m (distance between the back of propellers and the obstacle after braking)"
+        },
+        "Readings are not affected by the spray mist."
+    ]
+},
+"sensor_barometer":
+{
+    "type": "sensor",
+    "name": "Barometer",
+    "name_spanish": "Barómetro",
+    "material_num": "BC.AG.PP000354",
+    "material_name": "Barometer Board",
+    "risk": 1
+},
+"sensor_fwd_vision_{UL}":
+{
+    "type": "sensor",
+    "name": "Forward Vision Sensors ({ENG[UL]})",
+    "name_spanish": "Sensores de Visión Frontal ({SPA[UL]})",
+    "material_num": "BC.AG.SS000671",
+    "material_name": "Forward Vision Sensor Module",
+    "risk": 2,
+    "notes":
+    [
+        "Binocular vision depth sensor, i.e., a pair of cameras that estimate obstacle distance by measuring angular reading differences.",
+        "Located on the front of the drone.",
+        {
+            "purpose" : "Obstacle avoidance",
+            "range"   : "0.5 - 29 m",
+            "FOV"     : "Horizontal: 90 deg, Vertical: 106 deg (Up: 28 deg, Down: 78 deg)",
+            "Effective Sensing Speed" : "Up to 10 m/s",
+            "Operating Environment" : "Adequate light and discernible surroundings"
+        },
+        "This sensor's presence in the drone and usage for flight decision-making is a unfortunate design flaw. The reason is that the cameras are easily blurred/obstructed by the very same spray mist particles that are released during normal operation. The sensor needs to be cleaned often (usually every 2-3 flights) to avoid error messages related to blurring. Furthermore, the sensor cannot be turned off or disconnected to avoid error messages."
+    ]
+}
+}

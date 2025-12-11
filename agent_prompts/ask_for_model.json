@@ -1,0 +1,149 @@
+{
+  "en": {
+    "language" : "English",
+    "title"    : "Select Drone Model",
+    "body"     : "Hello! I am a technical assistant chatbot specialized in DJI Agras crop sprayer drones. I am here to help you diagnose errors and identify defective components that need replacement.",
+    "nothing"  : "To begin the diagnostic process please *select your drone model* from the list below.",
+    "image"    : "*I have received the image* you sent and will analyze it. Before proceeding with the image analysis I need to confirm your drone model.\n\nPlease *select your drone model* from the list below."
+  },
+  "es": {
+    "language" : "Spanish",
+    "title"    : "Seleccionar Modelo de Dron",
+    "body"     : "¡Hola! Soy un asistente técnico virtual especializado en drones de fumigación de la línea DJI Agras. Estoy aquí para ayudarte a diagnosticar errores e identificar cuales son los componentes defectuosos que necesitan reemplazarse.",
+    "nothing"  : "Para comenzar el proceso de diagnóstico, *selecciona tu modelo de dron* de la lista a continuación.",
+    "image"    : "*He recibido la imagen* que enviaste y la analizaré. Antes de proceder con el análisis de la imagen necesito confirmar tu modelo de dron.\n\nPor favor *selecciona tu modelo de dron* de la lista a continuación."
+  },
+  "am": {
+    "language" : "Amharic",
+    "title"    : "እባኮትን የድሮን ሞዴልዎን ይምረጡ",
+    "body"     : "ሰላም! እኔ በDJI Agras የተለያዩ የእርሻ ድሮኖች ላይ የተለየ ቴክኒካዊ እርዳታ ቻትቦት ነኝ። የተጎዳ ክፍሎችን ለመለየትና ስህተቶችን ለመመርመር እገዛ እሰጣለሁ።",
+    "nothing"  : "የምርመራ ሂደቱን ለመጀመር ከታች ያለውን *የድሮን ሞዴል ዝርዝር ይምረጡ*።",
+    "image"    : "*የላክከውን ምስል ተቀብያለሁ* እና አንደተመለከትኩት አስተናግዳለሁ። የምስል ትንተና ከመስራት በፊት የድሮንህን ሞዴል ማረጋገጥ አለብኝ። እባክህ ከታች ባለው ዝርዝር ውስጥ *የአንተን የድሮን ሞዴል ይምረጥ*።"
+  },
+  "ar": {
+    "language" : "Arabic",
+    "title"    : "يرجى اختيار طراز الطائرة بدون طيار",
+    "body"     : "مرحبًا! أنا روبوت محادثة مساعد تقني متخصص في طائرات الرش الزراعية DJI Agras. أنا هنا لمساعدتك في تشخيص الأخطاء وتحديد المكونات التالفة التي تحتاج إلى استبدال.",
+    "nothing"  : "لبدء عملية التشخيص، يرجى *اختيار طراز طائرتك بدون طيار* من القائمة أدناه.",
+    "image"    : "*لقد تلقيت الصورة التي أرسلتها* وسأقوم بتحليلها. قبل المضي قدمًا في تحليل الصورة أحتاج للتأكد من طراز طائرتك بدون طيار. يرجى *اختيار طراز طائرتك بدون طيار* من القائمة أدناه."
+  },
+  "bn": {
+    "language" : "Bengali",
+    "title"    : "দয়া করে ড্রোন মডেল নির্বাচন করুন",
+    "body"     : "হ্যালো! আমি DJI Agras ফসল স্প্রেয়ার ড্রোনে বিশেষজ্ঞ একটি প্রযুক্তিগত সহকারী চ্যাটবট। আমি আপনাকে ত্রুটি নির্ণয় করতে এবং প্রতিস্থাপনের প্রয়োজনীয় ত্রুটিপূর্ণ উপাদানগুলি সনাক্ত করতে সাহায্য করতে এখানে আছি।",
+    "nothing"  : "ডায়াগনস্টিক প্রক্রিয়া শুরু করতে নিচের তালিকা থেকে *আপনার ড্রোন মডেলটি নির্বাচন করুন*।",
+    "image"    : "আমি আপনি পাঠানো ছবিটি পেয়েছি এবং এটি বিশ্লেষণ করব। ছবির বিশ্লেষণের সাথে এগিয়ে যাওয়ার আগে আমাকে আপনার ড্রোন মডেল নিশ্চিত করতে হবে। অনুগ্রহ করে নীচের তালিকা থেকে *আপনার ড্রোন মডেল নির্বাচন করুন*।"
+  },
+  "de": {
+    "language" : "German",
+    "title"    : "Bitte wählen Sie das Drohnenmodell aus",
+    "body"     : "Hallo! Ich bin ein technischer Assistent-Chatbot, der auf DJI Agras Pflanzenschutzdrohnen spezialisiert ist. Ich bin hier, um Ihnen bei der Diagnose von Fehlern und der Identifizierung defekter Komponenten zu helfen, die ausgetauscht werden müssen.",
+    "nothing"  : "Um den Diagnoseprozess zu starten, wählen Sie bitte *Ihr Drohnenmodell* aus der Liste unten aus.",
+    "image"    : "Ich habe das von Ihnen gesendete Bild erhalten und werde es analysieren. Bevor ich mit der Bildanalyse fortfahre, muss ich Ihr Drohnenmodell bestätigen.\n\nBitte wählen Sie *Ihr Drohnenmodell* aus der Liste unten aus."
+  },
+  "nl": {
+    "language" : "Dutch",
+    "title"    : "Selecteer het dronemodel",
+    "body"     : "Hallo! Ik ben een technische assistent-chatbot die gespecialiseerd is in DJI Agras gewasbesproeiingsdrones. Ik ben hier om u te helpen fouten te diagnosticeren en defecte onderdelen te identificeren die moeten worden vervangen.",
+    "nothing"  : "Om het diagnoseproces te starten, selecteer *uw dronemodel* uit de onderstaande lijst.",
+    "image"    : "Ik heb de afbeelding die u heeft verzonden ontvangen en zal deze analyseren. Voordat ik verder ga met de beeldanalyse moet ik uw dronemodel bevestigen.\n\nSelecteer alstublieft *uw dronemodel* uit de onderstaande lijst."
+  },
+  "fr": {
+    "language" : "French",
+    "title"    : "Veuillez sélectionner le modèle de drone",
+    "body"     : "Bonjour! Je suis un chatbot assistant technique spécialisé dans les drones pulvérisateurs agricoles DJI Agras. Je suis ici pour vous aider à diagnostiquer les erreurs et à identifier les composants défectueux à remplacer.",
+    "nothing"  : "Pour commencer le processus de diagnostic, veuillez *sélectionner votre modèle de drone* dans la liste ci-dessous.",
+    "image"    : "J'ai *reçu l'image que vous avez envoyée* et je vais l'analyser. Avant de procéder à l'analyse de l'image, je dois confirmer votre modèle de drone.\n\nVeuillez *sélectionner votre modèle de drone* dans la liste ci-dessous."
+  },
+  "el": {
+    "language" : "Greek",
+    "title"    : "Παρακαλώ επιλέξτε μοντέλο drone",
+    "body"     : "Γεια σας! Είμαι ένα chatbot τεχνικής υποστήριξης που ειδικεύεται στα γεωργικά drones ψεκασμού DJI Agras. Είμαι εδώ για να σας βοηθήσω να διαγνώσετε σφάλματα και να εντοπίσετε ελαττωματικά εξαρτήματα που χρειάζονται αντικατάσταση.",
+    "nothing"  : "Για να ξεκινήσετε τη διαδικασία διάγνωσης, *επιλέξτε το μοντέλο του drone σας* από τη λίστα παρακάτω.",
+    "image"    : "*Έχω λάβει την εικόνα που στείλατε* και θα την αναλύσω. Πριν προχωρήσω στην ανάλυση της εικόνας πρέπει να επιβεβαιώσω το μοντέλο του drone σας.\n\nΠαρακαλώ *επιλέξτε το μοντέλο του drone σας* από τη λίστα παρακάτω."
+  },
+  "hi": {
+    "language" : "Hindi",
+    "title"    : "कृपया ड्रोन मॉडल का चयन करें",
+    "body"     : "नमस्ते! मैं DJI Agras फसल स्प्रेयर ड्रोन में विशेषज्ञ एक तकनीकी सहायक चैटबॉट हूं। मैं आपको त्रुटियों का निदान करने और उन दोषपूर्ण घटकों की पहचान करने में मदद करने के लिए यहां हूं जिन्हें बदलने की आवश्यकता है।",
+    "nothing"  : "निदान प्रक्रिया शुरू करने के लिए कृपया नीचे दी गई सूची से *अपना ड्रोन मॉडल चुनें*।",
+    "image"    : "मैंने *आपके द्वारा भेजी गई छवि प्राप्त की है* और उसका विश्लेषण करूंगा। छवि विश्लेषण के साथ आगे बढ़ने से पहले मुझे आपके ड्रोन मॉडल की पुष्टि करनी होगी। कृपया नीचे दी गई सूची से *अपना ड्रोन मॉडल चुनें*।"
+  },
+  "id": {
+    "language" : "Indonesian",
+    "title"    : "Silakan pilih model drone",
+    "body"     : "Halo! Saya adalah chatbot asisten teknis yang berspesialisasi dalam drone penyemprot tanaman DJI Agras. Saya di sini untuk membantu Anda mendiagnosis kesalahan dan mengidentifikasi komponen rusak yang perlu diganti.",
+    "nothing"  : "Untuk memulai proses diagnosis, silakan *pilih model drone Anda* dari daftar di bawah ini.",
+    "image"    : "Saya telah *menerima gambar yang Anda kirim* dan akan menganalisisnya. Sebelum melanjutkan analisis gambar saya perlu mengkonfirmasi model drone Anda.\n\nSilakan *pilih model drone Anda* dari daftar di bawah ini."
+  },
+  "it": {
+    "language" : "Italian",
+    "title"    : "Seleziona il modello di drone",
+    "body"     : "Ciao! Sono un chatbot assistente tecnico specializzato nei droni irroratori agricoli DJI Agras. Sono qui per aiutarti a diagnosticare gli errori e identificare i componenti difettosi che devono essere sostituiti.",
+    "nothing"  : "Per iniziare il processo di diagnostica, *seleziona il modello del tuo drone* dall'elenco sottostante.",
+    "image"    : "Ho *ricevuto l'immagine che hai inviato* e la analizzerò. Prima di procedere con l'analisi dell'immagine devo confermare il modello del tuo drone.\n\nPer favore *seleziona il modello del tuo drone* dall'elenco sottostante."
+  },
+  "ja": {
+    "language" : "Japanese",
+    "title"    : "ドローンモデルを選択してください",
+    "body"     : "こんにちは！私はDJI Agras農業用スプレードローンに特化した技術アシスタントチャットボットです。エラーの診断と交換が必要な故障部品の特定をお手伝いします。",
+    "nothing"  : "診断プロセスを開始するには、以下のリストから*ドローンモデルを選択してください*。",
+    "image"    : "*送信された画像を受信し、分析いたします*。画像分析を続行する前に、ドローンの機種を確認する必要があります。以下のリストから*ドローンモデルを選択してください*。"
+  },
+  "ko": {
+    "language" : "Korean",
+    "title"    : "드론 모델을 선택하십시오",
+    "body"     : "안녕하세요! 저는 DJI Agras 농업용 살포 드론에 특화된 기술 지원 챗봇입니다. 오류를 진단하고 교체가 필요한 결함 부품을 식별하는 데 도움을 드립니다.",
+    "nothing"  : "진단 프로세스를 시작하려면 아래 목록에서 *드론 모델을 선택하세요*.",
+    "image"    : "보내주신 *이미지를 받았으며 분석하겠습니다*. 이미지 분석을 진행하기 전에 드론 모델을 확인해야 합니다. 아래 목록에서 *드론 모델을 선택해 주세요*."
+  },
+  "pl": {
+    "language" : "Polish",
+    "title"    : "Wybierz model drona",
+    "body"     : "Cześć! Jestem chatbotem asystenta technicznego specjalizującym się w opryskiwaczach rolniczych DJI Agras. Pomagam w diagnozowaniu błędów i identyfikowaniu uszkodzonych komponentów wymagających wymiany.",
+    "nothing"  : "Aby rozpocząć proces diagnostyczny, *wybierz model swojego drona* z poniższej listy.",
+    "image"    : "Otrzymałem *wysłany obraz i przeanalizuję go*. Przed kontynuowaniem analizy obrazu muszę potwierdzić model Twojego drona.\n\nProszę *wybrać model drona* z poniższej listy."
+  },
+  "pt": {
+    "language" : "Portuguese",
+    "title"    : "Por favor, selecione o modelo do drone",
+    "body"     : "Olá! Sou um chatbot assistente técnico especializado em drones pulverizadores agrícolas DJI Agras. Estou aqui para ajudá-lo a diagnosticar erros e identificar os componentes defeituosos que precisam ser substituídos.",
+    "nothing"  : "Para iniciar o processo de diagnóstico, *selecione o modelo do seu drone* na lista abaixo.",
+    "image"    : "Recebi *a imagem que você enviou* e vou analisá-la. Antes de proceder com a análise da imagem preciso confirmar o modelo do seu drone.\n\nPor favor *selecione o modelo do seu drone* na lista abaixo."
+  },
+  "pa": {
+    "language" : "Punjabi",
+    "title"    : "ਕਿਰਪਾ ਕਰਕੇ ਡਰੋਨ ਮਾਡਲ ਚੁਣੋ",
+    "body"     : "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ DJI Agras ਫਸਲ ਸਪਰੇਅਰ ਡਰੋਨਾਂ ਵਿੱਚ ਵਿਸ਼ੇਸ਼ ਰੂਪ ਨਾਲ ਤਕਨੀਕੀ ਸਹਾਇਕ ਚੈਟਬੋਟ ਹਾਂ। ਮੈਂ ਤੁਹਾਨੂੰ ਗਲਤੀਆਂ ਦੀ ਪਛਾਣ ਕਰਨ ਅਤੇ ਬਦਲਾਅ ਦੀ ਲੋੜ ਵਾਲੇ ਖਰਾਬ ਹਿੱਸਿਆਂ ਦੀ ਪਛਾਣ ਕਰਨ ਵਿੱਚ ਮਦਦ ਕਰਨ ਲਈ ਇੱਥੇ ਹਾਂ।",
+    "nothing"  : "ਨਿਰਧਾਰਣ ਪ੍ਰਕਿਰਿਆ ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੀ ਸੂਚੀ ਵਿੱਚੋਂ *ਆਪਣਾ ਡਰੋਨ ਮਾਡਲ ਚੁਣੋ*।",
+    "image"    : "ਮੈਂ *ਤੁਹਾਡੇ ਦੁਆਰਾ ਭੇਜੀ ਗਈ ਤਸਵੀਰ ਪ੍ਰਾਪਤ ਕੀਤੀ ਹੈ* ਅਤੇ ਇਸ ਦਾ ਵਿਸ਼ਲੇਸ਼ਣ ਕਰਾਂਗਾ। ਤਸਵੀਰ ਦੇ ਵਿਸ਼ਲੇਸ਼ਣ ਨਾਲ ਅੱਗੇ ਵਧਣ ਤੋਂ ਪਹਿਲਾਂ ਮੈਨੂੰ ਤੁਹਾਡੇ ਡਰੋਨ ਦੇ ਮਾਡਲ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨੀ ਚਾਹੀਦੀ ਹੈ। ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੀ ਸੂਚੀ ਵਿੱਚੋਂ *ਆਪਣਾ ਡਰੋਨ ਮਾਡਲ ਚੁਣੋ*।"
+  },
+  "ru": {
+    "language" : "Russian",
+    "title"    : "Пожалуйста, выберите модель дрона",
+    "body"     : "Здравствуйте! Я — чат-бот технического помощника, специализирующийся на сельскохозяйственных дронах DJI Agras. Я помогу вам диагностировать ошибки и определить неисправные компоненты, которые необходимо заменить.",
+    "nothing"  : "Чтобы начать процесс диагностики, *выберите модель вашего дрона* из списка ниже.",
+    "image"    : "Я *получил изображение, которое вы отправили, и проанализирую его*. Прежде чем продолжить анализ изображения, мне нужно подтвердить модель вашего дрона.\n\nПожалуйста, *выберите модель вашего дрона* из списка ниже."
+  },
+  "tr": {
+    "language" : "Turkish",
+    "title"    : "Lütfen drone modelini seçin",
+    "body"     : "Merhaba! Ben DJI Agras tarımsal ilaçlama dronlarında uzmanlaşmış bir teknik asistan sohbet botuyum. Hataları teşhis etmenize ve değiştirilmesi gereken arızalı bileşenleri belirlemenize yardımcı olmak için buradayım.",
+    "nothing"  : "Teşhis sürecine başlamak için lütfen aşağıdaki listeden *drone modelinizi seçin*.",
+    "image"    : "Gönderdiğiniz *resmi aldım ve analiz edeceğim*. Resim analizine devam etmeden önce drone modelinizi doğrulamam gerekiyor.\n\nLütfen aşağıdaki listeden *drone modelinizi seçin*."
+  },
+  "uk": {
+    "language" : "Ukrainian",
+    "title"    : "Будь ласка, виберіть модель дрона",
+    "body"     : "Вітаю! Я чат-бот технічного помічника, який спеціалізується на сільськогосподарських обприскувальних дронах DJI Agras. Я допоможу вам визначити помилки та знайти несправні компоненти, які потрібно замінити.",
+    "nothing"  : "Щоб розпочати діагностичний процес, будь ласка, *виберіть модель вашого дрона* зі списку нижче.",
+    "image"    : "Я *отримав зображення, яке ви надіслали, і проаналізую його*. Перед тим як продовжити аналіз зображення мені потрібно підтвердити модель вашого дрона.\n\nБудь ласка *виберіть модель вашого дрона* зі списку нижче."
+  },
+  "vi": {
+    "language" : "Vietnamese",
+    "title"    : "Vui lòng chọn mẫu máy bay không người lái",
+    "body"     : "Xin chào! Tôi là chatbot trợ lý kỹ thuật chuyên về máy bay phun thuốc nông nghiệp DJI Agras. Tôi ở đây để giúp bạn chẩn đoán lỗi và xác định các bộ phận bị lỗi cần thay thế.",
+    "nothing"  : "Để bắt đầu quá trình chẩn đoán, vui lòng *chọn mẫu máy bay không người lái của bạn* từ danh sách bên dưới.",
+    "image"    : "Tôi đã *nhận được hình ảnh bạn gửi và sẽ phân tích nó*. Trước khi tiếp tục phân tích hình ảnh tôi cần xác nhận mẫu máy bay của bạn.\n\nVui lòng *chọn mẫu máy bay của bạn* từ danh sách bên dưới."
+  }
+}

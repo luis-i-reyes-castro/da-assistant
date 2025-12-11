@@ -1,0 +1,46 @@
+{
+"component_compliance":
+{
+    "name": "Component Compliance",
+    "solutions":
+    [
+    "Go to the Aircraft Component Compliance screen to view the incompliant components. Replace all the listed components with units purchased from your local DJI Agras dealer."
+    ]
+},
+"e_damage_avionics":
+{
+    "name": "Avionics Board: Possible Electronics-level Damage",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the Avionics Board."
+    ]
+},
+"e_damage_esc_{MOTOR}":
+{
+    "name": "ESC {SAME[MOTOR]}: Electronics-level Damage",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the ESC."
+    ]
+},
+"e_damage_radar_fwd_RF_board":
+{
+    "name": "Electronics-level Damage of the Forward Radar's Internal Board",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the Forward Radar Module."
+    ]
+},
+"e_damage_radar_rear_RF_board":
+{
+    "name": "Electronics-level Damage of the Rear Radar's Internal Board",
+    "solutions":
+    [
+    "Observe the error's persistence. If error goes away and does not persist, ignore.",
+    "If error persists replace the Rear Radar Module."
+    ]
+}
+}

@@ -1,0 +1,24 @@
+{
+"avionics":
+    "Avionics, IMU, barometer, algorithms, aircraft compliance verification",
+"battery":
+    "Battery",
+"cameras":
+    "Forward vision sensors, FPV camera, FPV gimbal motor",
+"operation":
+    "Mission radius, restricted altitudes or zones",
+"propulsion":
+    "ESCs, motors, vibrations, arms not securely fastened",
+"radar":
+    "Radars: Multidirectional (forward), upward, downward.",
+"remote_control":
+    "Remote control sticks",
+"RF":
+    "SDR radio communication between remote control and drone, GNSS, RTK",
+"ribbon":
+    "Upper ribbon messages (not actual errors)",
+"spraying":
+    "Weight sensor, liquid level sensor, pumps, flow meter, solenoid valves, centrifugal nozzles",
+"warning":
+    "Warning messages (not actual errors)"
+}

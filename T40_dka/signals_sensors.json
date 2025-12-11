@@ -1,0 +1,102 @@
+[
+{
+"signals":
+    [
+    "antenna_rtk_{SIDE}_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_RF",
+    "comp_B": "antenna_rtk_{SAME[SIDE]}"
+    }
+},
+{
+"signals":
+    [
+    "antenna_sdr_{SIDE}_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_RF",
+    "comp_B": "antenna_sdr_{SAME[SIDE]}"
+    }
+},
+{
+"signals":
+    [
+    "camera_fpv_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "camera_fpv"
+    }
+},
+{
+"signals":
+    [
+    "radar_bwd_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "radar_bwd"
+    }
+},
+{
+"signals":
+    [
+    "radar_omni_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "radar_omni"
+    }
+},
+{
+"signals":
+    [
+    "sensor_barometer_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "sensor_barometer"
+    }
+},
+{
+"signals":
+    [
+    "sensor_fwd_vision_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "sensor_fwd_vision"
+    }
+},
+{
+"signals":
+    [
+    "sensor_in_position_arm_m{ARM_FRONT}_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "sensor_in_position_arm_m{SAME[ARM_FRONT]}"
+    }
+},
+{
+"signals":
+    [
+    "sensor_in_position_arm_m{ARM_BACK}_power_and_data"
+    ],
+"path":
+    {
+    "comp_A": "board_avionics",
+    "comp_B": "sensor_in_position_arm_m{SAME[ARM_BACK]}",
+    "bridge": "cable_signal_right"
+    }
+}
+]

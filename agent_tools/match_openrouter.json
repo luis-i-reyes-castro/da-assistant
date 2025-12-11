@@ -1,0 +1,28 @@
+[
+{
+"type" : "function",
+"function" :
+    {
+    "name"        : "get_joint_diagnosis",
+    "description" : "DKDB: Get joint diagnosis for one or more message codes",
+    "parameters"  :
+        {
+        "type"       : "object",
+        "properties" :
+            {
+            "message_codes" :
+                {
+                "type"  : "array",
+                "items" :
+                    {
+                    "type" : "string"
+                    },
+                "description" : "List of message codes. If messages are associated with motors, ESCs, pumps or nozzles then message codes must be indexed and cannot have placeholders. Examples:\n* Correct: ['error_pump_1_stuck', 'error_esc_4_throttle']\n* Incorrect: ['error_pump_{PUMP}_stuck', 'error_esc_{MOTOR}_stuck']"
+                }
+            },
+        "required"             : ["message_codes"],
+        "additionalProperties" : false
+        }
+    }
+}
+]
