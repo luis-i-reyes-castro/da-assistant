@@ -8,7 +8,7 @@
     "name_spanish" : "Medidor de velocidad angular sobrecalentado"
     },
     {
-    "key"          : "compass_disconnected",
+    "key"          : "error_compass_disconnected",
     "name"         : "Compass disconnected",
     "name_spanish" : "Brújula desconectada"
     }
