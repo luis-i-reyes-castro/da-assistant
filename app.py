@@ -2,10 +2,11 @@
 
 import gc
 import os
-
 from dotenv import load_dotenv
 from flask import Flask
 from flask import request
+
+from sofia_utils.printing import print_sep
 
 from queue_db import QueueDB
 
@@ -51,7 +52,8 @@ def verify() :
 def webhook() :
     
     data = request.get_json( silent = True) or {}
-    # print( "Incoming:", data)
+    print_sep()
+    print( "Incoming:", data)
     
     # Fetch payload.
     # Reference: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/reference/messages

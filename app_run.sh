@@ -1,8 +1,13 @@
 #!/bin/bash
 
-trap "kill 0" TERM INT
+set -e
 
-gunicorn --bind 0.0.0.0:$PORT app:app \
+# Start supervisor to manage the queue worker only
+supervisord -c supervisord.conf &
+
+# Run gunicorn directly as the main process (PID 1 inside container)
+exec \
+gunicorn --bind 0.0.0.0:${PORT:-8080} app:app \
          --workers 1 \
          --max-requests 1000 \
          --max-requests-jitter 20 \
@@ -12,8 +17,4 @@ gunicorn --bind 0.0.0.0:$PORT app:app \
          --preload \
          --access-logfile - \
          --error-logfile - \
-         --log-level info &
-
-python3 queue_worker.py &
-
-wait
+         --log-level info
