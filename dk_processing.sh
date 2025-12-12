@@ -20,9 +20,9 @@ fi
 echo ""
 python3 dka_checkers.py $DIR_INPUT --everything
 echo ""
-python3 dka_placeholder_parsers.py $DIR_INPUT $DIR_OUTPUT --everything
+python3 dka_parse_placeholders.py $DIR_INPUT $DIR_OUTPUT --everything
 echo ""
 # DKB: Parse components graph and run checkers
-python3 dkb_graph_parsers.py $DIR_OUTPUT
+python3 dkb_parse_graph.py $DIR_OUTPUT
 echo ""
 python3 dkb_checkers.py $DIR_OUTPUT --everything
