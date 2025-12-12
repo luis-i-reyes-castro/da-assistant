@@ -6,14 +6,15 @@ Parsing functions for placeholder substitution
 import os
 from collections import OrderedDict
 from copy import deepcopy
+
+from sofia_utils.io import ( ensure_dir,
+                             list_files_starting_with,
+                             load_json_file,
+                             write_to_json_file )
+from sofia_utils.printing import print_ind
+
 from dk_argument_parsing import parse_arguments
 from dka_placeholder_database import PlaceHolderDatabase
-
-from sofia_utilities.file_io import ( ensure_dir,
-                                      list_files_starting_with,
-                                      load_json_file,
-                                      write_to_json_file )
-from sofia_utilities.printing import print_ind
 
 
 def parse_dict( data : OrderedDict, phDB : PlaceHolderDatabase) -> OrderedDict :

@@ -7,8 +7,8 @@ import threading
 from pathlib import Path
 from typing import Any
 
-from sofia_utilities.file_io import ( load_json_string,
-                                      write_to_json_string )
+from sofia_utils.io import ( load_json_string,
+                             write_to_json_string )
 
 
 QUEUE_DB_PATH = Path(__file__).parent / "queue.sqlite3"

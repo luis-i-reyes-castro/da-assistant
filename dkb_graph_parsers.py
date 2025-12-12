@@ -6,11 +6,12 @@ DKB Components Graph Parsers
 import os
 import sys
 
+from sofia_utils.io import ( load_json_file,
+                             list_files_starting_with,
+                             write_to_json_file )
+from sofia_utils.printing import print_ind
+
 from dkb_graph import ComponentsGraph
-from sofia_utilities.file_io import ( load_json_file,
-                                      list_files_starting_with,
-                                      write_to_json_file )
-from sofia_utilities.printing import print_ind
 
 
 def list_neighbors( data_components  : dict,

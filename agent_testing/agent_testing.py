@@ -5,22 +5,16 @@ Shared helpers for manual agent regression tests.
 
 from __future__ import annotations
 
-import json
 import mimetypes
 import os
-import sys
 from dotenv import load_dotenv
 from pathlib import Path
 
-# Ensure project root is on sys.path when scripts are executed directly
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path :
-    sys.path.insert(0, str(PROJECT_ROOT))
-
-from caseflow_basemodels import MediaData
+from sofia_utils.io import load_json_string
+from wa_agents.basemodels import MediaData
 
 
-load_dotenv()
+load_dotenv("..")
 DEFAULT_MODELS_SPEC = "openrouter:openrouter/auto"
 
 
@@ -41,12 +35,12 @@ def resolve_models_env(env_var : str = "AGENT_TEST_MODELS") -> str | list[str]:
     # JSON array
     if raw_value.startswith("[") :
         try :
-            parsed = json.loads(raw_value)
+            parsed = load_json_string(raw_value)
             if isinstance( parsed, list) :
                 models = [ str(m).strip() for m in parsed if str(m).strip() ]
                 if models :
                     return models
-        except json.JSONDecodeError :
+        except Exception as ex :
             pass
     
     # Prefix-based routing

@@ -4,8 +4,8 @@ import subprocess
 import sys
 from getpass import getpass
 
-from caseflow_agents.DO_spaces_io import ( b3_clear_prefix,
-                                           b3_list_directories )
+from wa_agents.DO_spaces_io import ( b3_clear_prefix,
+                                     b3_list_directories )
 
 
 def authenticate() :

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from caseflow_agents.DO_spaces_io import b3_list_directories
+from wa_agents.DO_spaces_io import b3_list_directories
 
 if __name__ == "__main__" :
     

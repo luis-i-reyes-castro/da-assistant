@@ -17,5 +17,5 @@ thefuzz==0.22.1
 tiktoken==0.9.0
 transitions==0.9.3
 
-sofia-utilities @ git+https://github.com/luis-i-reyes-castro/sofia-utilities.git@main
-caseflow-agents @ git+https://github.com/luis-i-reyes-castro/caseflow-agents.git@main
+sofia-utils @ git+https://github.com/luis-i-reyes-castro/sofia-utils.git@main
+wa-agents @ git+https://github.com/luis-i-reyes-castro/wa-agents.git@main

@@ -9,15 +9,15 @@ import os
 import signal
 import sys
 import time
-
 from dotenv import load_dotenv
 from traceback import format_exc
 from typing import Any
 
-from caseflow_agents.basemodels import ( MediaContent,
-                                         WhatsAppContact,
-                                         WhatsAppMsg )
-from caseflow_agents.whatsapp_functions import fetch_media
+from wa_agents.basemodels import ( MediaContent,
+                                   WhatsAppContact,
+                                   WhatsAppMsg )
+from wa_agents.whatsapp_functions import fetch_media
+
 from casehandler import CaseHandler
 from queue_db import QueueDB
 

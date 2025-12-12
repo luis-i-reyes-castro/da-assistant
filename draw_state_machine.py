@@ -3,4 +3,4 @@
 from state_machine import StateMachine
 
 state_machine = StateMachine()
-state_machine.draw_graph("caseflow_state_machine.png")
+state_machine.draw_graph("state_machine.png")

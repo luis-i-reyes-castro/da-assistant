@@ -11,13 +11,14 @@ Case Handler
 
 from inspect import currentframe
 
-from caseflow_agents.agent import Agent
-from caseflow_agents.basemodels import *
-from caseflow_agents.casehandlerbase import CaseHandlerBase
-from caseflow_agents.whatsapp_functions import markdown_to_whatsapp
+from sofia_utils.io import load_json_file
+from sofia_utils.stamps import unix_to_utc_iso
+from wa_agents.agent import Agent
+from wa_agents.basemodels import *
+from wa_agents.casehandlerbase import CaseHandlerBase
+from wa_agents.whatsapp_functions import markdown_to_whatsapp
+
 from dk_basemodels import RCImageAnalysis
-from sofia_utilities.file_io import load_json_file
-from sofia_utilities.stamps import unix_to_utc_iso
 from state_machine import StateMachine
 from tool_server import ToolServer
 

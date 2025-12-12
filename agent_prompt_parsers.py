@@ -7,11 +7,12 @@ import argparse
 from pathlib import Path
 from typing import Iterable
 
+from sofia_utils.io import ( ensure_dir,
+                             load_file_as_string,
+                             write_to_file )
+from sofia_utils.printing import print_ind
+
 from dka_placeholder_database import PlaceHolderDatabase
-from sofia_utilities.file_io import ( ensure_dir,
-                                      load_file_as_string,
-                                      write_to_file )
-from sofia_utilities.printing import print_ind
 
 
 def parse_arguments() -> argparse.Namespace :

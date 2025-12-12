@@ -3,13 +3,15 @@
 Data structures for placeholder substitution
 """
 
-import dka_regex as phrx
 from collections import OrderedDict
 from re import ( findall,
                  search,
                  sub )
 from typing import Callable
-from sofia_utilities.file_io import load_json_file
+
+from sofia_utils.io import load_json_file
+
+import dka_regex as phrx
 
 
 class BuiltInFunction(dict) :

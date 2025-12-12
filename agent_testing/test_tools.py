@@ -6,21 +6,16 @@ Exercise tool-calling instructions using the debug prompt + DKDB tools.
 from __future__ import annotations
 
 import argparse
-import sys
-from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path :
-    sys.path.insert( 0, str(PROJECT_ROOT))
+from wa_agents.agent import Agent
+from wa_agents.basemodels import( AssistantMsg,
+                                  UserContentMsg )
 
-from caseflow_agent import Agent
-from caseflow_agent_testing_utils import resolve_models_env
-from caseflow_basemodels import( AssistantMsg,
-                                 UserContentMsg )
+from agent_testing import resolve_models_env
 
 
-PROMPTS = [ "agent_prompts/debug_tools.md" ]
-TOOLS   = [ "agent_tools/debug_openrouter.json" ]
+PROMPTS = [ "../agent_prompts/debug_tools.md" ]
+TOOLS   = [ "../agent_tools/debug_openrouter.json" ]
 
 
 def run_test( debug : bool = False) -> None :

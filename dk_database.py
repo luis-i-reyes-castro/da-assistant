@@ -11,12 +11,13 @@ from thefuzz.fuzz import ratio
 from typing import ( Any,
                      Callable )
 
-from caseflow_agents.basemodels import InteractiveOption
+from sofia_utils.io import write_to_json_string
+from sofia_utils.printing import ( print_ind,
+                                   print_sep )
+from wa_agents.basemodels import InteractiveOption
+
 from dk_basemodels import *
 from dka_placeholder_database import PlaceHolderDatabase
-from sofia_utilities.file_io import write_to_json_string
-from sofia_utilities.printing import ( print_ind,
-                                       print_sep )
 
 
 class DomainKnowledgeDataBase :

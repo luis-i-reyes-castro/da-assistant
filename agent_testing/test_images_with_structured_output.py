@@ -6,23 +6,19 @@ Regression helper for validating structured image outputs.
 from __future__ import annotations
 
 import argparse
-import sys
 from pathlib import Path
 from pydantic import BaseModel
 from typing import Literal
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-if str(PROJECT_ROOT) not in sys.path :
-    sys.path.insert( 0, str(PROJECT_ROOT))
+from wa_agents.agent import Agent
+from wa_agents.basemodels import( AssistantMsg,
+                                  UserContentMsg )
 
-from caseflow_agent import Agent
-from caseflow_agent_testing_utils import ( load_image_attachment,
-                                           resolve_models_env )
-from caseflow_basemodels import( AssistantMsg,
-                                 UserContentMsg )
+from agent_testing import ( load_image_attachment,
+                            resolve_models_env )
 
 
-PROMPTS = [ "agent_prompts/debug_images_with_structured_output.md" ]
+PROMPTS = [ "../agent_prompts/debug_images_with_structured_output.md" ]
 
 
 class ImageResults(BaseModel) :

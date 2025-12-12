@@ -7,17 +7,17 @@ import os
 from pydantic import ValidationError
 from typing import Any
 
+from sofia_utils.io import ( list_files_starting_with,
+                             load_json_file )
+from sofia_utils.printing import ( print_ind,
+                                   print_validation_errors )
+
 from dk_argument_parsing import parse_arguments
 from dk_basemodels import (DKA_Component,
                            DKA_Connections,
                            DKA_Issue,
                            DKA_MessageGroup,
                            DKA_SignalGroup )
-
-from sofia_utilities.file_io import ( list_files_starting_with,
-                                      load_json_file )
-from sofia_utilities.printing import ( print_ind,
-                                       print_validation_errors )
 
 
 def validate_components( dir_input : str) -> None :

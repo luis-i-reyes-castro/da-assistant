@@ -8,15 +8,14 @@ various triggers in the case context.
 from transitions import State
 from transitions.extensions import GraphMachine
 
-from caseflow_agents.basemodels import ( AssistantMsg,
-                                         Message,
-                                         ServerMsg,
-                                         UserMsg,
-                                         UserInteractiveReplyMsg,
-                                         UserContentMsg )
-
-from sofia_utilities.printing import ( print_ind,
-                                       print_sep )
+from sofia_utils.printing import ( print_ind,
+                                   print_sep )
+from wa_agents.basemodels import ( AssistantMsg,
+                                   Message,
+                                   ServerMsg,
+                                   UserMsg,
+                                   UserInteractiveReplyMsg,
+                                   UserContentMsg )
 
 
 class StateWithColor(State) :
@@ -294,7 +293,7 @@ class StateMachine :
         
         return self.evaluate_triggers_from_states()
     
-    def draw_graph( self, filename : str = "caseflow_fsm_diagram.png") -> None :
+    def draw_graph( self, filename : str = "state_machine.png") -> None :
         """
         Draw the graph with:
         * label 'enter' replaced by 'actions'

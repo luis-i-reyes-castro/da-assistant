@@ -5,10 +5,11 @@ Manual testing helpers for dk_database outputs
 """
 from typing import Any
 
-from caseflow_agents.basemodels import ServerTextMsg
+from sofia_utils.io import write_to_json_string
+from sofia_utils.printing import print_sep
+from wa_agents.basemodels import ServerTextMsg
+
 from dk_database import DomainKnowledgeDataBase
-from sofia_utilities.file_io import write_to_json_string
-from sofia_utilities.printing import print_sep
 
 
 MODEL   = "T40"
