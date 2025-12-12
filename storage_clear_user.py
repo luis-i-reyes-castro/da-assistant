@@ -4,6 +4,11 @@ import subprocess
 import sys
 from getpass import getpass
 
+from dotenv import load_dotenv
+
+# Ensure local .env is loaded so SPACES_* vars are available
+load_dotenv()
+
 from wa_agents.DO_spaces_io import ( b3_clear_prefix,
                                      b3_list_directories )
 
