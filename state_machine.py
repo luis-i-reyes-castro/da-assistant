@@ -5,8 +5,8 @@ Uses the transitions library to implement a state machine for detecting
 various triggers in the case context.
 """
 
-from transitions import State
-from transitions.extensions import GraphMachine
+from transitions import ( Machine,
+                          State)
 
 from sofia_utils.printing import ( print_ind,
                                    print_sep )
@@ -37,7 +37,10 @@ class StateMachine :
     State Machine for detecting triggers in context
     """
     
-    def __init__(self) -> None :
+    def __init__( self,
+                  machine_cls : type[Machine] = Machine,
+                  **machine_kwargs
+                ) -> None :
         """
         Initialize the FSM with states and transitions
         """
@@ -67,11 +70,11 @@ class StateMachine :
         ]
         
         # Initialize state machine
-        self.machine = GraphMachine( model   = self,
-                                     states  = self.states,
-                                     initial = 'idle',
-                                     auto_transitions      = False,
-                                     show_state_attributes = True )
+        self.machine = machine_cls( model   = self,
+                                    states  = self.states,
+                                    initial = 'idle',
+                                    auto_transitions = False,
+                                    **machine_kwargs )
         
         # Build state machine transitions
         self.build_transitions()
@@ -292,41 +295,3 @@ class StateMachine :
             print_ind( f"[>] State: {self.state}", 1)
         
         return self.evaluate_triggers_from_states()
-    
-    def draw_graph( self, filename : str = "state_machine.png") -> None :
-        """
-        Draw the graph with:
-        * label 'enter' replaced by 'actions'
-        * states as rounded rectangles with black borders
-        * states fill-colored according to state_colors dict
-        * transition arrows in red
-        * transition labels in blue
-        """
-        graph        = self.machine.get_graph()
-        state_colors = { state.name : state.color for state in self.states }
-        
-        # Apply customizations to each node
-        for node in graph.nodes() :
-            
-            # Replace 'enter:' with 'actions:' in node labels
-            node_attrs = graph.get_node(node).attr
-            if 'label' in node_attrs :
-                label = node_attrs['label']
-                if 'enter:' in label :
-                    new_label = label.replace( 'enter:', 'actions:')
-                    graph.get_node(node).attr['label'] = new_label
-            
-            # Apply state style, border color and fill color
-            graph.get_node(node).attr['style']     = 'rounded,filled'
-            graph.get_node(node).attr['color']     = 'black'
-            graph.get_node(node).attr['fillcolor'] = state_colors[node]
-        
-        # Apply colors to transitions (edges)
-        for edge in graph.edges() :
-            graph.get_edge( edge[0], edge[1]).attr['color']     = 'red'
-            graph.get_edge( edge[0], edge[1]).attr['fontcolor'] = 'blue'
-        
-        # Draw the graph
-        graph.draw( filename, prog = 'dot')
-        
-        return
