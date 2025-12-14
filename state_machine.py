@@ -5,6 +5,8 @@ Uses the transitions library to implement a state machine for detecting
 various triggers in the case context.
 """
 
+from typing import Type
+
 from transitions import ( Machine,
                           State)
 
@@ -38,7 +40,7 @@ class StateMachine :
     """
     
     def __init__( self,
-                  machine_cls : type[Machine] = Machine,
+                  machine_cls : Type[Machine] = Machine,
                   **machine_kwargs
                 ) -> None :
         """
