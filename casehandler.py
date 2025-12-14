@@ -35,9 +35,11 @@ class CaseHandler(CaseHandlerBase) :
                            "qwen/qwen2.5-vl-32b-instruct:free",
                            "mistralai/pixtral-12b" ]
     
-    def __init__( self, user_id : str, user_name : str | None = None) -> None :
+    def __init__( self,
+                  operator : WhatsAppMetaData,
+                  user     : WhatsAppContact ) -> None :
         
-        super().__init__( user_id, user_name)
+        super().__init__( operator, user)
         
         self.state_machine = StateMachine()
         self.tool_server   = ToolServer()
