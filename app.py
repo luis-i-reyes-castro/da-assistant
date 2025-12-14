@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 
-import gc
 import os
 from dotenv import load_dotenv
-from flask import Flask
-from flask import request
+from flask import ( Flask,
+                    request )
+from pathlib import Path
+from pydantic import ValidationError
 
 from sofia_utils.printing import print_sep
+from wa_agents.basemodels import WhatsAppPayload
+from wa_agents.queue_db import QueueDB
 
-from queue_db import QueueDB
 
 # Load enviroment variables
 load_dotenv()
@@ -18,7 +20,12 @@ app = Flask(__name__)
 app.config["PROPAGATE_EXCEPTIONS"] = True
 
 # Start queue database
-queue_db = QueueDB()
+QUEUE_DB_NAME = os.getenv( "QUEUE_DB_NAME", "queue.sqlite3")
+QUEUE_DB_PATH = Path(__file__).parent / QUEUE_DB_NAME
+queue_db      = QueueDB(QUEUE_DB_PATH)
+
+# -----------------------------------------------------------------------------------------
+# Diagnostic functions
 
 @app.get("/")
 def root() :
@@ -30,64 +37,53 @@ def healthz() :
 
 @app.get("/debugz")
 def debugz() :
-    expected = os.getenv("VERIFY_TOKEN", "")
+    expected = os.getenv( "WA_VERIFY_TOKEN", default = "")
     masked   = ("*" * (len(expected) - 4) + expected[-4:]) if expected else ""
     return {"verify_token_set": bool(expected), "verify_token_tail": masked}, 200
 
-# --- Webhook verification (GET) ---
+# -----------------------------------------------------------------------------------------
+# Webhook functions
+
 @app.route( "/webhook", methods = ["GET"])
 def verify() :
+    """
+    Webhook verification
+    """
     
     token     = request.args.get( "hub.verify_token", default = "")
     challenge = request.args.get( "hub.challenge",    default = "")
-    expected  =        os.getenv( "VERIFY_TOKEN",     default = "")
+    expected  =        os.getenv( "WA_VERIFY_TOKEN",  default = "")
     
     if token and challenge and expected and ( token == expected ) :
         return challenge, 200
     
     return "Verification failed", 403
 
-# --- Handle incoming messages (POST) ---
 @app.route( "/webhook", methods = ["POST"])
 def webhook() :
+    """
+    Handle incoming messages
+    """
     
     data = request.get_json( silent = True) or {}
     print_sep()
     print( "Incoming:", data)
     
-    # Fetch payload.
-    # Reference: https://developers.facebook.com/docs/whatsapp/cloud-api/webhooks/reference/messages
     try :
-        payload : dict = data["entry"][0]["changes"][0]["value"]
-    except ( KeyError, IndexError, TypeError) :
-        return "malformed payload", 200
+        payload = WhatsAppPayload.model_validate(data)
+    except ValidationError as ve :
+        return { "status" : "error", "error" : f"Malformed payload: {ve}" }, 200
     
-    # Only process WhatsApp message events
-    if not payload.get("messaging_product") == "whatsapp" :
-        return "ignored", 200
+    enqueue_result = False
+    try :
+        enqueue_result = queue_db.enqueue(payload)
+    except Exception as ex :
+        return { "status" : "error", "error" : str(ex) }, 200
     
-    contacts = payload.get( "contacts", [])
-    if not contacts :
-        return "payload missing contacts", 200
-    
-    messages = payload.get( "messages", [])
-    if not messages :
-        return "payload missing messages", 200
-    
-    contact_map = { contact_.get("wa_id") : contact_
-                    for contact_ in contacts if contact_.get("wa_id") }
-    enqueued = 0
-    for message_ in messages :
-        msg_from = message_.get("from")
-        contact_ = contact_map.get(msg_from)
-        queue_payload = { "contact" : contact_,
-                          "message" : message_ }
-        enqueued += int(queue_db.enqueue(queue_payload))
-    
-    # Garbage collection
-    gc.collect()
-    
-    return { "status": "ok", "enqueued": enqueued }, 200
+    return { "status": "ok", "enqueued": enqueue_result }, 200
+
+# -----------------------------------------------------------------------------------------
+# Debug run
 
 if __name__ == "__main__" :
     app.run( port = 8080, debug = True)
