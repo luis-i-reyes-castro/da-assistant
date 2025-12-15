@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Background worker that drains the incoming WhatsApp queue and runs CaseHandler.
+Import and run the app's queue worker
 """
 
 import gc
