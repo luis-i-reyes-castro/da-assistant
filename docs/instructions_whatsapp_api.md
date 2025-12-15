@@ -5,8 +5,8 @@
 In our `.env` file:
 ```bash
 # WhatsApp Cloud API
-WA_BA_ID_PROD=1300095675231214 # WhatsApp Business Account ID (WABA ID)
-WA_TOKEN=EAAB...               # Permanent Access Token
+WA_BA_NUM=1300095675231214 # WhatsApp Business Account ID (WABA ID)
+WA_TOKEN=EAAB...           # WhatsApp Access Token
 ```
 
 Load the env vars:
@@ -20,7 +20,7 @@ Each WhatsApp Business Account (WABA) can have one or more phone numbers.
 To fetch them:
 ```bash
 curl -i -X GET \
-  "https://graph.facebook.com/v23.0/$WA_BA_ID_PROD/phone_numbers" \
+  "https://graph.facebook.com/v23.0/$WA_BA_NUM/phone_numbers" \
   -H "Authorization: Bearer $WA_TOKEN"
 ```
 

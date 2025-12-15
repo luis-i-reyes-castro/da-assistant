@@ -21,19 +21,19 @@ set -a
 source "$ENV_FILE"
 set +a
 
-: "${SPACES_BUCKET:?Set SPACES_BUCKET in .env}"
-: "${SPACES_REGION:?Set SPACES_REGION in .env}"
-: "${SPACES_KEY_ID:?Set SPACES_KEY_ID in .env}"
-: "${SPACES_KEY_SECRET:?Set SPACES_KEY_SECRET in .env}"
+: "${BUCKET_NAME:?Set BUCKET_NAME in .env}"
+: "${BUCKET_REGION:?Set BUCKET_REGION in .env}"
+: "${BUCKET_KEY_ID:?Set BUCKET_KEY_ID in .env}"
+: "${BUCKET_KEY_SECRET:?Set BUCKET_KEY_SECRET in .env}"
 
 mkdir -p "$MOUNT_POINT"
 
-export AWS_ACCESS_KEY_ID="$SPACES_KEY_ID"
-export AWS_SECRET_ACCESS_KEY="$SPACES_KEY_SECRET"
-export AWS_REGION="$SPACES_REGION"
-export AWS_ENDPOINT_URL="https://${SPACES_REGION}.digitaloceanspaces.com"
+export AWS_ACCESS_KEY_ID="$BUCKET_KEY_ID"
+export AWS_SECRET_ACCESS_KEY="$BUCKET_KEY_SECRET"
+export AWS_REGION="$BUCKET_REGION"
+export AWS_ENDPOINT_URL="https://${BUCKET_REGION}.digitaloceanspaces.com"
 
-echo "Mounting bucket '$SPACES_BUCKET' to $MOUNT_POINT"
+echo "Mounting bucket '$BUCKET_NAME' to $MOUNT_POINT"
 echo "Using endpoint $AWS_ENDPOINT_URL"
 
 ALLOW_OTHER_FLAG=()
@@ -46,5 +46,5 @@ fi
 exec mount-s3 \
   "${ALLOW_OTHER_FLAG[@]}" \
   --endpoint-url "$AWS_ENDPOINT_URL" \
-  "$SPACES_BUCKET" \
+  "$BUCKET_NAME" \
   "$MOUNT_POINT"
