@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
 import subprocess
-import sys
-from getpass import getpass
 
 from dotenv import load_dotenv
+from getpass import getpass
+from pathlib import Path
+from sys import argv
 
-# Ensure local .env is loaded so SPACES_* vars are available
+# Load .env so BUCKET_* vars are available to wa_agents.DO_spaces_io
 load_dotenv()
-
 from wa_agents.DO_spaces_io import ( b3_clear_prefix,
                                      b3_list_directories )
 
@@ -36,21 +36,27 @@ def authenticate() :
 
 if __name__ == "__main__" :
     
-    user = "593995341161"
-    if len(sys.argv) == 2 :
-        user = str(sys.argv[1])
+    fname = Path(__file__).name
+    usage = f"Usage: {fname} <prefix> [ Optional: <user> ]\n"
+    if not len(argv) in ( 2, 3) :
+        raise SystemExit(usage)
+    
+    prefix = argv[1]
+    user   = argv[2] if len(argv) == 3 else "593995341161"
     
     if authenticate() :
         
-        print(f"Clearing dir/key/prefix: {user}")
+        full_prefix = f"{prefix}/{user}"
+        print(f"Clearing directory: {full_prefix}")
+        
         try :
-            b3_clear_prefix(user)
+            b3_clear_prefix(full_prefix)
             print(f"Operation successful.")
         except Exception as ex :
             print(f"Operation failed. Exception: {ex}")
         
-        print(f"Root dir/key/prefix structure:")
-        results = b3_list_directories("")
+        print(f"Directories with prefix {prefix}:")
+        results = b3_list_directories(prefix)
         if results :
             for key in results :
                 print(f"[>] {key}")
