@@ -7,7 +7,7 @@ supervisord -c supervisord.conf &
 
 # Run gunicorn directly as the main process (PID 1 inside container)
 exec \
-gunicorn --bind 0.0.0.0:${PORT:-8080} app:app \
+gunicorn --bind 0.0.0.0:${PORT:-8080} run_listener:app \
          --workers 1 \
          --max-requests 1000 \
          --max-requests-jitter 20 \
