@@ -20,20 +20,6 @@ from wa_agents.basemodels import ( AssistantMsg,
                                    UserContentMsg )
 
 
-class StateWithColor(State) :
-    """
-    State with color (for drawing state machine graph)
-    """
-    def __init__( self,
-                  name     : str,
-                  color    : str = "white",
-                  on_enter : list[str] | None = None ) -> None :
-        
-        super().__init__( name, on_enter)
-        self.color = color
-        
-        return
-
 class StateMachine :
     """
     State Machine for detecting triggers in context
@@ -44,30 +30,24 @@ class StateMachine :
                   **machine_kwargs
                 ) -> None :
         """
-        Initialize the FSM with states and transitions
+        Initialize the State Machine
         """
-        # Define states with actions for diagram display
+        # Define states with on_enter and on_exit actions
         self.states = [
         
-        StateWithColor( "idle", "white",
-                        [ "ask_for_model_having_nothing" ] ),
+        # Information-gathering states
+        State( "idle",                on_enter = [ "ask_for_model_having_nothing" ]),
+        State( "have_model_no_image", on_enter = [ "ask_for_image", "set_model"   ]),
+        State( "have_image_no_model", on_enter = [ "ask_for_model_having_image"   ]),
         
-        StateWithColor( "have_model_no_image", "white",
-                        [ "set_model",
-                          "ask_for_image" ]                ),
+        # Single-task agents
+        State( "image_agent", on_enter = [ "call_image_agent", "set_model" ],
+                              on_exit  = [ "clear_image_agent_context" ]),
+        State( "match_agent", on_enter = [ "call_match_agent" ],
+                              on_exit  = [ "clear_match_agent_context" ]),
         
-        StateWithColor( "have_image_no_model", "white",
-                        [ "ask_for_model_having_image" ]   ),
-        
-        StateWithColor( "image_agent", "orange",
-                        [ "set_model",
-                          "call_image_agent" ] ),
-        
-        StateWithColor( "match_agent", "orange",
-                        [ "call_match_agent" ] ),
-        
-        StateWithColor( "main_agent",  "orange",
-                        [ "call_main_agent" ]  )
+        # Main agent
+        State( "main_agent", on_enter = [ "call_main_agent" ])
         
         ]
         
@@ -89,11 +69,18 @@ class StateMachine :
                     setattr( self, action_, lambda : None)
                     self.actions.add(action_)
         
-        # Persistent variables
+        # Persistent variables and agent contexts
         self.model_choice = None
-        self.msgs_for_image_agent : list[Message] = []
-        self.msgs_for_match_agent : list[Message] = []
-        self.msgs_for_main_agent  : list[Message] = []
+        self.image_agent_context : list[Message] = []
+        self.match_agent_context : list[Message] = []
+        self.main_agent_context  : list[Message] = []
+        
+        # Functions to clear contexts (for on_exit)
+        self.clear_image_agent_context = lambda : self.image_agent_context.clear()
+        self.clear_match_agent_context = lambda : self.match_agent_context.clear()
+        
+        # Initialize debug flag
+        self.debug = False
         
         return
     
@@ -157,7 +144,6 @@ class StateMachine :
         has_image           = False
         has_image_analysis  = False
         has_match_tool_call = False
-        prev_state          = self.state
         
         if isinstance( msg, UserMsg) :
             # Flag model choice
@@ -208,13 +194,6 @@ class StateMachine :
         # ---------------------------------------------------------------------------------
         # AFTER TRANSITION
         
-        # Single-task agents: Clear context when leaving their states
-        if self.state != prev_state :
-            if prev_state == 'image_agent' :
-                self.msgs_for_image_agent.clear()
-            elif prev_state == 'match_agent' :
-                self.msgs_for_match_agent.clear()
-        
         # If message is meant for the user eyes only then return
         if isinstance( msg, ServerMsg) and msg.user_eyes :
             return
@@ -222,11 +201,11 @@ class StateMachine :
         match self.state :
             case 'idle'|'have_model_no_image'|'have_image_no_model'|'image_agent' :
                 if has_image :
-                    self.msgs_for_image_agent.append(msg)
+                    self.image_agent_context.append(msg)
             case 'match_agent' :
-                self.msgs_for_match_agent.append(msg)
+                self.match_agent_context.append(msg)
             case 'main_agent' :
-                self.msgs_for_main_agent.append(msg)
+                self.main_agent_context.append(msg)
         
         return
     
@@ -243,49 +222,41 @@ class StateMachine :
         
         return result
     
-    def process( self,
-                 messages : list[Message],
-                 debug    : bool = False
-               ) -> dict[ str, bool] :
+    def process( self, messages : list[Message]) -> dict[ str, bool] :
         """
         Process a list of messages and compute trigger states.
         Args:
             messages: List of Message objects to process
-            debug:    Debug mode flag
         Returns:
-            Dictionary mapping triggers to booleans and persistent variables to their appropriate values.
+            Dictionary mapping trigger names to booleans
         """
-        if debug :
+        if self.debug :
             print_sep()
             print(f"{self.__class__.__name__} trace:")
         
         # Reset state machine
         self.state = 'idle'
 
-        if debug :
+        if self.debug :
             print_ind( f"[>] State: {self.state}", 1)
         
         # Process each message
         for msg in messages :
             self.ingest_message(msg)
-            if debug :
+            if self.debug :
                 print_ind( f"[>] State: {self.state}", 1)
         
         return self.evaluate_triggers_from_states()
     
-    def update( self,
-                message : Message,
-                debug   : bool = False
-              ) -> dict[ str, bool] :
+    def update( self, message : Message) -> dict[ str, bool] :
         """
         Process a single message and update trigger states.
         Args:
             message: Message object to process
-            debug:   Debug mode flag
         Returns:
-            Dictionary mapping triggers to booleans and persistent variables to their appropriate values.
+            Dictionary mapping trigger names to booleans
         """
-        if debug :
+        if self.debug :
             print_sep()
             print(f"{self.__class__.__name__} trace:")
             print_ind( f"[>] State: {self.state}", 1)
@@ -293,7 +264,7 @@ class StateMachine :
         # Process single message
         self.ingest_message(message)
         
-        if debug :
+        if self.debug :
             print_ind( f"[>] State: {self.state}", 1)
         
         return self.evaluate_triggers_from_states()

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import re
 from transitions.extensions import GraphMachine
 
 from state_machine import StateMachine
@@ -23,29 +24,32 @@ class GraphicalStateMachine(StateMachine) :
         * transition arrows in red
         * transition labels in blue
         """
-        graph        = self.machine.get_graph()
-        state_colors = { state.name : state.color for state in self.states }
+        graph = self.machine.get_graph()
         
         # Apply customizations to each node
         for node in graph.nodes() :
             
-            # Replace 'enter:' with 'actions:' in node labels
-            node_attrs = graph.get_node(node).attr
-            if 'label' in node_attrs :
-                label = node_attrs['label']
-                if 'enter:' in label :
-                    new_label = label.replace( 'enter:', 'actions:')
-                    graph.get_node(node).attr['label'] = new_label
+            # Replace node labels
+            if 'label' in node.attr :
+                label = node.attr['label']
+                label = re.sub( r"^(\w+)", r"STATE '\1'", label)
+                label = label.replace( '+', '·')
+                label = label.replace( '- enter:', '[>] do:')
+                label = label.replace( '- exit:', '[>] on exit:')
+                node.attr['label'] = label
             
-            # Apply state style, border color and fill color
-            graph.get_node(node).attr['style']     = 'rounded,filled'
-            graph.get_node(node).attr['color']     = 'black'
-            graph.get_node(node).attr['fillcolor'] = state_colors[node]
+            # Apply state style and border color
+            node.attr['style'] = 'rounded,filled'
+            node.attr['color'] = 'black'
+            
+            # Apply orange fill color to agent nodes
+            node_color = "orange" if ( "agent" in node.name ) else "white"
+            node.attr['fillcolor'] = node_color
         
         # Apply colors to transitions (edges)
         for edge in graph.edges() :
-            graph.get_edge( edge[0], edge[1]).attr['color']     = 'red'
-            graph.get_edge( edge[0], edge[1]).attr['fontcolor'] = 'blue'
+            edge.attr['color']     = 'red'
+            edge.attr['fontcolor'] = 'blue'
         
         # Draw the graph
         graph.draw( filename, prog = 'dot')

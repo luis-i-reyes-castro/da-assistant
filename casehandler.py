@@ -12,7 +12,6 @@ Case Handler
 from inspect import currentframe
 
 from sofia_utils.io import load_json_file
-from sofia_utils.stamps import unix_to_utc_iso
 from wa_agents.agent import Agent
 from wa_agents.basemodels import *
 from wa_agents.casehandlerbase import CaseHandlerBase
@@ -37,9 +36,10 @@ class CaseHandler(CaseHandlerBase) :
     
     def __init__( self,
                   operator : WhatsAppMetaData,
-                  user     : WhatsAppContact ) -> None :
+                  user     : WhatsAppContact,
+                  debug    : bool = False ) -> None :
         
-        super().__init__( operator, user)
+        super().__init__( operator, user, debug)
         
         self.state_machine = StateMachine()
         self.tool_server   = ToolServer()
@@ -50,6 +50,20 @@ class CaseHandler(CaseHandlerBase) :
         self.image_agent = None
         self.match_agent = None
         self.main_agent  = None
+        
+        if self.debug :
+            self.state_machine.debug    = True
+            self.tool_server.dkdb.debug = True
+        
+        return
+    
+    def case_set_drone_model( self, drone_model : str | None) -> None :
+        
+        if drone_model and isinstance( drone_model, str) and \
+           drone_model in self.tool_server.dkdb.MODELS_AVAILABLE :
+            
+            self.case_manifest.model = drone_model
+            self.storage.manifest_write(self.case_manifest)
         
         return
     
@@ -62,9 +76,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return data_dict
     
-    def send_agent_update( self,
-                           message_name : str,
-                           debug        : bool = False ) -> None :
+    def send_agent_update( self, message_name : str) -> None :
         
         _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
         
@@ -79,9 +91,45 @@ class CaseHandler(CaseHandlerBase) :
                                      user_eyes = True )
             message.print()
             # Send message to human
-            self.send_text( message, debug)
+            self.send_text(message)
             # Write message to storage and update manifest and triggers
-            self.context_update( message, True, debug)
+            self.context_update(message)
+        
+        return
+    
+    # =====================================================================================
+    # METHOD OVERLOADS
+    # =====================================================================================
+    
+    def context_build( self, truncate : bool = True) -> None :
+        """
+        Build context
+        Args:
+            truncate: Whether or not to enforce the max content length
+            debug:    Debug mode flag
+        """
+        
+        super().context_build(truncate)
+        
+        # Initialize DKDB
+        if self.case_manifest and self.case_manifest.model \
+                              and ( not self.tool_server.dkdb.model ) :
+            self.tool_server.dkdb.set_model(self.case_manifest.model)
+        
+        # Process for triggers
+        self.triggers = self.state_machine.process(self.case_context)
+        
+        return
+    
+    def context_update( self,
+                        message  : Message,
+                        triggers : bool = True ) -> None :
+        
+        super().context_update(message)
+        
+        # Update triggers
+        if triggers :
+            self.triggers = self.state_machine.update(message)
         
         return
     
@@ -89,98 +137,53 @@ class CaseHandler(CaseHandlerBase) :
     # PROCESS MESSAGE FROM HUMAN
     # =====================================================================================
 
-    def process_msg_human( self,
-                           message       : WhatsAppMsg,
-                           media_content : MediaContent | None = None
-                         ) -> bool :
-        """
-        Handle a new human message.
-        Returns: True if message needs to be replied to, else False.
-        """
+    def process_message( self,
+                         message       : WhatsAppMsg,
+                         media_content : MediaContent | None = None
+                       ) -> bool :
+        
         _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
         
-        # If message already processed then return False
-        if self.storage.dedup_exists(message.id) :
-            return False
+        # Dedup and ingest message
+        msg = self.dedup_and_ingest_message( message, media_content)
         
-        # Determine target case_id
-        self.case_id, self.case_manifest = self.case_decide()
-        
-        # Process text or media
-        msg, msg_reply = None, None
-        if message.text or message.media_data :
+        # If media is image then store contents in images cache
+        if msg and isinstance( msg, UserContentMsg) \
+        and msg.media and msg.media.mime.startswith("image") :
             
-            text       = None
-            media_data = None
-            if message.text :
-                text = message.text.body
-            elif message.media_data :
-                text       = message.media_data.caption
-                media_data = MediaData.from_content(media_content)
-            
-            msg = UserContentMsg(
-                    origin          = _orig_,
-                    case_id         = self.case_id,
-                    idempotency_key = message.id,
-                    time_created    = unix_to_utc_iso(message.timestamp),
-                    text            = text,
-                    media           = media_data )
-            msg.print()
-        
-        # Process Interactive Reply Message
-        elif message.interactive :
-            
-            msg = UserInteractiveReplyMsg(
-                    origin          = _orig_,
-                    case_id         = self.case_id,
-                    idempotency_key = message.id,
-                    time_created    = unix_to_utc_iso(message.timestamp),
-                    choice          = message.interactive.choice )
-            msg.print()
+            self.imgs_cache[msg.media.name] = media_content.content
         
         # If user message is not text, image, interactive reply then reply with a
         # message indicating lack of support
-        if  message.type not in ( "text", "image", "interactive") :
+        if message.type not in ( "text", "image", "interactive") :
             
             system_message = self.load_system_message("unsupported.json")
             msg_reply      = ServerTextMsg( origin  = _orig_,
                                             case_id = self.case_id,
                                             text    = system_message.get("body") )
             msg_reply.print()
-        
-        if msg :
-            # Write message to storage and update manifest
-            self.context_update( msg, triggers = False)
-            # Write message media to storage
-            if isinstance( msg, UserContentMsg) and msg.media :
-                with self.DirLock(self.user_root) :
-                    self.storage.media_write( msg, media_content)
-                # If media is image then store contents in images cache
-                if msg.media.mime.startswith("image") :
-                    self.imgs_cache[msg.media.name] = media_content.content
-        
-        if msg_reply :
-            # Send message to user
+            
+            # Send reply message to user
             self.send_text(msg_reply)
-            # Write message to storage and update manifest
+            # Write reply message to storage and update manifest
             self.context_update( msg_reply, triggers = False)
+            
             # Signal need to wait for user's reply
             return False
         
         # Signal need to generate a response
-        return True
+        return True if msg else False
     
     # =====================================================================================
     # GENERATE RESPONSE AS A FUNCTION OF FSM STATE
     # =====================================================================================
     
     def generate_response( self,
-                           max_tokens : int | None = None,
-                           debug      : bool       = False ) -> bool :
+                           max_tokens : int | None = None ) -> bool :
         
         # If necessary then build context
         if not self.case_context :
-            self.context_build( debug = debug)
+            self.context_build()
         
         # Perform action according to trigger
         
@@ -191,28 +194,26 @@ class CaseHandler(CaseHandlerBase) :
                 self.tool_server.dkdb.set_model(model)
         
         if self.triggers["ask_for_model_having_nothing"] :
-            return self.ask_user_for( "model_having_nothing", debug)
+            return self.ask_user_for("model_having_nothing")
         
         elif self.triggers["ask_for_model_having_image"] :
-            return self.ask_user_for( "model_having_image", debug)
+            return self.ask_user_for("model_having_image")
         
         elif self.triggers["ask_for_image"] :
-            return self.ask_user_for( "image", debug)
+            return self.ask_user_for("image")
         
         elif self.triggers["call_image_agent"] :
-            return self.call_image_agent( max_tokens, debug)
+            return self.call_image_agent(max_tokens)
         
         elif self.triggers["call_match_agent"] :
-            return self.call_match_agent( max_tokens, debug)
+            return self.call_match_agent(max_tokens)
         
         elif self.triggers["call_main_agent"] :
-            return self.call_main_agent( max_tokens, debug)
+            return self.call_main_agent(max_tokens)
         
         return False
     
-    def ask_user_for( self,
-                      argument : str,
-                      debug    : bool = False ) -> bool :
+    def ask_user_for( self, argument : str) -> bool :
         
         _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
         
@@ -246,9 +247,9 @@ class CaseHandler(CaseHandlerBase) :
             message.print()
             
             # Send message to user
-            self.send_interactive( message, debug = debug)
+            self.send_interactive(message)
             # Write message to storage and update manifest and triggers
-            self.context_update( message, True, debug)
+            self.context_update(message)
         
         elif argument == "image" :
             
@@ -259,9 +260,9 @@ class CaseHandler(CaseHandlerBase) :
             message.print()
             
             # Send message to user
-            self.send_text( message, debug)
+            self.send_text(message)
             # Write message to storage and update manifest and triggers
-            self.context_update( message, True, debug)
+            self.context_update(message)
         
         else :
             raise ValueError(f"In {_orig_}: Invalid argument {argument}")
@@ -282,12 +283,10 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def call_image_agent( self,
-                          max_tokens : int | None = None,
-                          debug      : bool       = False ) -> bool :
+    def call_image_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
-        self.send_agent_update( "image_start", debug)
+        self.send_agent_update("image_start")
         
         # ---------------------------------------------------------------------------------
         # Set text for message origin field
@@ -301,7 +300,7 @@ class CaseHandler(CaseHandlerBase) :
         # PHASE 1: GENERATE IMAGE ANALYSIS
         
         # Prepare image analysis agent context
-        image_agent_context = self.state_machine.msgs_for_image_agent
+        image_agent_context = self.state_machine.image_agent_context
         # Prepare images cache
         for msg_with_image in image_agent_context :
             image_filename = msg_with_image.media.name
@@ -315,7 +314,7 @@ class CaseHandler(CaseHandlerBase) :
                                                      imgs_cache = self.imgs_cache,
                                                      output_st  = RCImageAnalysis,
                                                      max_tokens = max_tokens,
-                                                     debug      = debug )
+                                                     debug      = self.debug )
         
         # If the agent did not respond then do not store response and return False
         if not ag_resp_obj or ag_resp_obj.is_empty() :
@@ -328,9 +327,9 @@ class CaseHandler(CaseHandlerBase) :
         message.print()
         
         # DEBUG: Send message to human
-        self.send_text( message, debug) if debug else None
+        self.send_text(message) if self.debug else None
         # Write message to storage and update manifest and triggers
-        self.context_update( message, True, debug)
+        self.context_update(message)
         
         # ---------------------------------------------------------------------------------
         # PHASE 2: INJECT MESSAGE FOR MATCH AGENT
@@ -343,9 +342,9 @@ class CaseHandler(CaseHandlerBase) :
                                        text    = data_str )
         msg_with_data.print()
         # DEBUG: Send message to human
-        self.send_text( msg_with_data, debug) if debug else None
+        self.send_text(msg_with_data) if self.debug else None
         # Write message to storage and update manifest and triggers
-        self.context_update( msg_with_data, True, debug)
+        self.context_update(msg_with_data)
         
         # ---------------------------------------------------------------------------------
         # Send agent update to user
@@ -378,9 +377,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def call_match_agent( self,
-                          max_tokens : int | None = None,
-                          debug      : bool       = False ) -> bool :
+    def call_match_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
         # self.send_agent_update( "match_start", debug)
@@ -397,13 +394,13 @@ class CaseHandler(CaseHandlerBase) :
         # STAGE 1: GENERATE INITIAL MATCH AGENT RESPONSE
         
         # Prepare match agent context
-        match_agent_context = self.state_machine.msgs_for_match_agent
+        match_agent_context = self.state_machine.match_agent_context
         
         # Generate response
         ag_resp_obj = self.match_agent.get_response( context    = match_agent_context,
                                                      load_imgs  = False,
                                                      max_tokens = max_tokens,
-                                                     debug      = debug )
+                                                     debug      = self.debug )
         
         # If the agent did not respond then do not store response and return False
         if not ag_resp_obj or ag_resp_obj.is_empty() :
@@ -416,9 +413,9 @@ class CaseHandler(CaseHandlerBase) :
         message.print()
         
         # If message contains text then send message to human
-        self.send_text( message, debug) if message.text or debug else None
+        self.send_text(message) if ( message.text or self.debug ) else None
         # Write message to storage and update manifest and triggers
-        self.context_update( message, True, debug)
+        self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -435,9 +432,9 @@ class CaseHandler(CaseHandlerBase) :
                                       tool_results = tool_results )
             message.print()
             # DEBUG: Send message to human
-            self.send_text( message, debug)
+            self.send_text(message)
             # Write message to storage and update manifest and triggers
-            self.context_update( message, True, debug)
+            self.context_update(message)
         
         # ---------------------------------------------------------------------------------
         # Send agent update to user
@@ -471,9 +468,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def call_main_agent( self,
-                         max_tokens : int | None = None,
-                         debug      : bool       = False ) -> bool :
+    def call_main_agent( self, max_tokens : int | None = None) -> bool :
         """
         Generate AI response
         Args:
@@ -496,13 +491,13 @@ class CaseHandler(CaseHandlerBase) :
             self.setup_main_agent()
         
         # Prepare main agent context
-        main_agent_context = self.state_machine.msgs_for_main_agent
+        main_agent_context = self.state_machine.main_agent_context
         
         # Generate main agent response
         ag_resp_obj = self.main_agent.get_response( context    = main_agent_context,
                                                     load_imgs  = False,
                                                     max_tokens = max_tokens,
-                                                    debug      = debug )
+                                                    debug      = self.debug )
         
         # If the agent did not respond then do not store response and return False
         # TODO: Add retries with a threshold on the number of retries.
@@ -516,9 +511,9 @@ class CaseHandler(CaseHandlerBase) :
         message.print()
         
         # Send message to user
-        self.send_text( message, debug)
+        self.send_text(message)
         # Write message to storage and update manifest and triggers
-        self.context_update( message, True, debug)
+        self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -545,9 +540,9 @@ class CaseHandler(CaseHandlerBase) :
                                       tool_results = tool_results )
             message.print()
             # DEBUG: Send message to human
-            self.send_text( message, debug)
+            self.send_text(message)
             # Write message to storage and update manifest and triggers
-            self.context_update( message, True, debug)
+            self.context_update(message)
         
         # If case remains open then signal need for another response
         return bool( self.case_manifest.status == "open" )

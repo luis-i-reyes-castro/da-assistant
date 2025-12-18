@@ -66,6 +66,7 @@ if __name__ == "__main__" :
     
     dkdb  = DomainKnowledgeDataBase()
     dkdb.set_model(MODEL)
+    dkdb.debug = OPTIONS["debug"]
     
     def show_result( label : str, error : bool, payload : Any) -> None :
         print_sep()
@@ -80,13 +81,12 @@ if __name__ == "__main__" :
     def demo_get_joint_diagnosis( message_codes : list[str]) -> None :
         
         label = "get_joint_diagnosis[" + ", ".join(message_codes) + "]"
-        show_result( label, *dkdb.get_joint_diagnosis( message_codes,
-                                                       OPTIONS["debug"]))
+        show_result( label, *dkdb.get_joint_diagnosis(message_codes))
         return
     
     def demo_get_components( component_codes : list[str]) -> None :
         show_result( f"get_components/{component_codes}",
-                     *dkdb.get_components( component_codes, OPTIONS["debug"]))
+                     *dkdb.get_components(component_codes))
         return
     
     if OPTIONS["list_messages"] :

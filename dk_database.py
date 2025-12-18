@@ -43,7 +43,10 @@ class DomainKnowledgeDataBase :
     }
     
     def __init__(self) -> None :
+        
+        self.debug = False
         self.model = None
+        
         return
     
     def get_model_options(self) -> list[InteractiveOption] :
@@ -112,8 +115,8 @@ class DomainKnowledgeDataBase :
     def get_match( self,
                    str_input : str,
                    list_str  : list[str] | tuple[str],
-                   score_fun : Callable = ratio,
-                   debug     : bool = False ) -> str | None :
+                   score_fun : Callable = ratio
+                 ) -> str | None :
         
         if list_str :
             list_matches = process.extract( query   = str_input,
@@ -121,7 +124,7 @@ class DomainKnowledgeDataBase :
                                             scorer  = score_fun )
             if list_matches :
                 
-                if debug :
+                if self.debug :
                     print_sep()
                     print( "MATCH INFORMATION" )
                     print( "SCORE FUNCTION: "
@@ -167,10 +170,9 @@ class DomainKnowledgeDataBase :
     
     def match_component( self,
                          component : str,
-                         debug     : bool = False
                        ) -> tuple[ bool, str | DKB_Component ] :
         
-        matched_comp = self.get_match( component, self.dkb_comp.keys(), debug = debug)
+        matched_comp = self.get_match( component, self.dkb_comp.keys())
         if not matched_comp :
             msg = f"Invalid component: {component}"
             return True, f"In DomainKnowledgeDataBase.match_component: {msg}"
@@ -179,12 +181,12 @@ class DomainKnowledgeDataBase :
     
     @check_model_initialization
     def get_components( self,
-                        components : list[str],
-                        debug      : bool = False ) -> tuple[ bool, Any] :
+                        components : list[str]
+                      ) -> tuple[ bool, Any] :
         
         result : list[ DKB_Component ] = []
         for comp_ in components :
-            query_error, matched_comp = self.match_component( comp_, debug)
+            query_error, matched_comp = self.match_component(comp_)
             if not query_error :
                 result.append(matched_comp)
         
@@ -194,10 +196,9 @@ class DomainKnowledgeDataBase :
     
     def match_message( self,
                        message : str,
-                       debug   : bool = False
                      ) -> tuple[ bool, str | DKB_MessageEntry ] :
         
-        matched_msg = self.get_match( message, self.dkb_msgs.keys(), debug = debug)
+        matched_msg = self.get_match( message, self.dkb_msgs.keys())
         if not matched_msg :
             msg = f"Invalid message: {message}"
             return True, f"In DomainKnowledgeDataBase.match_message: {msg}"
@@ -207,13 +208,13 @@ class DomainKnowledgeDataBase :
     @check_model_initialization
     def get_joint_diagnosis( self,
                              messages : list[str],
-                             debug    : bool = False) -> tuple[ bool, Any] :
+                           ) -> tuple[ bool, Any] :
         
         # Populate list of joint diagnosis message objects
         JD_messages : list[ JD_Message ] = []
         for message_ in messages :
             # Match message
-            query_error, matched_msg = self.match_message( message_, debug)
+            query_error, matched_msg = self.match_message(message_)
             if not query_error :
                 # Instantiate joint diagnosis message object
                 msg_obj = JD_Message(**(matched_msg.model_dump()))
@@ -225,7 +226,7 @@ class DomainKnowledgeDataBase :
                 # If necessary then disaggregate messages
                 if msg_obj.disaggregate :
                     for da_message_ in msg_obj.disaggregate :
-                        da_qe, da_mm = self.match_message( da_message_, debug)
+                        da_qe, da_mm = self.match_message(da_message_)
                         if not da_qe :
                             da_msg_obj = JD_Message(**(da_mm.model_dump()))
                             JD_messages.append(da_msg_obj)
@@ -284,7 +285,7 @@ class DomainKnowledgeDataBase :
                                           -ct[2],   # Risk in descending order
                                           +ct[3]) ) # Hops in  ascending order
         
-        if debug :
+        if self.debug :
             _comp_io_ = [ ( ct[0], ct[1], float(ct[2]), ct[3]) for ct in comp_io ]
             print_sep()
             print('COMPONENT INSPECTION ORDERING 4-TUPLES:')
@@ -303,7 +304,7 @@ class DomainKnowledgeDataBase :
         issues_io = [ ( issue, issue_cards[issue]) for issue in issue_cards.keys() ]
         issues_io.sort( key = lambda i_tup : -i_tup[1]) # Card in descending order
         
-        if debug :
+        if self.debug :
             print_sep()
             print('ISSUE INSPECTION ORDERING 2-TUPLES:')
             print(write_to_json_string(issues_io))
