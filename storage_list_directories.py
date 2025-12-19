@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 from pathlib import Path
 from sys import argv
 
-# Load .env so BUCKET_* vars are available to wa_agents.DO_spaces_io
+# Load .env so BUCKET_* vars are available to wa_agents.do_bucket_io
 load_dotenv()
-from wa_agents.DO_spaces_io import b3_list_directories
+from wa_agents.do_bucket_io import b3_list_directories
 
 
 if __name__ == "__main__" :

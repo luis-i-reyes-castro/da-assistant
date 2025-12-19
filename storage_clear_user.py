@@ -7,9 +7,9 @@ from getpass import getpass
 from pathlib import Path
 from sys import argv
 
-# Load .env so BUCKET_* vars are available to wa_agents.DO_spaces_io
+# Load .env so BUCKET_* vars are available to wa_agents.do_bucket_io
 load_dotenv()
-from wa_agents.DO_spaces_io import ( b3_clear_prefix,
+from wa_agents.do_bucket_io import ( b3_clear_prefix,
                                      b3_list_directories )
 
 
