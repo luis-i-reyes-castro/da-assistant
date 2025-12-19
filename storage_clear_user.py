@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import subprocess
 
 from dotenv import load_dotenv
@@ -36,15 +37,24 @@ def authenticate() :
 
 if __name__ == "__main__" :
     
-    fname = Path(__file__).name
-    usage = f"Usage: {fname} <prefix> [ Optional: <user> ]\n"
+    fname        = Path(__file__).name
+    user_env_var = "DEV_WHATSAPP_NUMBER"
+    
+    usage = f"Usage: {fname} <prefix> [ Optional: <user> ]\n" \
+          + f"If user is not specified then script will attempt to use " \
+          + f"environment variable '{user_env_var}'"
+    
     if not len(argv) in ( 2, 3) :
         raise SystemExit(usage)
     
     prefix = argv[1]
-    user   = argv[2] if len(argv) == 3 else "593995341161"
+    user   = argv[2] if len(argv) == 3 else os.getenv(user_env_var)
     
-    if authenticate() :
+    if not user :
+        print( "Developer phone number unset. " \
+             + f"Please set environment variable '{user_env_var}'." )
+    
+    elif authenticate() :
         
         full_prefix = f"{prefix}/{user}"
         print(f"Clearing directory: {full_prefix}")

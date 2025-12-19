@@ -5,8 +5,8 @@
 In our `.env` file:
 ```bash
 # WhatsApp Cloud API
-WA_BA_NUM=1300095675231214 # WhatsApp Business Account ID (WABA ID)
-WA_TOKEN=EAAB...           # WhatsApp Access Token
+WA_BA_NUM=...    # WhatsApp Business Account ID (WABA ID)
+WA_TOKEN=EAAB... # WhatsApp Access Token
 ```
 
 Load the env vars:
@@ -29,9 +29,9 @@ Example response:
 {
   "data": [
     {
-      "verified_name": "Reyes Castro Drones",
-      "display_phone_number": "+593 98 304 2146",
-      "id": "770358066161429"
+      "verified_name": "...",
+      "display_phone_number": "...",
+      "id": "..."
     }
   ]
 }
@@ -40,8 +40,8 @@ Example response:
 Take note of the `"id"` field because this is your **Phone Number ID**.
 Add it to your `.env` file:
 ```bash
-WA_NUMBER_ID_PROD=770358066161429
-WA_NUMBER_PIN_PROD=123456 # Example of 6-digit PIN you chose for registration
+WA_NUMBER_ID=...
+WA_NUMBER_PIN=123456 # Example of 6-digit PIN you chose for registration
 ```
 
 Reload:
@@ -55,17 +55,17 @@ After adding the phone number in **WhatsApp Manager**, it shows as **Pending**.
 Complete registration via API:
 ```bash
 curl -i -X POST \
-  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID_PROD/register" \
+  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID/register" \
   -H "Authorization: Bearer $WA_TOKEN" \
   -H "Content-Type: application/json" \
   -d "{
     \"messaging_product\": \"whatsapp\",
-    \"pin\": \"$WA_NUMBER_PIN_PROD\"
+    \"pin\": \"$WA_NUMBER_PIN\"
   }"
 ```
 
 * ⚠️ Use **double quotes** for the JSON (the part after `-d`)
-  * Necessary so that Bash expands `$WA_NUMBER_PIN_PROD`
+  * Necessary so that Bash expands `$WA_NUMBER_PIN`
   * Bash **cannot expand** variables inside single quotes!
 * On success: `{"success":true}`
 * Number status flips to **Connected**.
@@ -75,7 +75,7 @@ curl -i -X POST \
 If we later need to get rid of that phone number:
 ```bash
 curl -i -X POST \
-  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID_PROD/deregister" \
+  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID/deregister" \
   -H "Authorization: Bearer $WA_TOKEN"
 ```
 
@@ -91,7 +91,7 @@ curl -i -X POST \
 
 ```bash
 curl -i -X POST \
-  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID_PROD/messages" \
+  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID/messages" \
   -H "Authorization: Bearer $WA_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -109,7 +109,7 @@ curl -i -X POST \
 
 ```bash
 curl -i -X POST \
-  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID_PROD/messages" \
+  "https://graph.facebook.com/v23.0/$WA_NUMBER_ID/messages" \
   -H "Authorization: Bearer $WA_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
@@ -134,7 +134,7 @@ curl -i -X POST \
 **If registration fails:**
 * Check quotes after `-d`. Use double quotes.
   * In `curl`, single quotes prevent variable expansion!
-  * Use double quotes for vars like `$WA_NUMBER_PIN_PROD`.
+  * Use double quotes for vars like `$WA_NUMBER_PIN`.
 * Confirm PIN is 6 digits.
 * Ensure you didn’t exceed **10 register attempts / 72h**.
 
