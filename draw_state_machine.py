@@ -33,9 +33,9 @@ class GraphicalStateMachine(StateMachine) :
             if 'label' in node.attr :
                 label = node.attr['label']
                 label = re.sub( r"^(\w+)", r"STATE '\1'", label)
-                label = label.replace( '+', '·')
-                label = label.replace( '- enter:', '[>] do:')
-                label = label.replace( '- exit:', '[>] on exit:')
+                label = label.replace( '+', '•')
+                label = label.replace( '- enter:', '[»] do:')
+                label = label.replace( '- exit:', '[»] on exit:')
                 node.attr['label'] = label
             
             # Apply state style and border color

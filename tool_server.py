@@ -10,9 +10,9 @@ from dk_database import DomainKnowledgeDataBase
 
 class ToolServer :
     
-    def __init__(self) -> None :
+    def __init__( self, debug : bool = False) -> None :
         
-        self.dkdb  = DomainKnowledgeDataBase()
+        self.dkdb  = DomainKnowledgeDataBase(debug)
         self.tools = [ "dummy_tool",
                        "get_component_data",
                        "get_joint_diagnosis",

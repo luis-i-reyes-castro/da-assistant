@@ -42,9 +42,9 @@ class DomainKnowledgeDataBase :
                            "notes", "solutions", "errors" } },
     }
     
-    def __init__(self) -> None :
+    def __init__( self, debug : bool = False) -> None :
         
-        self.debug = False
+        self.debug = debug
         self.model = None
         
         return

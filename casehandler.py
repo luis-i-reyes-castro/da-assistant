@@ -41,19 +41,17 @@ class CaseHandler(CaseHandlerBase) :
         
         super().__init__( operator, user, debug)
         
-        self.state_machine = StateMachine()
-        self.tool_server   = ToolServer()
+        # Initialize state machine and tool server
+        self.state_machine = StateMachine(debug)
+        self.tool_server   = ToolServer(debug)
         
-        self.triggers   = {}
-        self.imgs_cache = {}
+        # Initialize images cache
+        self.imgs_cache : dict[ str, bytes] = {}
         
-        self.image_agent = None
-        self.match_agent = None
-        self.main_agent  = None
-        
-        if self.debug :
-            self.state_machine.debug    = True
-            self.tool_server.dkdb.debug = True
+        # Declare agents
+        self.image_agent : Agent = None
+        self.match_agent : Agent = None
+        self.main_agent  : Agent = None
         
         return
     
@@ -92,7 +90,7 @@ class CaseHandler(CaseHandlerBase) :
             message.print()
             # Send message to human
             self.send_text(message)
-            # Write message to storage and update manifest and triggers
+            # Write message to storage and update manifest and state machine
             self.context_update(message)
         
         return
@@ -106,7 +104,6 @@ class CaseHandler(CaseHandlerBase) :
         Build context
         Args:
             truncate: Whether or not to enforce the max content length
-            debug:    Debug mode flag
         """
         
         super().context_build(truncate)
@@ -116,27 +113,12 @@ class CaseHandler(CaseHandlerBase) :
                               and ( not self.tool_server.dkdb.model ) :
             self.tool_server.dkdb.set_model(self.case_manifest.model)
         
-        # Process for triggers
-        self.triggers = self.state_machine.process(self.case_context)
-        
-        return
-    
-    def context_update( self,
-                        message  : Message,
-                        triggers : bool = True ) -> None :
-        
-        super().context_update(message)
-        
-        # Update triggers
-        if triggers :
-            self.triggers = self.state_machine.update(message)
-        
         return
     
     # =====================================================================================
     # PROCESS MESSAGE FROM HUMAN
     # =====================================================================================
-
+    
     def process_message( self,
                          message       : WhatsAppMsg,
                          media_content : MediaContent | None = None
@@ -166,7 +148,7 @@ class CaseHandler(CaseHandlerBase) :
             # Send reply message to user
             self.send_text(msg_reply)
             # Write reply message to storage and update manifest
-            self.context_update( msg_reply, triggers = False)
+            self.context_update(msg_reply)
             
             # Signal need to wait for user's reply
             return False
@@ -185,30 +167,34 @@ class CaseHandler(CaseHandlerBase) :
         if not self.case_context :
             self.context_build()
         
-        # Perform action according to trigger
+        # Retrieve actions from state machine
+        actions = self.state_machine.get_actions()
         
-        if self.triggers["set_model"] :
+        # If necessary then set model
+        if "set_model" in actions :
             if not self.tool_server.dkdb.model :
                 model = self.state_machine.model_choice
                 self.case_set_drone_model(model)
                 self.tool_server.dkdb.set_model(model)
         
-        if self.triggers["ask_for_model_having_nothing"] :
+        # Call corresponding action method
+        
+        if "ask_for_model_having_nothing" in actions :
             return self.ask_user_for("model_having_nothing")
         
-        elif self.triggers["ask_for_model_having_image"] :
+        elif "ask_for_model_having_image" in actions :
             return self.ask_user_for("model_having_image")
         
-        elif self.triggers["ask_for_image"] :
+        elif "ask_for_image" in actions :
             return self.ask_user_for("image")
         
-        elif self.triggers["call_image_agent"] :
+        elif "call_image_agent" in actions :
             return self.call_image_agent(max_tokens)
         
-        elif self.triggers["call_match_agent"] :
+        elif "call_match_agent" in actions :
             return self.call_match_agent(max_tokens)
         
-        elif self.triggers["call_main_agent"] :
+        elif "call_main_agent" in actions :
             return self.call_main_agent(max_tokens)
         
         return False
@@ -248,7 +234,7 @@ class CaseHandler(CaseHandlerBase) :
             
             # Send message to user
             self.send_interactive(message)
-            # Write message to storage and update manifest and triggers
+            # Write message to storage and update manifest and state machine
             self.context_update(message)
         
         elif argument == "image" :
@@ -261,7 +247,7 @@ class CaseHandler(CaseHandlerBase) :
             
             # Send message to user
             self.send_text(message)
-            # Write message to storage and update manifest and triggers
+            # Write message to storage and update manifest and state machine
             self.context_update(message)
         
         else :
@@ -328,7 +314,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # DEBUG: Send message to human
         self.send_text(message) if self.debug else None
-        # Write message to storage and update manifest and triggers
+        # Write message to storage and update manifest and state machine
         self.context_update(message)
         
         # ---------------------------------------------------------------------------------
@@ -343,7 +329,7 @@ class CaseHandler(CaseHandlerBase) :
         msg_with_data.print()
         # DEBUG: Send message to human
         self.send_text(msg_with_data) if self.debug else None
-        # Write message to storage and update manifest and triggers
+        # Write message to storage and update manifest and state machine
         self.context_update(msg_with_data)
         
         # ---------------------------------------------------------------------------------
@@ -414,7 +400,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If message contains text then send message to human
         self.send_text(message) if ( message.text or self.debug ) else None
-        # Write message to storage and update manifest and triggers
+        # Write message to storage and update manifest and state machine
         self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
@@ -433,7 +419,7 @@ class CaseHandler(CaseHandlerBase) :
             message.print()
             # DEBUG: Send message to human
             self.send_text(message)
-            # Write message to storage and update manifest and triggers
+            # Write message to storage and update manifest and state machine
             self.context_update(message)
         
         # ---------------------------------------------------------------------------------
@@ -512,7 +498,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # Send message to user
         self.send_text(message)
-        # Write message to storage and update manifest and triggers
+        # Write message to storage and update manifest and state machine
         self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
@@ -541,7 +527,7 @@ class CaseHandler(CaseHandlerBase) :
             message.print()
             # DEBUG: Send message to human
             self.send_text(message)
-            # Write message to storage and update manifest and triggers
+            # Write message to storage and update manifest and state machine
             self.context_update(message)
         
         # If case remains open then signal need for another response
