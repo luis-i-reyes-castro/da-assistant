@@ -17,7 +17,7 @@ from wa_agents.basemodels import ( AssistantMsg,
                                    UserMsg,
                                    UserInteractiveReplyMsg,
                                    UserContentMsg )
-from wa_agents.statemachinebase import StateMachineBase
+from wa_agents.state_machine_base import StateMachineBase
 
 
 class StateMachine(StateMachineBase) :
