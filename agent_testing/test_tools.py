@@ -6,30 +6,30 @@ Exercise tool-calling instructions using the debug prompt + DKDB tools.
 from __future__ import annotations
 
 import argparse
+from dotenv import load_dotenv
 
 from wa_agents.agent import Agent
 from wa_agents.basemodels import( AssistantMsg,
                                   UserContentMsg )
 
-from agent_testing import resolve_models_env
 
-
-PROMPTS = [ "../agent_prompts/debug_tools.md" ]
-TOOLS   = [ "../agent_tools/debug_openrouter.json" ]
+load_dotenv("../.env")
+MODELS  = [ "anthropic/claude-3.5-sonnet" ]
+PROMPTS = [ "debug_tools.md" ]
+TOOLS   = [ "debug_tools.json" ]
 
 
 def run_test( debug : bool = False) -> None :
     
-    models = resolve_models_env()
-    print(f"AGENT TEST MODEL(S): {models}")
+    print(f"AGENT TEST MODEL(S): {MODELS}")
     
-    agent = Agent( "test", models)
+    agent = Agent( "test", MODELS)
     agent.load_prompts(PROMPTS)
     agent.load_tools(TOOLS)
     
     origin  = __file__
     case_id = 42
-    text    = "Start the debug drill."
+    text    = "Call both tools"
     
     context = [ UserContentMsg( origin = origin, case_id = case_id, text = text) ]
     

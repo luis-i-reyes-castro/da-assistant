@@ -6,23 +6,23 @@ Smoke test for plain text responses via OpenRouter.
 from __future__ import annotations
 
 import argparse
+from dotenv import load_dotenv
 
 from wa_agents.agent import Agent
 from wa_agents.basemodels import( AssistantMsg,
                                   UserContentMsg )
 
-from agent_testing import resolve_models_env
 
-
-PROMPTS = [ "../agent_prompts/debug_text.md" ]
+load_dotenv("../.env")
+MODELS  = [ "mistralai/pixtral-12b" ]
+PROMPTS = [ "debug_text.md" ]
 
 
 def run_test( debug : bool = False) -> None :
     
-    models = resolve_models_env()
-    print(f"AGENT TEST MODEL(S): {models}")
+    print(f"AGENT TEST MODEL(S): {MODELS}")
     
-    agent = Agent( "test", models)
+    agent = Agent( "test", MODELS)
     agent.load_prompts(PROMPTS)
     
     origin  = __file__

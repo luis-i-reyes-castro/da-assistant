@@ -1,6 +1,6 @@
 # Instructions
 
-* This is a software development/debug run.
+* This is a sandobox development/debug run.
 * We are working on being able to upload messages with images to your API and having you respond using structured output (JSON or Pydantic BaseModels)
 * In each turn the user will attempt to give you an image input.
 * If you receive the image then respond in the following format:
