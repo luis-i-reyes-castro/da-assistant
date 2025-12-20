@@ -12,7 +12,7 @@ from sofia_utils.io import ( ensure_dir,
                              write_to_file )
 from sofia_utils.printing import print_ind
 
-from dka_placeholder_database import PlaceHolderDatabase
+from domain_knowledge.dka_placeholder_database import PlaceHolderDatabase
 
 
 def parse_arguments() -> argparse.Namespace :

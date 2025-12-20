@@ -5,8 +5,10 @@ if [ -z "$MODEL" ]; then
     echo "Usage: $0 <MODEL>"
     exit 1
 fi
-DIR_INPUT="${MODEL}_dka"
-DIR_OUTPUT="${MODEL}_dkb"
+
+DIR="domain_knowledge"
+DIR_INPUT="${DIR}/${MODEL}_dka"
+DIR_OUTPUT="${DIR}/${MODEL}_dkb"
 
 # If directory exists then remove all its contents
 if [ -d "$DIR_OUTPUT" ]; then
@@ -18,11 +20,11 @@ fi
 
 # DKA: Run checkers and parse placeholders
 echo ""
-python3 dka_checkers.py $DIR_INPUT --everything
+python3 -m domain_knowledge.dka_checkers $DIR_INPUT --everything
 echo ""
-python3 dka_parse_placeholders.py $DIR_INPUT $DIR_OUTPUT --everything
+python3 -m domain_knowledge.dka_parse_placeholders $DIR_INPUT $DIR_OUTPUT --everything
 echo ""
 # DKB: Parse components graph and run checkers
-python3 dkb_parse_graph.py $DIR_OUTPUT
+python3 -m domain_knowledge.dkb_parse_graph $DIR_OUTPUT
 echo ""
-python3 dkb_checkers.py $DIR_OUTPUT --everything
+python3 -m domain_knowledge.dkb_checkers $DIR_OUTPUT --everything

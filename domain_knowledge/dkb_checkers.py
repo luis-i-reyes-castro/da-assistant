@@ -12,13 +12,13 @@ from sofia_utils.io import ( list_files_starting_with,
 from sofia_utils.printing import ( print_ind,
                                    print_validation_errors )
 
-from dk_argument_parsing import parse_arguments
-from dk_basemodels import ( DKB_Component,
-                            DKB_Connections,
-                            DKB_Issue,
-                            DKB_SignalEntry,
-                            DKB_MessageEntry )
-from dkb_graph import ComponentsGraph
+from .dk_argument_parsing import parse_arguments
+from .dk_basemodels import ( DKB_Component,
+                             DKB_Connections,
+                             DKB_Issue,
+                             DKB_SignalEntry,
+                             DKB_MessageEntry )
+from .dkb_graph import ComponentsGraph
 
 
 def load_components( dir_input     : str,

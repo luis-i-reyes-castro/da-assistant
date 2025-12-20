@@ -9,7 +9,7 @@ from sofia_utils.io import write_to_json_string
 from sofia_utils.printing import print_sep
 from wa_agents.basemodels import ServerTextMsg
 
-from dk_database import DomainKnowledgeDataBase
+from .dk_database import DomainKnowledgeDataBase
 
 
 MODEL   = "T40"

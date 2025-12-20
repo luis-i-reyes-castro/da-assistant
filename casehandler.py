@@ -17,7 +17,7 @@ from wa_agents.basemodels import *
 from wa_agents.case_handler_base import CaseHandlerBase
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
 
-from dk_basemodels import RCImageAnalysis
+from domain_knowledge.dk_basemodels import RCImageAnalysis
 from state_machine import StateMachine
 from tool_server import ToolServer
 

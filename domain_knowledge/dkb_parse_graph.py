@@ -11,7 +11,7 @@ from sofia_utils.io import ( load_json_file,
                              write_to_json_file )
 from sofia_utils.printing import print_ind
 
-from dkb_graph import ComponentsGraph
+from .dkb_graph import ComponentsGraph
 
 
 def list_neighbors( data_components  : dict,

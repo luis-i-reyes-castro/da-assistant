@@ -5,7 +5,7 @@ CaseHander Tool Server
 from wa_agents.basemodels import ( ToolCall,
                                    ToolResult )
 
-from dk_database import DomainKnowledgeDataBase
+from domain_knowledge.dk_database import DomainKnowledgeDataBase
 
 
 class ToolServer :

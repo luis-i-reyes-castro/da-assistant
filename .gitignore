@@ -20,4 +20,4 @@ queue.sqlite3
 *.log
 *.pdf
 *.png
-analysis_*.json
+*_analysis_*.json

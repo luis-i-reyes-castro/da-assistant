@@ -11,7 +11,11 @@ from typing import Callable
 
 from sofia_utils.io import load_json_file
 
-import dka_regex as phrx
+
+RX_NAME = fr'([A-Z][A-Z0-9_]+)'
+RX_SET  = fr'{{{RX_NAME}}}'
+RX_ARG  = fr'\[{RX_NAME}\]'
+RX_FUN  = fr'{{{RX_NAME}{RX_ARG}}}'
 
 
 class BuiltInFunction(dict) :
@@ -24,6 +28,7 @@ class BuiltInFunction(dict) :
         return self.function(key)
     def __setitem__( self, key : str, value : str) -> None :
         pass
+
 
 class PlaceHolderDatabase:
     """
@@ -134,7 +139,7 @@ class PlaceHolderDatabase:
         list_add_funs = []
         # Add lower-case function versions
         for fun_name, fun_dict in self.fun_map.items() :
-            m_obj = search( phrx.RX_FUN, f"{{{fun_name}}}")
+            m_obj = search( RX_FUN, f"{{{fun_name}}}")
             fun_name, arg_name = m_obj.group(1,2)
             new_func_name = f"{fun_name}_LOWER[{arg_name}]"
             new_func_dict = {}
@@ -143,7 +148,7 @@ class PlaceHolderDatabase:
             list_add_funs.append( ( new_func_name, new_func_dict) )
         # Add upper-case function versions
         for fun_name, fun_dict in self.fun_map.items() :
-            m_obj = search( phrx.RX_FUN, f"{{{fun_name}}}")
+            m_obj = search( RX_FUN, f"{{{fun_name}}}")
             fun_name, arg_name = m_obj.group(1,2)
             new_func_name = f"{fun_name}_UPPER[{arg_name}]"
             new_func_dict = {}
@@ -224,11 +229,10 @@ class PlaceHolderDatabase:
     @staticmethod
     def contains_placeholders( data : str | int | float | list | dict) -> bool :
         if isinstance( data, str) :
-            match = search( phrx.RX_SET, data)
+            match = search( RX_SET, data)
             if match :
-                if match.group(1) not in phrx.IGNORE :
-                    return True
-            match = search( phrx.RX_FUN, data)
+                return True
+            match = search( RX_FUN, data)
             if match :
                 return True
         elif isinstance( data, int) or isinstance( data, float) :
@@ -268,7 +272,7 @@ class PlaceHolderDatabase:
         Extract the argument set name from a function call.
         For example, from "ENG[SIDE]" extract "SIDE".
         """
-        match = search( phrx.RX_ARG, fun_call)
+        match = search( RX_ARG, fun_call)
         return match.group(1) if match else None
     
     def get_first_placeholder( self, 
@@ -313,7 +317,7 @@ class PlaceHolderDatabase:
         ph_sets = set()
         
         if isinstance( data, str) :
-            found_sets = findall( phrx.RX_SET, data)
+            found_sets = findall( RX_SET, data)
             for ph in found_sets :
                 if ph not in self.set_map :
                     print(f"Error: Set '{ph}' not found in signatures")
@@ -340,7 +344,7 @@ class PlaceHolderDatabase:
         ph_funs = set()
         
         if isinstance( data, str) :
-            found_funs = findall( phrx.RX_FUN, data)
+            found_funs = findall( RX_FUN, data)
             ph_funs_full = [f"{func_name}[{arg_name}]" for func_name, arg_name in found_funs]
             for ph in ph_funs_full :
                 if ph not in self.fun_map :
@@ -412,7 +416,7 @@ class PlaceHolderDatabase:
     @staticmethod
     def pseudo_XML( data : str) -> str :
         
-        result = sub( fr'{{SAME{phrx.RX_ARG}}}', r'{\1}', data)
-        result = sub( phrx.RX_SET, r'<\1>', result)
+        result = sub( fr'{{SAME{RX_ARG}}}', r'{\1}', data)
+        result = sub( RX_SET, r'<\1>', result)
         
         return result

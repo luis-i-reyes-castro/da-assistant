@@ -13,8 +13,8 @@ from sofia_utils.io import ( ensure_dir,
                              write_to_json_file )
 from sofia_utils.printing import print_ind
 
-from dk_argument_parsing import parse_arguments
-from dka_placeholder_database import PlaceHolderDatabase
+from .dk_argument_parsing import parse_arguments
+from .dka_placeholder_database import PlaceHolderDatabase
 
 
 def parse_dict( data : OrderedDict, phDB : PlaceHolderDatabase) -> OrderedDict :

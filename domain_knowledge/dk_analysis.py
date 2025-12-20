@@ -9,7 +9,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-from dk_basemodels import load_dka_components
+from .dk_basemodels import load_dka_components
 
 
 def parse_args() -> argparse.Namespace :

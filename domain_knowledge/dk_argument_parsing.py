@@ -5,6 +5,7 @@ Shared helpers for parsing command-line arguments in DK checkers.
 
 import sys
 
+
 DATA_TYPES = ( "components",
                "connections",
                "issues",
@@ -15,10 +16,12 @@ OPTION_ALL   = "--everything"
 OPTION_FLAGS = { f"--{data_t}" for data_t in DATA_TYPES }
 OPTION_FLAGS.add(OPTION_ALL)
 
+
 def build_option_dict( option : str) -> dict[str, bool] :
     
     return { data_t : option in ( f"--{data_t}", OPTION_ALL )
              for data_t in DATA_TYPES }
+
 
 def parse_arguments( script_name : str,
                      argv        : list[str],

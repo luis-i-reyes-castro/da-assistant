@@ -12,12 +12,12 @@ from sofia_utils.io import ( list_files_starting_with,
 from sofia_utils.printing import ( print_ind,
                                    print_validation_errors )
 
-from dk_argument_parsing import parse_arguments
-from dk_basemodels import (DKA_Component,
-                           DKA_Connections,
-                           DKA_Issue,
-                           DKA_MessageGroup,
-                           DKA_SignalGroup )
+from .dk_argument_parsing import parse_arguments
+from .dk_basemodels import ( DKA_Component,
+                             DKA_Connections,
+                             DKA_Issue,
+                             DKA_MessageGroup,
+                             DKA_SignalGroup )
 
 
 def validate_components( dir_input : str) -> None :

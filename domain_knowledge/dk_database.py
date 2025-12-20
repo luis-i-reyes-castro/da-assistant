@@ -16,8 +16,8 @@ from sofia_utils.printing import ( print_ind,
                                    print_sep )
 from wa_agents.basemodels import InteractiveOption
 
-from dk_basemodels import *
-from dka_placeholder_database import PlaceHolderDatabase
+from .dk_basemodels import *
+from .dka_placeholder_database import PlaceHolderDatabase
 
 
 class DomainKnowledgeDataBase :
@@ -96,7 +96,7 @@ class DomainKnowledgeDataBase :
                 self.dkb_msgs[msg_key].key = msg_key
             
             # Initalize placeholder database
-            ph_path   = Path(self.dir_dka) / "placeholders.jsonc"
+            ph_path   = Path("domain_knowledge") /self.dir_dka / "placeholders.jsonc"
             self.phDB = PlaceHolderDatabase(ph_path)
             
             return False, f"Successfully set model to {model}"
