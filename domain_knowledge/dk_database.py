@@ -46,6 +46,7 @@ class DomainKnowledgeDataBase :
         
         self.debug = debug
         self.model = None
+        self.dk_dir = Path(__file__).resolve().parent
         
         return
     
@@ -63,8 +64,8 @@ class DomainKnowledgeDataBase :
             
             # Record model and setup Domain Knowledge directories
             self.model   = model
-            self.dir_dka = model + "_dka"
-            self.dir_dkb = model + "_dkb"
+            self.dir_dka = self.dk_dir / f"{model}_dka"
+            self.dir_dkb = self.dk_dir / f"{model}_dkb"
             
             # DKA: Load topics
             self.dka_comp = load_dka_components(self.dir_dka)
@@ -96,7 +97,7 @@ class DomainKnowledgeDataBase :
                 self.dkb_msgs[msg_key].key = msg_key
             
             # Initalize placeholder database
-            ph_path   = Path("domain_knowledge") /self.dir_dka / "placeholders.jsonc"
+            ph_path   = self.dir_dka / "placeholders.jsonc"
             self.phDB = PlaceHolderDatabase(ph_path)
             
             return False, f"Successfully set model to {model}"
