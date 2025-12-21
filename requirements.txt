@@ -1,20 +1,9 @@
-anthropic==0.74.1
-Babel==2.17.0
-boto3==1.40.27
-botocore==1.40.27
-Flask==3.1.2
-GitPython==3.1.45
 gunicorn==23.0.0
-mistralai==1.9.11
 networkx==3.4.2
-openai==2.9.0
-phonenumbers==9.0.13
 pydantic==2.12.5
 python-dotenv==1.2.1
-requests==2.32.5
 supervisor==4.3.0
 thefuzz==0.22.1
-tiktoken==0.9.0
 transitions==0.9.3
 
 sofia-utils @ git+https://github.com/luis-i-reyes-castro/sofia-utils.git@main
