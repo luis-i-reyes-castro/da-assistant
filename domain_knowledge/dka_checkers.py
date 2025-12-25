@@ -9,8 +9,8 @@ from typing import Any
 
 from sofia_utils.io import ( list_files_starting_with,
                              load_json_file )
-from sofia_utils.printing import ( print_ind,
-                                   print_validation_errors )
+from sofia_utils.printing import print_ind
+from wa_agents.basemodels import print_validation_errors
 
 from .dk_argument_parsing import parse_arguments
 from .dk_basemodels import ( DKA_Component,
@@ -36,10 +36,10 @@ def validate_components( dir_input : str) -> None :
         for comp_key, comp_data in data.items() :
             try :
                 DKA_Component.model_validate(comp_data)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f'❌ Component {comp_key} failed validation', 1)
-                print_validation_errors( exc.errors())
+                print_validation_errors(ve)
         if not errors_found :
             print_ind('✅ Components file passed validation', 1)
     return
@@ -56,9 +56,9 @@ def validate_connections( dir_input : str) -> None :
     data : dict[ str, Any] = load_json_file(filename)
     try :
         DKA_Connections.model_validate(data)
-    except ValidationError as exc :
+    except ValidationError as ve :
         print_ind('❌ connections.json failed validation', 1)
-        print_validation_errors( exc.errors())
+        print_validation_errors(ve)
     else :
         print_ind('✅ connections.json passed validation', 1)
     return
@@ -79,10 +79,10 @@ def validate_issues( dir_input : str) -> None :
         for issue_key, issue_data in data.items() :
             try :
                 DKA_Issue.model_validate(issue_data)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f'❌ Issue {issue_key} failed validation', 1)
-                print_validation_errors( exc.errors())
+                print_validation_errors(ve)
         if not errors_found :
             print_ind('✅ Issues file passed validation', 1)
     return
@@ -106,10 +106,10 @@ def validate_messages( dir_input : str) -> None :
         for index, message_group in enumerate( data, start = 1) :
             try :
                 DKA_MessageGroup.model_validate(message_group)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f'❌ Message entry #{index} failed validation', 1)
-                print_validation_errors( exc.errors())
+                print_validation_errors(ve)
         if not errors_found :
             print_ind('✅ Messages file passed validation', 1)
     return
@@ -133,10 +133,10 @@ def validate_signals( dir_input : str) -> None :
         for index, signal_group in enumerate( data, start = 1) :
             try :
                 DKA_SignalGroup.model_validate(signal_group)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f'❌ Signal entry #{index} failed validation', 1)
-                print_validation_errors( exc.errors())
+                print_validation_errors(ve)
         if not errors_found :
             print_ind('✅ Signals file passed validation', 1)
     return

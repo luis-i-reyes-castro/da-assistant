@@ -9,8 +9,8 @@ from pydantic import ValidationError
 
 from sofia_utils.io import ( list_files_starting_with,
                              load_json_file )
-from sofia_utils.printing import ( print_ind,
-                                   print_validation_errors )
+from sofia_utils.printing import print_ind
+from wa_agents.basemodels import print_validation_errors
 
 from .dk_argument_parsing import parse_arguments
 from .dk_basemodels import ( DKB_Component,
@@ -47,10 +47,10 @@ def load_components( dir_input     : str,
         for comp_key, comp_data in data.items() :
             try :
                 component = DKB_Component.model_validate(comp_data)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f"❌ Component {comp_key} failed validation", 1)
-                print_validation_errors(exc.errors())
+                print_validation_errors(ve)
                 continue
             if perform_check and comp_key in components :
                 print_ind( f"⚠️ Found repeated component key: {comp_key}", 1)
@@ -86,10 +86,10 @@ def load_issues( dir_input     : str,
         for issue_key, issue_dict in data.items() :
             try :
                 issue_entry = DKB_Issue.model_validate(issue_dict)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f"❌ Issue {issue_key} failed validation", 1)
-                print_validation_errors(exc.errors())
+                print_validation_errors(ve)
                 continue
             if perform_check and issue_key in issues :
                 print_ind( f"⚠️ Found repeated issue key: {issue_key}", 1)
@@ -151,10 +151,10 @@ def load_signals( dir_input     : str,
         for signal_key, signal_dict in data.items() :
             try :
                 signal_entry = DKB_SignalEntry.model_validate(signal_dict)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f"❌ Signal {signal_key} failed validation", 1)
-                print_validation_errors(exc.errors())
+                print_validation_errors(ve)
                 continue
             if perform_check :
                 validate_signal_relations( signal_key,
@@ -251,9 +251,9 @@ def run_connections_check( dir_input  : str,
         return
     try :
         connections = DKB_Connections.model_validate(data)
-    except ValidationError as exc :
+    except ValidationError as ve :
         print_ind( "❌ connections.json failed validation", 1)
-        print_validation_errors( exc.errors())
+        print_validation_errors(ve)
         return
     
     e_found = check_connections_relationships( connections, components)
@@ -349,10 +349,10 @@ def run_messages_check( dir_input  : str,
         for msg_key, msg_dict in data.items() :
             try :
                 message_entry = DKB_MessageEntry.model_validate(msg_dict)
-            except ValidationError as exc :
+            except ValidationError as ve :
                 errors_found = True
                 print_ind( f"❌ Message {msg_key} failed validation", 1)
-                print_validation_errors(exc.errors())
+                print_validation_errors(ve)
                 continue
             
             validate_message_relations( msg_key,
