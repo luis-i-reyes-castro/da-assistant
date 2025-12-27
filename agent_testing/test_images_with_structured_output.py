@@ -37,21 +37,15 @@ def run_test( image_path : Path, debug : bool = False) -> None :
     agent = Agent( "test", MODELS)
     agent.load_prompts(PROMPTS)
     
-    origin  = "tests/test_agent_images_structured.py"
-    case_id = 42
-    text    = "Identify vehicles in this image and respond using the structured schema."
-    md, mc  = load_media(image_path)
+    msg_text = "Identify vehicles in this image and respond using the structured schema."
+    msg_md, msg_mc = load_media(image_path)
     
-    if not ( md and mc ) :
+    if not ( msg_md and msg_mc ) :
         print(f"Error: Could not read file {image_path}")
         return
     
-    context = [ UserContentMsg( origin  = origin,
-                                case_id = case_id,
-                                text    = text,
-                                media   = md) ]
-    
-    imgs_cache = { md.name : mc.content }
+    context    = [ UserContentMsg( text = msg_text, media  = msg_md) ]
+    imgs_cache = { msg_md.name : msg_mc.content }
     
     response = agent.get_response( context    = context,
                                    load_imgs  = True,
@@ -61,9 +55,7 @@ def run_test( image_path : Path, debug : bool = False) -> None :
                                    debug      = debug )
     
     if response and not response.is_empty() :
-        assistant_msg = AssistantMsg.from_content( origin  = origin,
-                                                   case_id = case_id,
-                                                   content = response)
+        assistant_msg = AssistantMsg.from_content(content = response)
         assistant_msg.print()
     
     return

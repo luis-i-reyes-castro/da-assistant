@@ -83,9 +83,8 @@ class CaseHandler(CaseHandlerBase) :
         message_text  : str  = agent_updates.get(message_name)
         if message_text :
             # Construct message
-            message = ServerTextMsg( origin  = _orig_,
-                                     case_id = self.case_id,
-                                     text    = message_text,
+            message = ServerTextMsg( origin    = _orig_,
+                                     text      = message_text,
                                      user_eyes = True )
             message.print()
             # Send message to human
@@ -140,9 +139,8 @@ class CaseHandler(CaseHandlerBase) :
         if message.type not in ( "text", "image", "interactive") :
             
             system_message = self.load_system_message("unsupported.json")
-            msg_reply      = ServerTextMsg( origin  = _orig_,
-                                            case_id = self.case_id,
-                                            text    = system_message.get("body") )
+            msg_reply      = ServerTextMsg( origin = _orig_,
+                                            text   = system_message.get("body") )
             msg_reply.print()
             
             # Send reply message to user
@@ -225,7 +223,6 @@ class CaseHandler(CaseHandlerBase) :
             
             # Construct message
             message = ServerInteractiveOptsMsg( origin  = _orig_,
-                                                case_id = self.case_id,
                                                 type    = "button",
                                                 header  = msg_header,
                                                 body    = msg_body,
@@ -240,9 +237,8 @@ class CaseHandler(CaseHandlerBase) :
         elif argument == "image" :
             
             system_message = self.load_system_message("ask_for_image.json")
-            message        = ServerTextMsg( origin  = _orig_,
-                                            case_id = self.case_id,
-                                            text    = system_message.get("body") )
+            message        = ServerTextMsg( origin = _orig_,
+                                            text   = system_message.get("body") )
             message.print()
             
             # Send message to user
@@ -308,7 +304,6 @@ class CaseHandler(CaseHandlerBase) :
         
         # Construct message
         message = AssistantMsg.from_content( origin  = f"{_orig_}/stage-1",
-                                             case_id = self.case_id,
                                              content = ag_resp_obj )
         message.print()
         
@@ -323,9 +318,8 @@ class CaseHandler(CaseHandlerBase) :
         # Retrive data from Domain Knowledge Database
         data_str = self.tool_server.dkdb.list_messages()
         # Construct message
-        msg_with_data = ServerTextMsg( origin  = f"{_orig_}/stage-2",
-                                       case_id = self.case_id,
-                                       text    = data_str )
+        msg_with_data = ServerTextMsg( origin = f"{_orig_}/stage-2",
+                                       text   = data_str )
         msg_with_data.print()
         # DEBUG: Send message to human
         self.send_text(msg_with_data) if self.debug else None
@@ -394,7 +388,6 @@ class CaseHandler(CaseHandlerBase) :
         
         # Construct message
         message = AssistantMsg.from_content( origin  = f"{_orig_}/stage-1",
-                                             case_id = self.case_id,
                                              content = ag_resp_obj )
         message.print()
         
@@ -414,7 +407,6 @@ class CaseHandler(CaseHandlerBase) :
         if tool_results :
             # Construct message
             message = ToolResultsMsg( origin       = f"{_orig_}/stage-2",
-                                      case_id      = self.case_id,
                                       tool_results = tool_results )
             message.print()
             # DEBUG: Send message to human
@@ -492,7 +484,6 @@ class CaseHandler(CaseHandlerBase) :
         
         # Construct message
         message = AssistantMsg.from_content( origin  = f"{_orig_}/stage-1",
-                                             case_id = self.case_id,
                                              content = ag_resp_obj )
         message.print()
         
@@ -522,7 +513,6 @@ class CaseHandler(CaseHandlerBase) :
         if tool_results :
             # Construct message
             message = ToolResultsMsg( origin       = f"{_orig_}/stage-2",
-                                      case_id      = self.case_id,
                                       tool_results = tool_results )
             message.print()
             # DEBUG: Send message to human

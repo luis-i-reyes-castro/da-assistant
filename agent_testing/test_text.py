@@ -25,20 +25,15 @@ def run_test( debug : bool = False) -> None :
     agent = Agent( "test", MODELS)
     agent.load_prompts(PROMPTS)
     
-    origin  = __file__
-    case_id = 42
-    text    = "Reply with a short greeting and confirm the debug sandbox."
-    
-    context = [ UserContentMsg( origin = origin, case_id = case_id, text = text) ]
+    msg_text = "Reply with a short greeting and confirm the debug sandbox."
+    context  = [ UserContentMsg(text = msg_text) ]
     
     response = agent.get_response( context    = context,
                                    max_tokens = 256,
                                    debug      = debug )
     
     if response and not response.is_empty() :
-        assistant_msg = AssistantMsg.from_content( origin  = origin,
-                                                   case_id = case_id,
-                                                   content = response)
+        assistant_msg = AssistantMsg.from_content(content = response)
         assistant_msg.print()
 
 

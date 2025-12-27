@@ -90,9 +90,8 @@ if __name__ == "__main__" :
         return
     
     if OPTIONS["list_messages"] :
-        msg = ServerTextMsg( origin  = "dk_database_testing.py",
-                             case_id = 42,
-                             text    = dkdb.list_messages() )
+        msg = ServerTextMsg( origin = "dk_database_testing.py",
+                             text   = dkdb.list_messages() )
         msg.print()
     
     if OPTIONS["get_joint_diagnosis"] :
