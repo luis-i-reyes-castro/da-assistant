@@ -7,7 +7,7 @@ dir_current  = os.path.dirname(os.path.realpath(__file__))
 dir_parent   = os.path.dirname(dir_current)
 sys.path.append(dir_parent)
 
-from utilities_printing import str_ind
+from sofia_utils.printing import str_ind
 
 def translate_tools_anthropic( target_api : str,
                                fname_in   : str,
