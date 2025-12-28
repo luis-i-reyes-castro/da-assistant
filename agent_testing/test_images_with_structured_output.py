@@ -12,8 +12,7 @@ from pydantic import BaseModel
 from typing import Literal
 
 from wa_agents.agent import Agent
-from wa_agents.basemodels import( AssistantMsg,
-                                  load_media,
+from wa_agents.basemodels import( load_media,
                                   UserContentMsg )
 
 
@@ -47,16 +46,15 @@ def run_test( image_path : Path, debug : bool = False) -> None :
     context    = [ UserContentMsg( text = msg_text, media  = msg_md) ]
     imgs_cache = { msg_md.name : msg_mc.content }
     
-    response = agent.get_response( context    = context,
-                                   load_imgs  = True,
-                                   imgs_cache = imgs_cache,
-                                   output_st  = ImageResults,
-                                   max_tokens = 1024,
-                                   debug      = debug )
+    message = agent.get_response( context    = context,
+                                  load_imgs  = True,
+                                  imgs_cache = imgs_cache,
+                                  output_st  = ImageResults,
+                                  max_tokens = 1024,
+                                  debug      = debug )
     
-    if response and not response.is_empty() :
-        assistant_msg = AssistantMsg.from_content(content = response)
-        assistant_msg.print()
+    if message :
+        message.print()
     
     return
 
@@ -69,7 +67,7 @@ def main() -> None :
                          help = "Image used for the debug structured prompt." )
     parser.add_argument( "--debug",
                          action = "store_true",
-                         help   = "Pass through debug=True and dump responses." )
+                         help   = "Pass through 'debug = True'" )
     args = parser.parse_args()
     
     if not args.image.exists() :

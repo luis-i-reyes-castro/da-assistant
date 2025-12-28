@@ -291,23 +291,21 @@ class CaseHandler(CaseHandlerBase) :
                 self.imgs_cache[image_filename] = image_content
         
         # Generate response
-        ag_resp_obj = self.image_agent.get_response( context    = image_agent_context,
-                                                     load_imgs  = True,
-                                                     imgs_cache = self.imgs_cache,
-                                                     output_st  = RCImageAnalysis,
-                                                     max_tokens = max_tokens,
-                                                     debug      = self.debug )
+        message = self.image_agent.get_response( context    = image_agent_context,
+                                                 origin     = f"{_orig_}/stage-1",
+                                                 load_imgs  = True,
+                                                 imgs_cache = self.imgs_cache,
+                                                 output_st  = RCImageAnalysis,
+                                                 max_tokens = max_tokens,
+                                                 debug      = self.debug )
         
-        # If the agent did not respond then do not store response and return False
-        if not ag_resp_obj or ag_resp_obj.is_empty() :
+        # If the agent did not respond then simply return False
+        if not message or message.is_empty() :
            return False
         
-        # Construct message
-        message = AssistantMsg.from_content( origin  = f"{_orig_}/stage-1",
-                                             content = ag_resp_obj )
+        # DEBUG: Print message
         message.print()
-        
-        # DEBUG: Send message to human
+        # If debug mode is on then send message to human
         self.send_text(message) if self.debug else None
         # Write message to storage and update manifest and state machine
         self.context_update(message)
@@ -377,22 +375,20 @@ class CaseHandler(CaseHandlerBase) :
         match_agent_context = self.state_machine.match_agent_context
         
         # Generate response
-        ag_resp_obj = self.match_agent.get_response( context    = match_agent_context,
-                                                     load_imgs  = False,
-                                                     max_tokens = max_tokens,
-                                                     debug      = self.debug )
+        message = self.match_agent.get_response( context    = match_agent_context,
+                                                 origin     = f"{_orig_}/stage-1",
+                                                 max_tokens = max_tokens,
+                                                 debug      = self.debug )
         
-        # If the agent did not respond then do not store response and return False
-        if not ag_resp_obj or ag_resp_obj.is_empty() :
+        # If the agent did not respond then simply return False
+        if not message or message.is_empty() :
            return False
         
-        # Construct message
-        message = AssistantMsg.from_content( origin  = f"{_orig_}/stage-1",
-                                             content = ag_resp_obj )
+        # DEBUG: Print message
         message.print()
-        
-        # If message contains text then send message to human
-        self.send_text(message) if ( message.text or self.debug ) else None
+        # If message contains text or debug mode is on then send message to human
+        if message.text or self.debug :
+            self.send_text(message)
         # Write message to storage and update manifest and state machine
         self.context_update(message)
         
@@ -472,21 +468,17 @@ class CaseHandler(CaseHandlerBase) :
         main_agent_context = self.state_machine.main_agent_context
         
         # Generate main agent response
-        ag_resp_obj = self.main_agent.get_response( context    = main_agent_context,
-                                                    load_imgs  = False,
-                                                    max_tokens = max_tokens,
-                                                    debug      = self.debug )
+        message = self.main_agent.get_response( context    = main_agent_context,
+                                                origin     = f"{_orig_}/stage-1",
+                                                max_tokens = max_tokens,
+                                                debug      = self.debug )
         
-        # If the agent did not respond then do not store response and return False
-        # TODO: Add retries with a threshold on the number of retries.
-        if not ag_resp_obj or ag_resp_obj.is_empty() :
+        # If the agent did not respond then simply return False
+        if not message or message.is_empty() :
            return False
         
-        # Construct message
-        message = AssistantMsg.from_content( origin  = f"{_orig_}/stage-1",
-                                             content = ag_resp_obj )
+        # DEBUG: Print message
         message.print()
-        
         # Send message to user
         self.send_text(message)
         # Write message to storage and update manifest and state machine

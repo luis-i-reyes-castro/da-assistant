@@ -9,8 +9,7 @@ import argparse
 from dotenv import load_dotenv
 
 from wa_agents.agent import Agent
-from wa_agents.basemodels import( AssistantMsg,
-                                  UserContentMsg )
+from wa_agents.basemodels import UserContentMsg
 
 
 load_dotenv("../.env")
@@ -29,13 +28,12 @@ def run_test( debug : bool = False) -> None :
     
     context = [ UserContentMsg(text = "Call both tools") ]
     
-    response = agent.get_response( context    = context,
-                                   max_tokens = 256,
-                                   debug      = debug )
+    message = agent.get_response( context    = context,
+                                  max_tokens = 256,
+                                  debug      = debug )
     
-    if response and not response.is_empty() :
-        assistant_msg = AssistantMsg.from_content(content = response)
-        assistant_msg.print()
+    if message :
+        message.print()
 
 
 def main() -> None :
@@ -43,7 +41,7 @@ def main() -> None :
     parser = argparse.ArgumentParser(description = __doc__)
     parser.add_argument( "--debug",
                          action = "store_true",
-                         help   = "Pass through debug=True and dump responses." )
+                         help   = "Pass through 'debug = True'" )
     args = parser.parse_args()
     
     run_test( debug = args.debug)
