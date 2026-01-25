@@ -1,23 +1,17 @@
-# Specific Directories
-.ipynb_checkpoints/
-.vscode/
-__pycache__/
-kgstorage/
+# Directories
+*/archive
+.ipynb_checkpoints
+__pycache__
+T*0_dkb
 
-# Directory Patterns
-*/archive/
-agent_prompts/*_T*0.md
-T*0_dkb/
-
-# Specific Files
-.env
+# Files
 abc_dev_prompt.md
-test.py
-queue.sqlite3
-
-# File Patterns
+agent_prompts/*_T*0.md
+*_analysis_*.json
+.env
 *.jpg
 *.log
 *.pdf
 *.png
-*_analysis_*.json
+queue.sqlite3
+test.py
