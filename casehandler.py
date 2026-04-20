@@ -36,19 +36,32 @@ class CaseHandler(CaseHandlerBase) :
                            "qwen/qwen2.5-vl-32b-instruct:free",
                            "mistralai/pixtral-12b" ]
     
+    # =====================================================================================
+    # STATE MACHINE DEFINITION, CONSTRUCTOR AND RESET METHOD
+    # =====================================================================================
+    
     @classmethod
     def get_state_machine_config(cls) -> tuple[ list[State], list[dict] ] :
-        
+        """
+        Define state machine states and transitions. \\
+        NOTE: The state on-enter/on-exit callbacks fall into two groups:
+            * Exact-name callbacks that the FSM executes directly:
+                - `set_model_if_necessary`
+                - `clear_*_agent_context`
+            * No-op FSM callback names that are later dispatched manually in method `generate_response` to underscored methods:
+                - `ask_for_*` -> `_ask_user_for(*)`
+                - `call_*_agent` -> `_call_*_agent`
+        """
         states = [
         
         # Information-gathering states
         State( "idle",                on_enter = [ "ask_for_model_having_nothing" ]),
-        State( "have_model_no_image", on_enter = [ "set_model",
+        State( "have_model_no_image", on_enter = [ "set_model_if_necessary",
                                                    "ask_for_image"                ]),
         State( "have_image_no_model", on_enter = [ "ask_for_model_having_image"   ]),
         
         # Single-task agents
-        State( "image_agent", on_enter = [ "set_model",
+        State( "image_agent", on_enter = [ "set_model_if_necessary",
                                            "call_image_agent"          ],
                               on_exit  = [ "clear_image_agent_context" ]),
         State( "match_agent", on_enter = [ "call_match_agent"          ],
@@ -106,7 +119,7 @@ class CaseHandler(CaseHandlerBase) :
         super().__init__( operator, user, debug)
         
         # Drone model choice
-        self.model_choice : str = None
+        self.model_choice : str | None = None
         
         # Agents
         self.image_agent : Agent = None
@@ -125,10 +138,6 @@ class CaseHandler(CaseHandlerBase) :
         states, transitions = self.get_state_machine_config()
         self.init_machine( states, transitions, initial = "idle")
         
-        # Functions to clear contexts (for on_exit)
-        self.clear_image_agent_context = lambda : self.image_agent_context.clear()
-        self.clear_match_agent_context = lambda : self.match_agent_context.clear()
-        
         # Tool server
         self.tool_server = ToolServer(debug)
         
@@ -144,9 +153,33 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
+    # =====================================================================================
+    # METHOD OVERLOADS
+    # =====================================================================================
+    
+    def context_build( self, truncate : bool = True) -> None :
+        """
+        Build context. \\
+        Overloads method `CaseHandlerBase.context_build` by calling the original method and then initializing the Domain Knowledge Database (DKDB). \\
+        Args:
+            truncate: Whether or not to enforce the max content length
+        """
+        
+        super().context_build(truncate)
+        
+        # Initialize DKDB
+        if (
+        self.case_manifest and self.case_manifest.model
+        and ( not self.tool_server.dkdb.model )
+        ) :
+            self.tool_server.dkdb.set_model(self.case_manifest.model)
+        
+        return
+    
     def ingest_message( self, message : Message) -> None :
         """
         Ingest a single message and fire corresponding triggers \\
+        Overloads no-op method `CaseHandlerBase.ingest_message`. \\
         Args:
             message : Instance of a subclass of Message
         """
@@ -208,62 +241,29 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def case_set_drone_model( self, drone_model : str | None) -> None :
-        
-        if drone_model and isinstance( drone_model, str) and \
-           drone_model in self.tool_server.dkdb.MODELS_AVAILABLE :
-            
-            self.case_manifest.model = drone_model
-            self.storage.manifest_write(self.case_manifest)
-        
-        return
-    
-    def load_system_message( self, json_file : str) -> dict[ str, str] :
-        
-        file_dict : dict = load_json_file(f"agent_prompts/{json_file}")
-        data_dict : dict = file_dict.get(self.user_data.code_lan)
-        if not data_dict :
-            data_dict = file_dict.get("en")
-        
-        return data_dict
-    
-    def send_agent_update( self, message_name : str) -> None :
-        
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
-        
-        # Fetch agent update messages
-        agent_updates : dict = self.load_system_message("agent_updates.json")
-        message_text  : str  = agent_updates.get(message_name)
-        if message_text :
-            # Construct message
-            message = ServerTextMsg( origin    = _orig_,
-                                     text      = message_text,
-                                     user_eyes = True )
-            message.print()
-            # Send message to human
-            self.send_text(message)
-            # Write message to storage and update manifest and state machine
-            self.context_update(message)
-        
-        return
-    
     # =====================================================================================
-    # METHOD OVERLOADS
+    # ON ENTER AND ON EXIT METHODS
     # =====================================================================================
     
-    def context_build( self, truncate : bool = True) -> None :
-        """
-        Build context
-        Args:
-            truncate: Whether or not to enforce the max content length
-        """
+    def clear_image_agent_context(self) -> None :
+        return self.image_agent_context.clear()
+    
+    def clear_match_agent_context(self) -> None :
+        return self.match_agent_context.clear()
+    
+    def set_model_if_necessary(self) -> None :
         
-        super().context_build(truncate)
+        if (
+        ( not ( self.case_manifest.model and self.tool_server.dkdb.model ) )
+        and ( self.model_choice and isinstance( self.model_choice, str) )
+        and ( self.model_choice in self.tool_server.dkdb.MODELS_AVAILABLE )
+        ) :
+            if not self.case_manifest.model :
+                self.case_manifest.model = self.model_choice
+                self.storage.manifest_write(self.case_manifest)
         
-        # Initialize DKDB
-        if self.case_manifest and self.case_manifest.model \
-                              and ( not self.tool_server.dkdb.model ) :
-            self.tool_server.dkdb.set_model(self.case_manifest.model)
+            if not self.tool_server.dkdb.model :
+                    self.tool_server.dkdb.set_model(self.model_choice)
         
         return
     
@@ -321,36 +321,29 @@ class CaseHandler(CaseHandlerBase) :
         # Retrieve actions from current state
         actions = set( self.machine.get_state(self.state).on_enter )
         
-        # If necessary then set model
-        if "set_model" in actions :
-            if not self.tool_server.dkdb.model :
-                model = self.model_choice
-                self.case_set_drone_model(model)
-                self.tool_server.dkdb.set_model(model)
-        
         # Call corresponding action method
         
         if "ask_for_model_having_nothing" in actions :
-            return self.ask_user_for("model_having_nothing")
+            return self._ask_user_for("model_having_nothing")
         
         elif "ask_for_model_having_image" in actions :
-            return self.ask_user_for("model_having_image")
+            return self._ask_user_for("model_having_image")
         
         elif "ask_for_image" in actions :
-            return self.ask_user_for("image")
+            return self._ask_user_for("image")
         
         elif "call_image_agent" in actions :
-            return self.call_image_agent(max_tokens)
+            return self._call_image_agent(max_tokens)
         
         elif "call_match_agent" in actions :
-            return self.call_match_agent(max_tokens)
+            return self._call_match_agent(max_tokens)
         
         elif "call_main_agent" in actions :
-            return self.call_main_agent(max_tokens)
+            return self._call_main_agent(max_tokens)
         
         return False
     
-    def ask_user_for( self, argument : str) -> bool :
+    def _ask_user_for( self, argument : str) -> bool :
         
         _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
         
@@ -409,7 +402,7 @@ class CaseHandler(CaseHandlerBase) :
     # SETUP AND CALL IMAGE ANALYSIS AGENT
     # =====================================================================================
     
-    def setup_image_agent(self) -> None :
+    def _setup_image_agent(self) -> None :
         
         self.image_agent = Agent( "image", self.IMAGE_AGENT_MODELS)
         
@@ -418,7 +411,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def call_image_agent( self, max_tokens : int | None = None) -> bool :
+    def _call_image_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
         self.send_agent_update("image_start")
@@ -429,7 +422,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If necessary then setup agent
         if not self.image_agent :
-            self.setup_image_agent()
+            self._setup_image_agent()
         
         # ---------------------------------------------------------------------------------
         # PHASE 1: GENERATE IMAGE ANALYSIS
@@ -489,7 +482,7 @@ class CaseHandler(CaseHandlerBase) :
     # SETUP AND CALL MATCH AGENT
     # =====================================================================================
     
-    def setup_match_agent(self) -> None :
+    def _setup_match_agent(self) -> None :
         
         self.match_agent = Agent( "match", self.MAIN_AGENT_MODELS)
         
@@ -508,7 +501,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def call_match_agent( self, max_tokens : int | None = None) -> bool :
+    def _call_match_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
         # self.send_agent_update( "match_start", debug)
@@ -519,7 +512,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If necessary then setup agent
         if not self.match_agent :
-            self.setup_match_agent()
+            self._setup_match_agent()
         
         # ---------------------------------------------------------------------------------
         # STAGE 1: GENERATE INITIAL MATCH AGENT RESPONSE
@@ -575,7 +568,7 @@ class CaseHandler(CaseHandlerBase) :
     # SETUP AND CALL MAIN AGENT
     # =====================================================================================
     
-    def setup_main_agent(self) -> None :
+    def _setup_main_agent(self) -> None :
         
         self.main_agent = Agent( "main", self.MAIN_AGENT_MODELS)
         
@@ -595,7 +588,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def call_main_agent( self, max_tokens : int | None = None) -> bool :
+    def _call_main_agent( self, max_tokens : int | None = None) -> bool :
         """
         Generate AI response
         Args:
@@ -615,7 +608,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If necessary then setup agent
         if not self.main_agent :
-            self.setup_main_agent()
+            self._setup_main_agent()
         
         # Prepare main agent context
         main_agent_context = self.main_agent_context
@@ -648,9 +641,6 @@ class CaseHandler(CaseHandlerBase) :
         for tc in message.tool_calls :
             if tc.name == "mark_as_resolved" :
                 self.case_mark_as_resolved()
-            if tc.name == "set_model" :
-                model = tc.input.get("model")
-                self.case_set_drone_model(model)
         # Process low level tool calls
         tool_results = self.tool_server.process(message.tool_calls)
         
@@ -667,3 +657,36 @@ class CaseHandler(CaseHandlerBase) :
         
         # If case remains open then signal need for another response
         return bool( self.case_manifest.status == "open" )
+    
+    # =====================================================================================
+    # OTHER HELPERS
+    # =====================================================================================
+    
+    def load_system_message( self, json_file : str) -> dict[ str, str] :
+        
+        file_dict : dict = load_json_file(f"agent_prompts/{json_file}")
+        data_dict : dict = file_dict.get(self.user_data.code_lan)
+        if not data_dict :
+            data_dict = file_dict.get("en")
+        
+        return data_dict
+    
+    def send_agent_update( self, message_name : str) -> None :
+        
+        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+        
+        # Fetch agent update messages
+        agent_updates : dict = self.load_system_message("agent_updates.json")
+        message_text  : str  = agent_updates.get(message_name)
+        if message_text :
+            # Construct message
+            message = ServerTextMsg( origin    = _orig_,
+                                     text      = message_text,
+                                     user_eyes = True )
+            message.print()
+            # Send message to human
+            self.send_text(message)
+            # Write message to storage and update manifest and state machine
+            self.context_update(message)
+        
+        return
