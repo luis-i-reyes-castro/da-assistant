@@ -10,7 +10,6 @@ Case Handler
 """
 
 from inspect import currentframe
-from transitions import State
 
 from sofia_utils.io import load_json_file
 from sofia_utils.printing import ( print_ind,
@@ -18,6 +17,7 @@ from sofia_utils.printing import ( print_ind,
 from wa_agents.agent import Agent
 from wa_agents.basemodels import *
 from wa_agents.case_handler_base import ( CaseHandlerBase,
+                                          CH_State,
                                           TransitionDK )
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
 
@@ -43,39 +43,62 @@ class CaseHandler(CaseHandlerBase) :
     
     @classmethod
     def define_state_machine_config(cls) \
-    -> tuple[ list[ State ], str, list[ dict[ TransitionDK, str] ] ] :
+    -> tuple[ list[ CH_State ], str, list[ dict[ TransitionDK, str] ] ] :
         """
         Define state machine states and transitions. \\
         Returns:
-            * List of states. Each must have `name`. Optional: `on_enter`, `on_exit`.
+            * List of states. Each must have `name`. Optional: `on_enter`, `while_in`, `on_exit`.
             * List of transitions as dicts with keys `source`, `trigger` and `dest`.
             * Initial state name.
         
-        NOTE: The state on-enter/on-exit callbacks fall into two groups:
-            * Exact-name callbacks that the FSM executes directly:
-                - `set_model_if_necessary`
-                - `clear_*_agent_context`
-            * No-op FSM callback names that are later dispatched manually in method `generate_response` to underscored methods:
-                - `ask_for_*` -> `_ask_user_for(*)`
-                - `call_*_agent` -> `_call_*_agent`
+        NOTE:
+            * Lists `on_enter` / `on_exit` are true FSM callbacks and should only contain
+              methods that must run when a transition changes state.
+            * List `while_in` contains response-generation actions that
+              `generate_response()` dispatches manually while the handler remains in
+              the current state.
+            * Because `auto_transitions = False`, ingesting a message can leave the
+              machine in the same state without re-running `on_enter`. That is why
+              `ask_for_*` and `call_*_agent` live in `while_in`.
+            * If we instead forced same-state transitions with
+              `auto_transitions = True`, we would also need to account for that
+              state's `on_exit` + `on_enter` firing on every such loop.
         """
         states = [
         
         # Information-gathering states
-        State( "idle",                on_enter = [ "ask_for_model_having_nothing" ]),
-        State( "have_model_no_image", on_enter = [ "set_model_if_necessary",
-                                                   "ask_for_image"                ]),
-        State( "have_image_no_model", on_enter = [ "ask_for_model_having_image"   ]),
+        CH_State(
+            "idle",
+            while_in = [ "ask_for_model_having_nothing" ],
+        ),
+        CH_State(
+            "have_model_no_image",
+            on_enter = [ "set_model_if_necessary" ],
+            while_in = [ "ask_for_image" ],
+        ),
+        CH_State(
+            "have_image_no_model",
+            while_in = [ "ask_for_model_having_image" ],
+        ),
         
         # Single-task agents
-        State( "image_agent", on_enter = [ "set_model_if_necessary",
-                                           "call_image_agent"          ],
-                              on_exit  = [ "clear_image_agent_context" ]),
-        State( "match_agent", on_enter = [ "call_match_agent"          ],
-                              on_exit  = [ "clear_match_agent_context" ]),
+        CH_State(
+            "image_agent",
+            on_enter = [ "set_model_if_necessary" ],
+            while_in = [ "call_image_agent" ],
+            on_exit  = [ "clear_image_agent_context" ],
+        ),
+        CH_State(
+            "match_agent",
+            while_in = [ "call_match_agent" ],
+            on_exit  = [ "clear_match_agent_context" ],
+        ),
         
         # Main agent
-        State( "main_agent", on_enter = [ "call_main_agent" ])
+        CH_State(
+            "main_agent",
+            while_in = [ "call_main_agent" ],
+        ),
         
         ]
         
@@ -326,32 +349,33 @@ class CaseHandler(CaseHandlerBase) :
         if not self.case_context :
             self.context_build()
         
-        # Retrieve actions from current state
-        actions = set( self.machine.get_state(self.state).on_enter )
+        # Retrieve manually-dispatched actions from current state
+        state   = self.machine.get_state(self.state)
+        actions = getattr( state, "while_in", [] )
         
-        # Call corresponding action method
-        
-        if "ask_for_model_having_nothing" in actions :
-            return self._ask_user_for("model_having_nothing")
-        
-        elif "ask_for_model_having_image" in actions :
-            return self._ask_user_for("model_having_image")
-        
-        elif "ask_for_image" in actions :
-            return self._ask_user_for("image")
-        
-        elif "call_image_agent" in actions :
-            return self._call_image_agent(max_tokens)
-        
-        elif "call_match_agent" in actions :
-            return self._call_match_agent(max_tokens)
-        
-        elif "call_main_agent" in actions :
-            return self._call_main_agent(max_tokens)
+        for action in actions :
+            
+            if action == "ask_for_model_having_nothing" :
+                return self.ask_user_for("model_having_nothing")
+            
+            elif action == "ask_for_model_having_image" :
+                return self.ask_user_for("model_having_image")
+            
+            elif action == "ask_for_image" :
+                return self.ask_user_for("image")
+            
+            elif action == "call_image_agent" :
+                return self.call_image_agent(max_tokens)
+            
+            elif action == "call_match_agent" :
+                return self.call_match_agent(max_tokens)
+            
+            elif action == "call_main_agent" :
+                return self.call_main_agent(max_tokens)
         
         return False
     
-    def _ask_user_for( self, argument : str) -> bool :
+    def ask_user_for( self, argument : str) -> bool :
         
         _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
         
@@ -410,7 +434,7 @@ class CaseHandler(CaseHandlerBase) :
     # SETUP AND CALL IMAGE ANALYSIS AGENT
     # =====================================================================================
     
-    def _setup_image_agent(self) -> None :
+    def setup_image_agent(self) -> None :
         
         self.image_agent = Agent( "image", self.IMAGE_AGENT_MODELS)
         
@@ -419,7 +443,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def _call_image_agent( self, max_tokens : int | None = None) -> bool :
+    def call_image_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
         self.send_agent_update("image_start")
@@ -430,7 +454,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If necessary then setup agent
         if not self.image_agent :
-            self._setup_image_agent()
+            self.setup_image_agent()
         
         # ---------------------------------------------------------------------------------
         # PHASE 1: GENERATE IMAGE ANALYSIS
@@ -490,7 +514,7 @@ class CaseHandler(CaseHandlerBase) :
     # SETUP AND CALL MATCH AGENT
     # =====================================================================================
     
-    def _setup_match_agent(self) -> None :
+    def setup_match_agent(self) -> None :
         
         self.match_agent = Agent( "match", self.MAIN_AGENT_MODELS)
         
@@ -509,7 +533,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def _call_match_agent( self, max_tokens : int | None = None) -> bool :
+    def call_match_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
         # self.send_agent_update( "match_start", debug)
@@ -520,7 +544,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If necessary then setup agent
         if not self.match_agent :
-            self._setup_match_agent()
+            self.setup_match_agent()
         
         # ---------------------------------------------------------------------------------
         # STAGE 1: GENERATE INITIAL MATCH AGENT RESPONSE
@@ -576,7 +600,7 @@ class CaseHandler(CaseHandlerBase) :
     # SETUP AND CALL MAIN AGENT
     # =====================================================================================
     
-    def _setup_main_agent(self) -> None :
+    def setup_main_agent(self) -> None :
         
         self.main_agent = Agent( "main", self.MAIN_AGENT_MODELS)
         
@@ -596,7 +620,7 @@ class CaseHandler(CaseHandlerBase) :
         
         return
     
-    def _call_main_agent( self, max_tokens : int | None = None) -> bool :
+    def call_main_agent( self, max_tokens : int | None = None) -> bool :
         """
         Generate AI response
         Args:
@@ -616,7 +640,7 @@ class CaseHandler(CaseHandlerBase) :
         
         # If necessary then setup agent
         if not self.main_agent :
-            self._setup_main_agent()
+            self.setup_main_agent()
         
         # Prepare main agent context
         main_agent_context = self.main_agent_context
