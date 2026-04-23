@@ -9,6 +9,38 @@ The app is designed as a multi-turn state machine:
 - runs a match agent against the domain-knowledge database,
 - runs a main agent with tool calls to produce the final diagnosis or guidance.
 
+## State Machine
+
+The conversation logic lives in [`CaseHandler.get_state_machine_config()`](casehandler.py).
+Its core states are:
+- `idle`
+- `have_model_no_image`
+- `have_image_no_model`
+- `image_agent`
+- `match_agent`
+- `main_agent`
+
+The handler itself is initialized as a `transitions.Machine` via
+`CaseHandlerBase.init_machine(...)`. Stored messages are replayed into the
+handler with `ingest_message(...)`, so the current FSM state can be rebuilt from
+persisted case context.
+
+![CaseHandler State Machine](./state_machine.png)
+
+## Domain Knowledge
+
+[`domain_knowledge/dk_database.py`](domain_knowledge/dk_database.py) exposes the
+knowledge base used by the agents and tools. It currently supports:
+- model selection for `T40` and `T50`,
+- message and placeholder catalogs used to narrow likely diagnoses,
+- component and joint-diagnosis lookups,
+- resolution tracking.
+
+The main tool calls exposed through [`ToolServer`](tool_server.py) are:
+- `get_component_data`
+- `get_joint_diagnosis`
+- `mark_as_resolved`
+
 ## Runtime Flow
 
 1. [`run_listener.py`](run_listener.py) receives WhatsApp webhooks and pushes them into a SQLite queue.
@@ -116,37 +148,6 @@ bash app_run.sh
 That starts:
 - `supervisord` with [`supervisord.conf`](supervisord.conf) to manage the queue worker,
 - `gunicorn` serving `run_listener:app` as the main process.
-
-## State Machine
-
-The conversation logic lives in [`CaseHandler.get_state_machine_config()`](casehandler.py).
-Its core states are:
-
-- `idle`
-- `have_model_no_image`
-- `have_image_no_model`
-- `image_agent`
-- `match_agent`
-- `main_agent`
-
-The handler itself is initialized as a `transitions.Machine` via
-`CaseHandlerBase.init_machine(...)`. Stored messages are replayed into the
-handler with `ingest_message(...)`, so the current FSM state can be rebuilt from
-persisted case context.
-
-## Domain Knowledge
-
-[`domain_knowledge/dk_database.py`](domain_knowledge/dk_database.py) exposes the
-knowledge base used by the agents and tools. It currently supports:
-- model selection for `T40` and `T50`,
-- message and placeholder catalogs used to narrow likely diagnoses,
-- component and joint-diagnosis lookups,
-- resolution tracking.
-
-The main tool calls exposed through [`ToolServer`](tool_server.py) are:
-- `get_component_data`
-- `get_joint_diagnosis`
-- `mark_as_resolved`
 
 ## Helper Scripts
 

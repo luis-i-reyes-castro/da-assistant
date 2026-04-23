@@ -17,7 +17,8 @@ from sofia_utils.printing import ( print_ind,
                                    print_sep )
 from wa_agents.agent import Agent
 from wa_agents.basemodels import *
-from wa_agents.case_handler_base import CaseHandlerBase
+from wa_agents.case_handler_base import ( CaseHandlerBase,
+                                          TransitionDK )
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
 
 from domain_knowledge.dk_basemodels import RCImageAnalysis
@@ -41,9 +42,15 @@ class CaseHandler(CaseHandlerBase) :
     # =====================================================================================
     
     @classmethod
-    def get_state_machine_config(cls) -> tuple[ list[State], list[dict] ] :
+    def define_state_machine_config(cls) \
+    -> tuple[ list[ State ], str, list[ dict[ TransitionDK, str] ] ] :
         """
         Define state machine states and transitions. \\
+        Returns:
+            * List of states. Each must have `name`. Optional: `on_enter`, `on_exit`.
+            * List of transitions as dicts with keys `source`, `trigger` and `dest`.
+            * Initial state name.
+        
         NOTE: The state on-enter/on-exit callbacks fall into two groups:
             * Exact-name callbacks that the FSM executes directly:
                 - `set_model_if_necessary`
@@ -71,6 +78,8 @@ class CaseHandler(CaseHandlerBase) :
         State( "main_agent", on_enter = [ "call_main_agent" ])
         
         ]
+        
+        initial = "idle"
         
         transitions = [
         
@@ -109,7 +118,7 @@ class CaseHandler(CaseHandlerBase) :
         
         ]
         
-        return states, transitions
+        return states, initial, transitions
     
     def __init__( self,
                   operator : WhatsAppMetaData,
@@ -134,9 +143,8 @@ class CaseHandler(CaseHandlerBase) :
         # Images cache (for image agent)
         self.imgs_cache : dict[ str, bytes] = {}
         
-        # State machine
-        states, transitions = self.get_state_machine_config()
-        self.init_machine( states, transitions, initial = "idle")
+        # Initialize state machine from method `define_state_machine_config`
+        self.init_machine()
         
         # Tool server
         self.tool_server = ToolServer(debug)
