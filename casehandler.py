@@ -12,13 +12,17 @@ Case Handler
 from inspect import currentframe
 
 from sofia_utils.io import load_json_file
-from sofia_utils.printing import ( print_ind,
-                                   print_sep )
+from sofia_utils.printing import (
+    print_ind,
+    print_sep,
+)
 from wa_agents.agent import Agent
 from wa_agents.basemodels import *
-from wa_agents.case_handler_base import ( CaseHandlerBase,
-                                          CH_State,
-                                          TransitionDK )
+from wa_agents.case_handler_base import (
+    CaseHandlerBase,
+    CH_State,
+    TransitionDict,
+)
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
 
 from domain_knowledge.dk_basemodels import RCImageAnalysis
@@ -42,8 +46,11 @@ class CaseHandler(CaseHandlerBase) :
     # =====================================================================================
     
     @classmethod
-    def define_state_machine_config(cls) \
-    -> tuple[ list[ CH_State ], str, list[ dict[ TransitionDK, str] ] ] :
+    def define_state_machine_config(cls) -> tuple[
+        list[CH_State],
+        str,
+        list[TransitionDict],
+    ] :
         """
         Define state machine states and transitions. \\
         Returns:
