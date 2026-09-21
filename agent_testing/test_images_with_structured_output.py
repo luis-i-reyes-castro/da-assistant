@@ -12,8 +12,10 @@ from pydantic import BaseModel
 from typing import Literal
 
 from wa_agents.agent import Agent
-from wa_agents.basemodels import( load_media,
-                                  UserContentMsg )
+from wa_agents.case_handler_models import (
+    UserContentMsg,
+    load_media,
+)
 
 
 load_dotenv("../.env")

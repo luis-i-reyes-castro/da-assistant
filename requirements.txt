@@ -6,5 +6,5 @@ supervisor==4.3.0
 thefuzz==0.22.1
 transitions==0.9.3
 
-sofia-utils @ git+https://github.com/luis-i-reyes-castro/sofia-utils.git@main
+sofia-utils[pydantic] @ git+https://github.com/luis-i-reyes-castro/sofia-utils.git@main
 wa-agents @ git+https://github.com/luis-i-reyes-castro/wa-agents.git@main

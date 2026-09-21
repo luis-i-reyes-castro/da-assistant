@@ -2,8 +2,10 @@
 CaseHander Tool Server
 """
 
-from wa_agents.basemodels import ( ToolCall,
-                                   ToolResult )
+from wa_agents.case_handler_models import (
+    ToolCall,
+    ToolResult,
+)
 
 from domain_knowledge.dk_database import DomainKnowledgeDataBase
 

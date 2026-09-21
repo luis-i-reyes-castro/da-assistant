@@ -14,20 +14,23 @@ from typing import ( Annotated,
                      Literal,
                      Type )
 
+from sofia_utils.pydantic import NE_str
 from sofia_utils.io import ( clean_filename,
                              LoadMode,
                              list_files_starting_with,
                              load_file_as_string,
                              strip_jsonc_comments )
-from wa_agents.basemodels import ( NN_Decimal,
-                                   NE_dict_str,
-                                   NE_list_str,
-                                   NE_str )
 
 
 # -----------------------------------------------------------------------------------------
 # TYPES
 # -----------------------------------------------------------------------------------------
+type NE_list_str = Annotated[ list[ NE_str ], Field( min_length = 1)]
+""" Non-empty list of strings (at least 1 string) """
+
+type NE_dict_str = Annotated[ dict[ NE_str, Any], Field( min_length = 1)]
+""" Non-empty dict of strings (at least 1 key-value pair) """
+
 type NoteData   = NE_str | NE_dict_str
 type Graph_Edge = Annotated[ list[NE_str], Field( min_length = 2, max_length = 2) ]
 
@@ -54,7 +57,7 @@ class DKA_Component(BaseModel) :
     name_spanish  : NE_str | list[NE_str] | None = None
     material_num  : NE_str
     material_name : NE_str
-    risk          : NN_Decimal
+    risk          : Annotated[ Decimal, Field( ge = 0)]
     notes         : list[NoteData] | None = None
     connected_to  : list[NE_str]   | None = None
     

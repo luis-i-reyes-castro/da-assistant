@@ -14,7 +14,9 @@ from typing import ( Any,
 from sofia_utils.io import write_to_json_string
 from sofia_utils.printing import ( print_ind,
                                    print_sep )
-from wa_agents.basemodels import InteractiveOption
+from wa_agents.whatsapp_models import (
+    WhatsAppInteractiveOption as InteractiveOption,
+)
 
 from .dk_basemodels import *
 from .dka_placeholder_database import PlaceHolderDatabase

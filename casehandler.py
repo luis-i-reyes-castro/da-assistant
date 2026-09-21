@@ -17,13 +17,29 @@ from sofia_utils.printing import (
     print_sep,
 )
 from wa_agents.agent import Agent
-from wa_agents.basemodels import *
 from wa_agents.case_handler_base import (
     CaseHandlerBase,
     CH_State,
     TransitionDict,
 )
+from wa_agents.case_handler_models import (
+    AssistantMsg,
+    MediaContent,
+    Message,
+    ServerInteractiveOptsMsg,
+    ServerMsg,
+    ServerTextMsg,
+    ToolResultsMsg,
+    UserContentMsg,
+    UserInteractiveReplyMsg,
+    UserMsg,
+)
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
+from wa_agents.whatsapp_models import (
+    WhatsAppContact,
+    WhatsAppMetaData,
+    WhatsAppMessage,
+)
 
 from domain_knowledge.dk_basemodels import RCImageAnalysis
 from tool_server import ToolServer
@@ -310,7 +326,7 @@ class CaseHandler(CaseHandlerBase) :
     # =====================================================================================
     
     def process_message( self,
-                         message       : WhatsAppMsg,
+                         message       : WhatsAppMessage,
                          media_content : MediaContent | None = None
                        ) -> bool :
         

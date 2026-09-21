@@ -7,7 +7,7 @@ from typing import Any
 
 from sofia_utils.io import write_to_json_string
 from sofia_utils.printing import print_sep
-from wa_agents.basemodels import ServerTextMsg
+from wa_agents.case_handler_models import ServerTextMsg
 
 from .dk_database import DomainKnowledgeDataBase
 
