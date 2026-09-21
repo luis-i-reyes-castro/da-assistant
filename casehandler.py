@@ -45,11 +45,13 @@ from domain_knowledge.dk_basemodels import RCImageAnalysis
 from tool_server import ToolServer
 
 
-class CaseHandler(CaseHandlerBase) :
+class CaseHandler (CaseHandlerBase) :
     """
     Class for message ingestion and agent orchestration.
     Relies on CaseHandlerBase for management of cases, context and message sending.
     """
+    
+    HANDLER_KEY        = "da-assistant"
     
     MAIN_AGENT_MODELS  = [ "openai/gpt-5-mini",
                            "qwen/qwen2.5-vl-32b-instruct:free" ]
