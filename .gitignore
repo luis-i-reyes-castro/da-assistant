@@ -1,8 +1,7 @@
 # Directories
-*/archive
 .ipynb_checkpoints
 __pycache__
-T*0_dkb
+T*0_dkb/
 
 # Files
 abc_dev_prompt.md
@@ -13,5 +12,4 @@ agent_prompts/*_T*0.md
 *.log
 *.pdf
 *.png
-queue.sqlite3
-test.py
+*test*.py

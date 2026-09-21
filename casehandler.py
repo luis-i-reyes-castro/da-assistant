@@ -548,7 +548,7 @@ class CaseHandler(CaseHandlerBase) :
                                              "{LANGUAGE}" : self.user_data.language } },
                              { "path"    : "agent_prompts/spanish.md",
                                "replace" : {} } ]
-        match_ag_tools   = [ f"agent_tools/match_{self.match_agent.api}.json" ]
+        match_ag_tools   = [ f"agent_tools/match.json" ]
         
         self.match_agent.load_prompts(match_ag_prompts)
         self.match_agent.load_tools(match_ag_tools)
@@ -635,7 +635,7 @@ class CaseHandler(CaseHandlerBase) :
                                             "{LANGUAGE}" : self.user_data.language } },
                             { "path"    : "agent_prompts/spanish.md",
                               "replace" : {} } ]
-        main_ag_tools   = [ f"agent_tools/main_{self.main_agent.api}.json" ]
+        main_ag_tools   = [ f"agent_tools/main.json" ]
         
         self.main_agent.load_prompts(main_ag_prompts)
         self.main_agent.load_tools(main_ag_tools)
