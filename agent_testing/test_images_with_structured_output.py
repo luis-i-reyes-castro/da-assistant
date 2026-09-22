@@ -13,7 +13,7 @@ from typing import Literal
 
 from wa_agents.agent import Agent
 from wa_agents.case_handler_models import (
-    UserContentMsg,
+    HumanUserContentMsg,
     load_media,
 )
 
@@ -39,14 +39,14 @@ def run_test( image_path : Path, debug : bool = False) -> None :
     agent.load_prompts(PROMPTS)
     
     msg_text = "Identify vehicles in this image and respond using the structured schema."
-    msg_md, msg_mc = load_media(image_path)
+    media    = load_media(image_path)
     
-    if not ( msg_md and msg_mc ) :
+    if not media :
         print(f"Error: Could not read file {image_path}")
         return
     
-    context    = [ UserContentMsg( text = msg_text, media  = msg_md) ]
-    imgs_cache = { msg_md.name : msg_mc.content }
+    context    = [ HumanUserContentMsg( text = msg_text, media = media) ]
+    imgs_cache = { media.name : media.content }
     
     message = agent.get_response( context    = context,
                                   load_imgs  = True,

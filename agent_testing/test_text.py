@@ -9,7 +9,7 @@ import argparse
 from dotenv import load_dotenv
 
 from wa_agents.agent import Agent
-from wa_agents.case_handler_models import UserContentMsg
+from wa_agents.case_handler_models import HumanUserContentMsg
 
 
 load_dotenv("../.env")
@@ -25,7 +25,7 @@ def run_test( debug : bool = False) -> None :
     agent.load_prompts(PROMPTS)
     
     msg_text = "Reply with a short greeting and confirm the debug sandbox."
-    context  = [ UserContentMsg(text = msg_text) ]
+    context  = [ HumanUserContentMsg(text = msg_text) ]
     
     message = agent.get_response( context    = context,
                                   max_tokens = 256,

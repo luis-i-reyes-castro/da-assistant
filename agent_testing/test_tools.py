@@ -9,7 +9,7 @@ import argparse
 from dotenv import load_dotenv
 
 from wa_agents.agent import Agent
-from wa_agents.case_handler_models import UserContentMsg
+from wa_agents.case_handler_models import HumanUserContentMsg
 
 
 load_dotenv("../.env")
@@ -26,7 +26,7 @@ def run_test( debug : bool = False) -> None :
     agent.load_prompts(PROMPTS)
     agent.load_tools(TOOLS)
     
-    context = [ UserContentMsg(text = "Call both tools") ]
+    context = [ HumanUserContentMsg(text = "Call both tools") ]
     
     message = agent.get_response( context    = context,
                                   max_tokens = 256,
