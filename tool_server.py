@@ -7,7 +7,7 @@ from wa_agents.case_handler_models import (
     ToolResult,
 )
 
-from domain_knowledge.dk_database import DomainKnowledgeDataBase
+from .domain_knowledge.dk_database import DomainKnowledgeDataBase
 
 
 class ToolServer :

@@ -1,6 +1,8 @@
 #!/bin/bash
 
-MODEL="$1"
+set -euo pipefail
+
+MODEL="${1:-}"
 if [ -z "$MODEL" ]; then
     echo "Usage: $0 <MODEL>"
     exit 1

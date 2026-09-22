@@ -10,7 +10,7 @@ from pydantic import ValidationError
 from sofia_utils.io import ( list_files_starting_with,
                              load_json_file )
 from sofia_utils.printing import print_ind
-from wa_agents.case_handler_models import print_validation_errors
+from sofia_utils.pydantic import print_validation_errors
 
 from .dk_argument_parsing import parse_arguments
 from .dk_basemodels import ( DKB_Component,

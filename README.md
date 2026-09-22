@@ -11,7 +11,8 @@ The app is designed as a multi-turn state machine:
 
 ## State Machine
 
-The conversation logic lives in [`CaseHandler.get_state_machine_config()`](casehandler.py).
+The conversation logic lives in
+[`CaseHandler.define_state_machine_config()`](casehandler.py).
 Its core states are:
 - `idle`
 - `have_model_no_image`
@@ -20,10 +21,12 @@ Its core states are:
 - `match_agent`
 - `main_agent`
 
-The handler itself is initialized as a `transitions.Machine` via
-`CaseHandlerBase.init_machine(...)`. Stored messages are replayed into the
-handler with `ingest_message(...)`, so the current FSM state can be rebuilt from
-persisted case context.
+The handler itself is initialized as a `transitions.AsyncMachine` via
+`AsyncWhatsAppCaseHandler.init_machine(...)`. The current FSM state and selected
+drone model are persisted together in `wa_case_handler_case_manifests.machine_state`:
+plain state names are used before model selection, and values such as
+`match_agent,T50` are used afterward. Restoring a case does not replay transitions;
+stored messages are only scanned to rebuild the derived agent contexts.
 
 ![CaseHandler State Machine](./state_machine.png)
 
@@ -43,9 +46,11 @@ The main tool calls exposed through [`ToolServer`](tool_server.py) are:
 
 ## Runtime Flow
 
-1. [`run_listener.py`](run_listener.py) receives WhatsApp webhooks and pushes them into a SQLite queue.
-2. [`run_queue_worker.py`](run_queue_worker.py) drains that queue and instantiates [`CaseHandler`](casehandler.py).
-3. [`CaseHandler`](casehandler.py) rebuilds conversation state from persisted context and advances its FSM.
+1. Sofia's `WhatsAppAPIServer` receives WhatsApp webhooks, normalizes them in
+   Supabase Postgres, resolves a case-handler route, and enqueues the message.
+2. The server's lifespan-managed `AsyncQueueWorker` drains messages routed with
+   `handler_key = 'da-assistant'` and instantiates [`CaseHandler`](casehandler.py).
+3. [`CaseHandler`](casehandler.py) restores its persisted state and advances its FSM.
 4. The handler routes work across these stages:
    - ask for missing model or image,
    - `image_agent`: analyze the uploaded image,
@@ -59,8 +64,8 @@ The main tool calls exposed through [`ToolServer`](tool_server.py) are:
 | --- | --- |
 | [`casehandler.py`](casehandler.py) | Application-specific state machine and agent orchestration |
 | [`tool_server.py`](tool_server.py) | Tool execution layer for component data and diagnosis lookup |
-| [`run_listener.py`](run_listener.py) | Webhook HTTP entrypoint |
-| [`run_queue_worker.py`](run_queue_worker.py) | Async worker process |
+| Sofia `backend/app.py` | Webhook HTTP entrypoint and handler registry |
+| `wa_agents.AsyncQueueWorker` | Lifespan-managed queue worker |
 | [`domain_knowledge/`](domain_knowledge/) | Structured knowledge base, preprocessing, analysis, and validation scripts |
 | [`agent_prompts/`](agent_prompts/) | Prompt templates and interactive-message payloads |
 | [`agent_tools/`](agent_tools/) | Tool schemas used by the match and main agents |
@@ -68,12 +73,11 @@ The main tool calls exposed through [`ToolServer`](tool_server.py) are:
 
 ## Setup
 
-Create a Python environment and install dependencies:
+Initialize the submodule and install Sofia's backend dependencies:
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+git submodule update --init --recursive
+pip install -r backend/requirements.txt
 ```
 
 This repo depends on:
@@ -93,14 +97,6 @@ At minimum, the app needs the same base variables required by `wa-agents`:
 | `WA_TOKEN` | WhatsApp Graph API token |
 | `WA_VERIFY_TOKEN` | WhatsApp webhook verification token |
 
-Queue settings are optional:
-
-| Variable | Default |
-| --- | --- |
-| `QUEUE_DB_DIR` | repo directory |
-| `QUEUE_DB_NAME` | `queue.sqlite3` |
-| `PORT` | `8080` |
-
 If you enable LLM calls, set the provider keys required by the configured agent
 models. In practice this usually means `OPENROUTER_API_KEY`; depending on your
 setup you may also need `OPENAI_API_KEY` or `MISTRAL_API_KEY`.
@@ -111,7 +107,7 @@ Before running the app, preprocess the domain knowledge and expand prompt
 templates:
 
 ```bash
-bash app_build.sh
+bash build.sh
 ```
 
 That script:
@@ -129,25 +125,38 @@ python3 parse_agent_prompts.py
 
 ## Running
 
-For local development, run the listener and worker in separate terminals:
+The handler runs inside `sofia-server`; it has no standalone listener or worker.
+From the Sofia repository, initialize the submodule and start the normal stack:
 
 ```bash
-python3 run_listener.py
+git submodule update --init --recursive
+./deploy_now.sh --local
 ```
 
-```bash
-python3 run_queue_worker.py
+The backend image runs `build.sh` during its build and starts the webhook server and
+queue worker in the same FastAPI process.
+
+Configure a business route after applying the current `wa_agents` schema:
+
+```sql
+INSERT INTO public.wa_case_handler_routes (
+  business,
+  contact,
+  handler_key
+)
+VALUES (
+  '<WA_API_BUSINESSES_ID>',
+  NULL,
+  'da-assistant'
+)
+ON CONFLICT
+  ( business, contact)
+DO
+  UPDATE
+SET
+  handler_key = EXCLUDED.handler_key,
+  updated_at  = now();
 ```
-
-For container-style execution, use:
-
-```bash
-bash app_run.sh
-```
-
-That starts:
-- `supervisord` with [`supervisord.conf`](supervisord.conf) to manage the queue worker,
-- `gunicorn` serving `run_listener:app` as the main process.
 
 ## Helper Scripts
 

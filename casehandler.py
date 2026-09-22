@@ -9,49 +9,54 @@ Case Handler
 * Mark cases as resolved.
 """
 
-from inspect import currentframe
+from pathlib import Path
+from uuid import UUID
 
 from sofia_utils.io import load_json_file
 from sofia_utils.printing import (
+    get_qualname as here,
     print_ind,
     print_sep,
 )
-from wa_agents.agent import Agent
+from wa_agents.agent import AsyncAgent
 from wa_agents.case_handler_base import (
-    CaseHandlerBase,
+    AsyncWhatsAppCaseHandler,
     CH_State,
     TransitionDict,
 )
 from wa_agents.case_handler_models import (
     AssistantMsg,
-    MediaContent,
+    CaseManifest,
+    HumanServerMsg,
+    HumanUserContentMsg,
+    HumanUserInteractiveReplyMsg,
+    HumanUserMsg,
     Message,
     ServerInteractiveOptsMsg,
     ServerMsg,
     ServerTextMsg,
     ToolResultsMsg,
-    UserContentMsg,
-    UserInteractiveReplyMsg,
-    UserMsg,
+)
+from wa_agents.supabase import (
+    WhatsAppDatabaseRecord_Business,
+    WhatsAppDatabaseRecord_Contact,
 )
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
-from wa_agents.whatsapp_models import (
-    WhatsAppContact,
-    WhatsAppMetaData,
-    WhatsAppMessage,
-)
+from wa_agents.whatsapp_models import WhatsAppMessage
 
-from domain_knowledge.dk_basemodels import RCImageAnalysis
-from tool_server import ToolServer
+from .domain_knowledge.dk_basemodels import RCImageAnalysis
+from .tool_server import ToolServer
 
 
-class CaseHandler (CaseHandlerBase) :
+class CaseHandler (AsyncWhatsAppCaseHandler) :
     """
     Class for message ingestion and agent orchestration.
-    Relies on CaseHandlerBase for management of cases, context and message sending.
+    Relies on AsyncWhatsAppCaseHandler for cases, context, and message sending.
     """
     
     HANDLER_KEY        = "da-assistant"
+    PACKAGE_DIR        = Path(__file__).resolve().parent
+    AGENT_NAMES        = ( "image", "match", "main" )
     
     MAIN_AGENT_MODELS  = [ "openai/gpt-5-mini",
                            "qwen/qwen2.5-vl-32b-instruct:free" ]
@@ -72,8 +77,13 @@ class CaseHandler (CaseHandlerBase) :
         """
         Define state machine states and transitions. \\
         Returns:
-            * List of states. Each must have `name`. Optional: `on_enter`, `while_in`, `on_exit`.
-            * List of transitions as dicts with keys `source`, `trigger` and `dest`.
+            * List of states. For each state:
+                * Required field: `name`
+                * Optional fields: `on_enter`, `while_in`, `on_exit`.
+            * List of transitions as dicts with keys:
+                * `source`
+                * `trigger`
+                * `dest`
             * Initial state name.
         
         NOTE:
@@ -168,25 +178,35 @@ class CaseHandler (CaseHandlerBase) :
         
         return states, initial, transitions
     
-    def __init__( self,
-                  operator : WhatsAppMetaData,
-                  user     : WhatsAppContact,
-                  debug    : bool = False ) -> None :
+    def __init__(
+        self,
+        business : WhatsAppDatabaseRecord_Business,
+        contact  : WhatsAppDatabaseRecord_Contact,
+        *,
+        api_inbound_msg_id : int | None        = None,
+        handler_id         : int | None        = None,
+        owner_token        : UUID | str | None = None,
+        debug              : bool              = False,
+        database_url       : str | None        = None,
+    ) -> None :
         
-        super().__init__( operator, user, debug)
+        super().__init__(
+            business,
+            contact,
+            api_inbound_msg_id = api_inbound_msg_id,
+            handler_id         = handler_id,
+            owner_token        = owner_token,
+            debug              = debug,
+            database_url       = database_url,
+        )
         
         # Drone model choice
         self.model_choice : str | None = None
         
         # Agents
-        self.image_agent : Agent = None
-        self.match_agent : Agent = None
-        self.main_agent  : Agent = None
-        
-        # Agent contexts
-        self.image_agent_context : list[Message] = []
-        self.match_agent_context : list[Message] = []
-        self.main_agent_context  : list[Message] = []
+        self.image_agent : AsyncAgent | None = None
+        self.match_agent : AsyncAgent | None = None
+        self.main_agent  : AsyncAgent | None = None
         
         # Images cache (for image agent)
         self.imgs_cache : dict[ str, bytes] = {}
@@ -203,39 +223,58 @@ class CaseHandler (CaseHandlerBase) :
         
         self.state = "idle"
         self.model_choice = None
-        self.image_agent_context.clear()
-        self.match_agent_context.clear()
-        self.main_agent_context.clear()
+        self.agent_contexts["image"].clear()
+        self.agent_contexts["match"].clear()
+        self.agent_contexts["main"].clear()
+        
+        return
+
+    def _machine_state(self) -> str | None :
+        """
+        Serialize the FSM state and selected drone model into one database field.
+        """
+        state = super()._machine_state()
+        
+        if state and self.model_choice :
+            return f"{state},{self.model_choice}"
+        
+        return state
+    
+    def _restore_machine_state( self, manifest : CaseManifest) -> None :
+        """
+        Restore the FSM state and drone model from the persisted composite value.
+        """
+        persisted = manifest.machine_state
+        if not persisted :
+            return
+        
+        parts = persisted.split(",")
+        if ( len(parts) > 2 ) or any( not part for part in parts ) :
+            raise ValueError(f"In {here()}: Invalid machine state '{persisted}'")
+        
+        state = parts[0]
+        model = parts[1] if len(parts) == 2 else None
+        
+        if ( not self.machine ) or ( state not in self.machine.states ) :
+            raise ValueError(f"In {here()}: Invalid FSM state '{state}'")
+        
+        if model and ( model not in self.tool_server.dkdb.MODELS_AVAILABLE ) :
+            raise ValueError(f"In {here()}: Invalid drone model '{model}'")
+        
+        self.machine.set_state( state, model = self)
+        self.model_choice = model
+        
+        if model and ( not self.tool_server.dkdb.model ) :
+            error, result = self.tool_server.dkdb.set_model(model)
+            if error :
+                raise ValueError(f"In {here()}: {result}")
         
         return
     
-    # =====================================================================================
-    # METHOD OVERLOADS
-    # =====================================================================================
-    
-    def context_build( self, truncate : bool = True) -> None :
-        """
-        Build context. \\
-        Overloads method `CaseHandlerBase.context_build` by calling the original method and then initializing the Domain Knowledge Database (DKDB). \\
-        Args:
-            truncate: Whether or not to enforce the max content length
-        """
-        
-        super().context_build(truncate)
-        
-        # Initialize DKDB
-        if (
-        self.case_manifest and self.case_manifest.model
-        and ( not self.tool_server.dkdb.model )
-        ) :
-            self.tool_server.dkdb.set_model(self.case_manifest.model)
-        
-        return
-    
-    def ingest_message( self, message : Message) -> None :
+    async def ingest_message( self, message : Message) -> None :
         """
         Ingest a single message and fire corresponding triggers \\
-        Overloads no-op method `CaseHandlerBase.ingest_message`. \\
+        Overloads the no-op method on `AsyncWhatsAppCaseHandler`. \\
         Args:
             message : Instance of a subclass of Message
         """
@@ -247,30 +286,39 @@ class CaseHandler (CaseHandlerBase) :
             print_sep()
             print("State Machine Message Ingestion")
             print_ind( f"[>] State k-1: {self.state}", 1)
+
+        if isinstance( message, HumanServerMsg) :
+            return
         
         msg_has_image = False
         
         # ---------------------------------------------------------------------------------
         # TRANSITION HAPPENS HERE
         
-        if isinstance( message, UserMsg) :
+        if isinstance( message, HumanUserMsg) :
             
-            if isinstance( message, UserInteractiveReplyMsg) :
+            if (
+                isinstance( message, HumanUserInteractiveReplyMsg) and
+                ( self.state in ( "idle", "have_image_no_model") )
+            ) :
                 self.model_choice = message.choice.id
-                self.trigger("has_model_choice")
+                await self.trigger("has_model_choice")
             
-            msg_has_image = isinstance( message, UserContentMsg) and message.media \
-                            and message.media.mime.startswith("image")
+            msg_has_image = bool(
+                isinstance( message, HumanUserContentMsg) and
+                message.media                             and
+                message.media.mime.startswith("image")
+            )
             if msg_has_image :
-                self.trigger("has_image")
+                await self.trigger("has_image")
         
         elif isinstance( message, AssistantMsg) :
             
             if message.agent == "image" :
-                self.trigger("has_image_analysis")
+                await self.trigger("has_image_analysis")
             
             elif ( message.agent == "match" ) and message.tool_calls :
-                self.trigger("has_match_tool_call")
+                await self.trigger("has_match_tool_call")
         
         # ---------------------------------------------------------------------------------
         # AFTER TRANSITION
@@ -283,17 +331,24 @@ class CaseHandler (CaseHandlerBase) :
             return
         
         # Else append message to corresponding agent's context
-        elif self.state in ( 'idle',
-                             'have_model_no_image',
-                             'have_image_no_model',
-                             'image_agent') and msg_has_image :
-            self.image_agent_context.append(message)
+        elif (
+            (
+                self.state in (
+                    "idle",
+                    "have_model_no_image",
+                    "have_image_no_model",
+                    "image_agent"
+                )
+            )
+            and msg_has_image
+        ) :
+            self.agent_context_append( "image", message)
         
-        elif self.state == 'match_agent' :
-            self.match_agent_context.append(message)
+        elif self.state == "match_agent" :
+            self.agent_context_append( "match", message)
         
-        elif self.state == 'main_agent' :
-            self.main_agent_context.append(message)
+        elif self.state == "main_agent" :
+            self.agent_context_append( "main", message)
         
         return
     
@@ -301,25 +356,27 @@ class CaseHandler (CaseHandlerBase) :
     # ON ENTER AND ON EXIT METHODS
     # =====================================================================================
     
-    def clear_image_agent_context(self) -> None :
-        return self.image_agent_context.clear()
-    
-    def clear_match_agent_context(self) -> None :
-        return self.match_agent_context.clear()
-    
-    def set_model_if_necessary(self) -> None :
+    async def clear_image_agent_context(self) -> None :
         
-        if (
-        ( not ( self.case_manifest.model and self.tool_server.dkdb.model ) )
-        and ( self.model_choice and isinstance( self.model_choice, str) )
-        and ( self.model_choice in self.tool_server.dkdb.MODELS_AVAILABLE )
-        ) :
-            if not self.case_manifest.model :
-                self.case_manifest.model = self.model_choice
-                self.storage.manifest_write(self.case_manifest)
+        return self.agent_context_clear("image")
+    
+    async def clear_match_agent_context(self) -> None :
         
-            if not self.tool_server.dkdb.model :
-                    self.tool_server.dkdb.set_model(self.model_choice)
+        return self.agent_context_clear("match")
+    
+    async def set_model_if_necessary(self) -> None :
+        
+        if not self.model_choice :
+            return
+        if self.model_choice not in self.tool_server.dkdb.MODELS_AVAILABLE :
+            raise ValueError(
+                f"In {here()}: Invalid drone model '{self.model_choice}'"
+            )
+
+        if not self.tool_server.dkdb.model :
+            error, result = self.tool_server.dkdb.set_model(self.model_choice)
+            if error :
+                raise ValueError(f"In {here()}: {result}")
         
         return
     
@@ -327,35 +384,42 @@ class CaseHandler (CaseHandlerBase) :
     # PROCESS MESSAGE FROM HUMAN
     # =====================================================================================
     
-    def process_message( self,
-                         message       : WhatsAppMessage,
-                         media_content : MediaContent | None = None
-                       ) -> bool :
-        
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+    async def process_message(
+        self,
+        message       : WhatsAppMessage,
+        media_content : bytes | None = None,
+    ) -> bool :
         
         # Dedup and ingest message
-        msg = self.dedup_and_ingest_message( message, media_content)
+        msg = await self.dedup_and_ingest_message( message, media_content)
+        if isinstance( msg, HumanServerMsg) :
+            return False
         
         # If media is image then store contents in images cache
-        if msg and isinstance( msg, UserContentMsg) \
-        and msg.media and msg.media.mime.startswith("image") :
+        if (
+            isinstance( msg, HumanUserContentMsg) and
+            msg.media                             and
+            msg.media.mime.startswith("image")    and
+            msg.media.content
+        ) :
             
-            self.imgs_cache[msg.media.name] = media_content.content
+            self.imgs_cache[msg.media.name] = msg.media.content
         
         # If user message is not text, image, interactive reply then reply with a
         # message indicating lack of support
         if message.type not in ( "text", "image", "interactive") :
             
             system_message = self.load_system_message("unsupported.json")
-            msg_reply      = ServerTextMsg( origin = _orig_,
-                                            text   = system_message.get("body") )
+            msg_reply      = ServerTextMsg(
+                origin = here(),
+                text   = system_message.get("body"),
+            )
             msg_reply.print()
             
             # Send reply message to user
-            self.send_text(msg_reply)
+            await self.send_text(msg_reply)
             # Write reply message to storage and update manifest
-            self.context_update(msg_reply)
+            await self.context_update(msg_reply)
             
             # Signal need to wait for user's reply
             return False
@@ -367,12 +431,14 @@ class CaseHandler (CaseHandlerBase) :
     # GENERATE RESPONSE AS A FUNCTION OF FSM STATE
     # =====================================================================================
     
-    def generate_response( self,
-                           max_tokens : int | None = None ) -> bool :
+    async def generate_response(
+        self,
+        max_tokens : int | None = None,
+    ) -> bool :
         
         # If necessary then build context
         if not self.case_context :
-            self.context_build()
+            await self.context_build()
         
         # Retrieve manually-dispatched actions from current state
         state   = self.machine.get_state(self.state)
@@ -381,28 +447,28 @@ class CaseHandler (CaseHandlerBase) :
         for action in actions :
             
             if action == "ask_for_model_having_nothing" :
-                return self.ask_user_for("model_having_nothing")
+                return await self.ask_user_for("model_having_nothing")
             
             elif action == "ask_for_model_having_image" :
-                return self.ask_user_for("model_having_image")
+                return await self.ask_user_for("model_having_image")
             
             elif action == "ask_for_image" :
-                return self.ask_user_for("image")
+                return await self.ask_user_for("image")
             
             elif action == "call_image_agent" :
-                return self.call_image_agent(max_tokens)
+                return await self.call_image_agent(max_tokens)
             
             elif action == "call_match_agent" :
-                return self.call_match_agent(max_tokens)
+                return await self.call_match_agent(max_tokens)
             
             elif action == "call_main_agent" :
-                return self.call_main_agent(max_tokens)
+                return await self.call_main_agent(max_tokens)
         
         return False
     
-    def ask_user_for( self, argument : str) -> bool :
+    async def ask_user_for( self, argument : str) -> bool :
         
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+        origin = here()
         
         if argument.startswith("model") :
             
@@ -425,32 +491,36 @@ class CaseHandler (CaseHandlerBase) :
             msg_options = self.tool_server.dkdb.get_model_options()
             
             # Construct message
-            message = ServerInteractiveOptsMsg( origin  = _orig_,
-                                                type    = "button",
-                                                header  = msg_header,
-                                                body    = msg_body,
-                                                options = msg_options )
+            message = ServerInteractiveOptsMsg(
+                origin  = origin,
+                type    = "button",
+                header  = msg_header,
+                body    = msg_body,
+                options = msg_options,
+            )
             message.print()
             
             # Send message to user
-            self.send_interactive(message)
+            await self.send_interactive(message)
             # Write message to storage and update manifest and state machine
-            self.context_update(message)
+            await self.context_update(message)
         
         elif argument == "image" :
             
             system_message = self.load_system_message("ask_for_image.json")
-            message        = ServerTextMsg( origin = _orig_,
-                                            text   = system_message.get("body") )
+            message        = ServerTextMsg(
+                origin = origin,
+                text   = system_message.get("body"),
+            )
             message.print()
             
             # Send message to user
-            self.send_text(message)
+            await self.send_text(message)
             # Write message to storage and update manifest and state machine
-            self.context_update(message)
+            await self.context_update(message)
         
         else :
-            raise ValueError(f"In {_orig_}: Invalid argument {argument}")
+            raise ValueError(f"In {origin}: Invalid argument {argument}")
         
         # Return False because we need to wait for user to reply
         return False
@@ -461,75 +531,75 @@ class CaseHandler (CaseHandlerBase) :
     
     def setup_image_agent(self) -> None :
         
-        self.image_agent = Agent( "image", self.IMAGE_AGENT_MODELS)
+        self.image_agent = AsyncAgent( "image", self.IMAGE_AGENT_MODELS)
         
         drone_model = self.tool_server.dkdb.model
-        self.image_agent.load_prompts([f"agent_prompts/image_{drone_model}.md"])
+        prompt_path = self.PACKAGE_DIR / f"agent_prompts/image_{drone_model}.md"
+        
+        self.image_agent.load_prompts([prompt_path])
         
         return
     
-    def call_image_agent( self, max_tokens : int | None = None) -> bool :
+    async def call_image_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
-        self.send_agent_update("image_start")
+        await self.send_agent_update("image_start")
         
         # ---------------------------------------------------------------------------------
         # Set text for message origin field
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+        origin = here()
         
         # If necessary then setup agent
         if not self.image_agent :
             self.setup_image_agent()
         
         # ---------------------------------------------------------------------------------
-        # PHASE 1: GENERATE IMAGE ANALYSIS
+        # STAGE 1: GENERATE IMAGE ANALYSIS
         
-        # Prepare image analysis agent context
-        image_agent_context = self.image_agent_context
         # Prepare images cache
-        for msg_with_image in image_agent_context :
+        for msg_with_image in self.agent_contexts["image"] :
+            if not (
+                isinstance( msg_with_image, HumanUserContentMsg) and
+                msg_with_image.media and
+                msg_with_image.media.content
+            ) :
+                continue
+            
             image_filename = msg_with_image.media.name
             if image_filename not in self.imgs_cache :
-                image_content = self.storage.media_get(image_filename)
-                self.imgs_cache[image_filename] = image_content
+                self.imgs_cache[image_filename] = msg_with_image.media.content
         
         # Generate response
-        message = self.image_agent.get_response( context    = image_agent_context,
-                                                 origin     = f"{_orig_}/stage-1",
-                                                 load_imgs  = True,
-                                                 imgs_cache = self.imgs_cache,
-                                                 output_st  = RCImageAnalysis,
-                                                 max_tokens = max_tokens,
-                                                 debug      = self.debug )
+        message = await self.image_agent.get_response(
+            context    = self.agent_contexts["image"],
+            origin     = f"{origin}[stage-1]",
+            load_imgs  = True,
+            imgs_cache = self.imgs_cache,
+            output_st  = RCImageAnalysis,
+            max_tokens = max_tokens,
+            debug      = self.debug,
+        )
         
         # If the agent did not respond then simply return False
         if not message or message.is_empty() :
            return False
+        else :
+            message.print()
         
-        # DEBUG: Print message
-        message.print()
-        # If debug mode is on then send message to human
-        self.send_text(message) if self.debug else None
         # Write message to storage and update manifest and state machine
-        self.context_update(message)
+        await self.context_update(message)
         
         # ---------------------------------------------------------------------------------
-        # PHASE 2: INJECT MESSAGE FOR MATCH AGENT
+        # STAGE 2: INJECT MESSAGE FOR MATCH AGENT
         
         # Retrive data from Domain Knowledge Database
         data_str = self.tool_server.dkdb.list_messages()
         # Construct message
-        msg_with_data = ServerTextMsg( origin = f"{_orig_}/stage-2",
+        msg_with_data = ServerTextMsg( origin = f"{origin}[stage-2]",
                                        text   = data_str )
         msg_with_data.print()
-        # DEBUG: Send message to human
-        self.send_text(msg_with_data) if self.debug else None
         # Write message to storage and update manifest and state machine
-        self.context_update(msg_with_data)
-        
-        # ---------------------------------------------------------------------------------
-        # Send agent update to user
-        # self.send_agent_update( "image_end", debug)
+        await self.context_update(msg_with_data)
         
         # ---------------------------------------------------------------------------------
         # Signal need for another response
@@ -541,16 +611,31 @@ class CaseHandler (CaseHandlerBase) :
     
     def setup_match_agent(self) -> None :
         
-        self.match_agent = Agent( "match", self.MAIN_AGENT_MODELS)
+        self.match_agent = AsyncAgent( "match", self.MAIN_AGENT_MODELS)
         
-        match_ag_prompts = [ { "path"    : "agent_prompts/match.md",
-                               "replace" : {} },
-                             { "path"    : "agent_prompts/user_profile.md",
-                               "replace" : { "{COUNTRY}"  : self.user_data.country,
-                                             "{LANGUAGE}" : self.user_data.language } },
-                             { "path"    : "agent_prompts/spanish.md",
-                               "replace" : {} } ]
-        match_ag_tools   = [ f"agent_tools/match.json" ]
+        lan_reg_data = self.user_data.lan_reg_data if self.user_data else None
+        country      = lan_reg_data.country  if lan_reg_data else None
+        language     = lan_reg_data.language if lan_reg_data else None
+        
+        prompts_dir      = self.PACKAGE_DIR / "agent_prompts"
+        match_ag_prompts = [
+            {
+                "path"    : prompts_dir / "match.md",
+                "replace" : {},
+            },
+            {
+                "path"    : prompts_dir / "user_profile.md",
+                "replace" : {
+                    "{COUNTRY}"  : country  or "Unknown",
+                    "{LANGUAGE}" : language or "English",
+                },
+            },
+            {
+                "path"    : prompts_dir / "spanish.md",
+                "replace" : {},
+            },
+        ]
+        match_ag_tools   = [ self.PACKAGE_DIR / "agent_tools/match.json" ]
         
         self.match_agent.load_prompts(match_ag_prompts)
         self.match_agent.load_tools(match_ag_tools)
@@ -558,14 +643,14 @@ class CaseHandler (CaseHandlerBase) :
         
         return
     
-    def call_match_agent( self, max_tokens : int | None = None) -> bool :
+    async def call_match_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
         # Send agent update to user
         # self.send_agent_update( "match_start", debug)
         
         # ---------------------------------------------------------------------------------
         # Set text for message origin field
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+        origin = here()
         
         # If necessary then setup agent
         if not self.match_agent :
@@ -574,26 +659,26 @@ class CaseHandler (CaseHandlerBase) :
         # ---------------------------------------------------------------------------------
         # STAGE 1: GENERATE INITIAL MATCH AGENT RESPONSE
         
-        # Prepare match agent context
-        match_agent_context = self.match_agent_context
-        
         # Generate response
-        message = self.match_agent.get_response( context    = match_agent_context,
-                                                 origin     = f"{_orig_}/stage-1",
-                                                 max_tokens = max_tokens,
-                                                 debug      = self.debug )
+        message = await self.match_agent.get_response(
+            context    = self.agent_contexts["match"],
+            origin     = f"{origin}[stage-1]",
+            max_tokens = max_tokens,
+            debug      = self.debug,
+        )
         
         # If the agent did not respond then simply return False
         if not message or message.is_empty() :
            return False
+        else :
+            message.print()
         
-        # DEBUG: Print message
-        message.print()
-        # If message contains text or debug mode is on then send message to human
-        if message.text or self.debug :
-            self.send_text(message)
+        # If message contains text then send it to the human user
+        if message.text :
+            await self.send_text(message)
+        
         # Write message to storage and update manifest and state machine
-        self.context_update(message)
+        await self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -605,17 +690,13 @@ class CaseHandler (CaseHandlerBase) :
         tool_results = self.tool_server.process(message.tool_calls)
         if tool_results :
             # Construct message
-            message = ToolResultsMsg( origin       = f"{_orig_}/stage-2",
-                                      tool_results = tool_results )
+            message = ToolResultsMsg(
+                origin       = f"{origin}[stage-2]",
+                tool_results = tool_results,
+            )
             message.print()
-            # DEBUG: Send message to human
-            self.send_text(message)
             # Write message to storage and update manifest and state machine
-            self.context_update(message)
-        
-        # ---------------------------------------------------------------------------------
-        # Send agent update to user
-        # self.send_agent_update( "match_end", debug)
+            await self.context_update(message)
         
         # ---------------------------------------------------------------------------------
         # Signal need for another response
@@ -627,17 +708,33 @@ class CaseHandler (CaseHandlerBase) :
     
     def setup_main_agent(self) -> None :
         
-        self.main_agent = Agent( "main", self.MAIN_AGENT_MODELS)
+        self.main_agent = AsyncAgent( "main", self.MAIN_AGENT_MODELS)
         
+        lan_reg_data = self.user_data.lan_reg_data if self.user_data else None
+        country      = lan_reg_data.country  if lan_reg_data else None
+        language     = lan_reg_data.language if lan_reg_data else None
+        
+        prompts_dir     = self.PACKAGE_DIR / "agent_prompts"
         drone_model     = self.tool_server.dkdb.model
-        main_ag_prompts = [ { "path"    : f"agent_prompts/main_{drone_model}.md",
-                              "replace" : {} },
-                            { "path"    : "agent_prompts/user_profile.md",
-                              "replace" : { "{COUNTRY}"  : self.user_data.country,
-                                            "{LANGUAGE}" : self.user_data.language } },
-                            { "path"    : "agent_prompts/spanish.md",
-                              "replace" : {} } ]
-        main_ag_tools   = [ f"agent_tools/main.json" ]
+        main_ag_prompts = [
+            {
+                "path"    : prompts_dir / f"main_{drone_model}.md",
+                "replace" : {},
+            },
+            {
+                "path"    : prompts_dir / "user_profile.md",
+                "replace" : {
+                    "{COUNTRY}"  : country  or "Unknown",
+                    "{LANGUAGE}" : language or "English",
+                },
+            },
+            {
+                "path"    : prompts_dir / "spanish.md",
+                "replace" : {},
+            }
+        ]
+        
+        main_ag_tools = [ self.PACKAGE_DIR / "agent_tools/main.json" ]
         
         self.main_agent.load_prompts(main_ag_prompts)
         self.main_agent.load_tools(main_ag_tools)
@@ -645,7 +742,7 @@ class CaseHandler (CaseHandlerBase) :
         
         return
     
-    def call_main_agent( self, max_tokens : int | None = None) -> bool :
+    async def call_main_agent( self, max_tokens : int | None = None) -> bool :
         """
         Generate AI response
         Args:
@@ -658,7 +755,7 @@ class CaseHandler (CaseHandlerBase) :
         
         # ---------------------------------------------------------------------------------
         # Set text for message origin field
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+        origin = here()
         
         # ---------------------------------------------------------------------------------
         # STAGE 1: GENERATE INITIAL MAIN AGENT RESPONSE
@@ -667,25 +764,25 @@ class CaseHandler (CaseHandlerBase) :
         if not self.main_agent :
             self.setup_main_agent()
         
-        # Prepare main agent context
-        main_agent_context = self.main_agent_context
-        
         # Generate main agent response
-        message = self.main_agent.get_response( context    = main_agent_context,
-                                                origin     = f"{_orig_}/stage-1",
-                                                max_tokens = max_tokens,
-                                                debug      = self.debug )
+        message = await self.main_agent.get_response(
+            context    = self.agent_contexts["main"],
+            origin     = f"{origin}[stage-1]",
+            max_tokens = max_tokens,
+            debug      = self.debug,
+        )
         
         # If the agent did not respond then simply return False
         if not message or message.is_empty() :
            return False
+        else :
+            message.print()
         
-        # DEBUG: Print message
-        message.print()
         # Send message to user
-        self.send_text(message)
+        await self.send_text(message)
+        
         # Write message to storage and update manifest and state machine
-        self.context_update(message)
+        await self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -697,23 +794,23 @@ class CaseHandler (CaseHandlerBase) :
         # Process high level tool calls
         for tc in message.tool_calls :
             if tc.name == "mark_as_resolved" :
-                self.case_mark_as_resolved()
+                await self.case_mark_as_resolved()
         # Process low level tool calls
         tool_results = self.tool_server.process(message.tool_calls)
         
         # Process tool results
         if tool_results :
             # Construct message
-            message = ToolResultsMsg( origin       = f"{_orig_}/stage-2",
-                                      tool_results = tool_results )
+            message = ToolResultsMsg(
+                origin       = f"{origin}[stage-2]",
+                tool_results = tool_results,
+            )
             message.print()
-            # DEBUG: Send message to human
-            self.send_text(message)
             # Write message to storage and update manifest and state machine
-            self.context_update(message)
+            await self.context_update(message)
         
         # If case remains open then signal need for another response
-        return bool( self.case_manifest.status == "open" )
+        return bool( self.case_manifest and self.case_manifest.is_open )
     
     # =====================================================================================
     # OTHER HELPERS
@@ -721,29 +818,36 @@ class CaseHandler (CaseHandlerBase) :
     
     def load_system_message( self, json_file : str) -> dict[ str, str] :
         
-        file_dict : dict = load_json_file(f"agent_prompts/{json_file}")
-        data_dict : dict = file_dict.get(self.user_data.code_lan)
-        if not data_dict :
-            data_dict = file_dict.get("en")
+        lan_reg_data  = (
+            self.user_data.lan_reg_data
+            if self.user_data else None
+        )
+        language_code = (
+            lan_reg_data.code_lan
+            if lan_reg_data else None
+        )
+        languate_dict : dict = load_json_file(
+            self.PACKAGE_DIR / "agent_prompts" / json_file
+        )
         
-        return data_dict
+        return languate_dict.get(language_code) or languate_dict.get("en") or {}
     
-    def send_agent_update( self, message_name : str) -> None :
-        
-        _orig_ = f"{self.__class__.__name__}/{currentframe().f_code.co_name}"
+    async def send_agent_update( self, message_name : str) -> None :
         
         # Fetch agent update messages
         agent_updates : dict = self.load_system_message("agent_updates.json")
         message_text  : str  = agent_updates.get(message_name)
         if message_text :
             # Construct message
-            message = ServerTextMsg( origin    = _orig_,
-                                     text      = message_text,
-                                     user_eyes = True )
+            message = ServerTextMsg(
+                origin    = here(),
+                text      = message_text,
+                user_eyes = True,
+            )
             message.print()
             # Send message to human
-            self.send_text(message)
+            await self.send_text(message)
             # Write message to storage and update manifest and state machine
-            self.context_update(message)
+            await self.context_update(message)
         
         return
