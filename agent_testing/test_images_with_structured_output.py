@@ -45,15 +45,15 @@ def run_test( image_path : Path, debug : bool = False) -> None :
         print(f"Error: Could not read file {image_path}")
         return
     
-    context    = [ HumanUserContentMsg( text = msg_text, media = media) ]
-    imgs_cache = { media.name : media.content }
+    context = [ HumanUserContentMsg( text = msg_text, media = media) ]
     
-    message = agent.get_response( context    = context,
-                                  load_imgs  = True,
-                                  imgs_cache = imgs_cache,
-                                  output_st  = ImageResults,
-                                  max_tokens = 1024,
-                                  debug      = debug )
+    message = agent.get_response(
+        context    = context,
+        load_imgs  = True,
+        output_st  = ImageResults,
+        max_tokens = 1024,
+        debug      = debug,
+    )
     
     if message :
         message.print()
@@ -64,12 +64,16 @@ def run_test( image_path : Path, debug : bool = False) -> None :
 def main() -> None :
     
     parser = argparse.ArgumentParser(description = __doc__)
-    parser.add_argument( "image",
-                         type = Path,
-                         help = "Image used for the debug structured prompt." )
-    parser.add_argument( "--debug",
-                         action = "store_true",
-                         help   = "Pass through 'debug = True'" )
+    parser.add_argument(
+        "image",
+        type = Path,
+        help = "Image used for the debug structured prompt.",
+    )
+    parser.add_argument(
+        "--debug",
+        action = "store_true",
+        help   = "Pass through 'debug = True'",
+    )
     args = parser.parse_args()
     
     if not args.image.exists() :

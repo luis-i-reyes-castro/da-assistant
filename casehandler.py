@@ -208,9 +208,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         self.match_agent : AsyncAgent | None = None
         self.main_agent  : AsyncAgent | None = None
         
-        # Images cache (for image agent)
-        self.imgs_cache : dict[ str, bytes] = {}
-        
         # Initialize state machine from method `define_state_machine_config`
         self.init_machine()
         
@@ -395,16 +392,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         if isinstance( msg, HumanServerMsg) :
             return False
         
-        # If media is image then store contents in images cache
-        if (
-            isinstance( msg, HumanUserContentMsg) and
-            msg.media                             and
-            msg.media.mime.startswith("image")    and
-            msg.media.content
-        ) :
-            
-            self.imgs_cache[msg.media.name] = msg.media.content
-        
         # If user message is not text, image, interactive reply then reply with a
         # message indicating lack of support
         if message.type not in ( "text", "image", "interactive") :
@@ -556,25 +543,11 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # ---------------------------------------------------------------------------------
         # STAGE 1: GENERATE IMAGE ANALYSIS
         
-        # Prepare images cache
-        for msg_with_image in self.agent_contexts["image"] :
-            if not (
-                isinstance( msg_with_image, HumanUserContentMsg) and
-                msg_with_image.media and
-                msg_with_image.media.content
-            ) :
-                continue
-            
-            image_filename = msg_with_image.media.name
-            if image_filename not in self.imgs_cache :
-                self.imgs_cache[image_filename] = msg_with_image.media.content
-        
         # Generate response
         message = await self.image_agent.get_response(
             context    = self.agent_contexts["image"],
             origin     = f"{origin}[stage-1]",
             load_imgs  = True,
-            imgs_cache = self.imgs_cache,
             output_st  = RCImageAnalysis,
             max_tokens = max_tokens,
             debug      = self.debug,
