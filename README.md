@@ -15,11 +15,16 @@ The conversation logic lives in
 [`CaseHandler.define_state_machine_config()`](casehandler.py).
 Its core states are:
 - `idle`
+- `have_nothing`
 - `have_model_no_image`
 - `have_image_no_model`
 - `image_agent`
 - `match_agent`
 - `main_agent`
+
+`idle` is the callback-free initial state, before the first user message has been
+classified. A text-only message moves the machine to `have_nothing`, where it asks
+for the drone model; an image moves it directly to `have_image_no_model`.
 
 The handler itself is initialized as a `transitions.AsyncMachine` via
 `AsyncWhatsAppCaseHandler.init_machine(...)`. The current FSM state and selected

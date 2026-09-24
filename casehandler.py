@@ -101,9 +101,12 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         """
         states = [
         
+        # Initial state
+        CH_State("idle"),
+
         # Information-gathering states
         CH_State(
-            "idle",
+            "have_nothing",
             while_in = [ "ask_for_model_having_nothing" ],
         ),
         CH_State(
@@ -143,9 +146,17 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         
         # From state: idle
         { "source"  : "idle",
+          "trigger" : "has_text_only",
+          "dest"    : "have_nothing" },
+        { "source"  : "idle",
+          "trigger" : "has_image",
+          "dest"    : "have_image_no_model" },
+        
+        # From state: have_nothing
+        { "source"  : "have_nothing",
           "trigger" : "has_model_choice",
           "dest"    : "have_model_no_image" },
-        { "source"  : "idle",
+        { "source"  : "have_nothing",
           "trigger" : "has_image",
           "dest"    : "have_image_no_model" },
         
@@ -296,7 +307,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             
             if (
                 isinstance( message, HumanUserInteractiveReplyMsg) and
-                ( self.state in ( "idle", "have_image_no_model") )
+                ( self.state in ( "have_nothing", "have_image_no_model") )
             ) :
                 self.model_choice = message.choice.id
                 await self.trigger("has_model_choice")
@@ -308,6 +319,11 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             if msg_has_image :
                 await self.trigger("has_image")
+            elif (
+                isinstance( message, HumanUserContentMsg) and
+                message.text and ( self.state == "idle" )
+            ) :
+                await self.trigger("has_text_only")
         
         elif isinstance( message, AssistantMsg) :
             
@@ -332,6 +348,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             (
                 self.state in (
                     "idle",
+                    "have_nothing",
                     "have_model_no_image",
                     "have_image_no_model",
                     "image_agent"
