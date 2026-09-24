@@ -21,7 +21,7 @@ from sofia_utils.printing import (
 from wa_agents.agent import AsyncAgent
 from wa_agents.case_handler_base import (
     AsyncWhatsAppCaseHandler,
-    CH_State,
+    Async_CH_State,
     TransitionDict,
 )
 from wa_agents.case_handler_models import (
@@ -70,7 +70,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     @classmethod
     def define_state_machine_config(cls) -> tuple[
-        list[CH_State],
+        list[Async_CH_State],
         str,
         list[TransitionDict],
     ] :
@@ -90,7 +90,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             * Lists `on_enter` / `on_exit` are true FSM callbacks and should only contain
               methods that must run when a transition changes state.
             * List `while_in` contains response-generation actions that
-              `generate_response()` dispatches manually while the handler remains in
+              `run_while_in_action()` dispatches manually while the handler remains in
               the current state.
             * Because `auto_transitions = False`, ingesting a message can leave the
               machine in the same state without re-running `on_enter`. That is why
@@ -102,38 +102,38 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         states = [
         
         # Initial state
-        CH_State("idle"),
+        Async_CH_State("idle"),
 
         # Information-gathering states
-        CH_State(
+        Async_CH_State(
             "have_nothing",
             while_in = [ "ask_for_model_having_nothing" ],
         ),
-        CH_State(
+        Async_CH_State(
             "have_model_no_image",
             on_enter = [ "set_model_if_necessary" ],
             while_in = [ "ask_for_image" ],
         ),
-        CH_State(
+        Async_CH_State(
             "have_image_no_model",
             while_in = [ "ask_for_model_having_image" ],
         ),
         
         # Single-task agents
-        CH_State(
+        Async_CH_State(
             "image_agent",
             on_enter = [ "set_model_if_necessary" ],
             while_in = [ "call_image_agent" ],
             on_exit  = [ "clear_image_agent_context" ],
         ),
-        CH_State(
+        Async_CH_State(
             "match_agent",
             while_in = [ "call_match_agent" ],
             on_exit  = [ "clear_match_agent_context" ],
         ),
         
         # Main agent
-        CH_State(
+        Async_CH_State(
             "main_agent",
             while_in = [ "call_main_agent" ],
         ),
@@ -279,9 +279,12 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         
         return
     
-    async def ingest_message( self, message : Message) -> None :
+    async def apply_message_to_state_machine(
+        self,
+        message : Message,
+    ) -> None :
         """
-        Ingest a single message and fire corresponding triggers \\
+        Apply a single message to handler state and fire corresponding triggers. \\
         Overloads the no-op method on `AsyncWhatsAppCaseHandler`. \\
         Args:
             message : Instance of a subclass of Message
@@ -421,7 +424,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             msg_reply.print()
             
             # Write reply message to storage and update manifest
-            msg_reply = await self.context_update(msg_reply)
+            msg_reply = await self.apply_and_persist_message(msg_reply)
             # Send reply message to user
             await self.send_text(msg_reply)
             
@@ -432,10 +435,10 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         return True if msg else False
     
     # =====================================================================================
-    # GENERATE RESPONSE AS A FUNCTION OF FSM STATE
+    # RUN WHILE_IN ACTION AS A FUNCTION OF FSM STATE
     # =====================================================================================
     
-    async def generate_response(
+    async def run_while_in_action(
         self,
         max_tokens : int | None = None,
     ) -> bool :
@@ -505,7 +508,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             message.print()
             
             # Write message to storage and update manifest and state machine
-            message = await self.context_update(message)
+            message = await self.apply_and_persist_message(message)
             # Send message to user
             await self.send_interactive(message)
         
@@ -519,7 +522,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             message.print()
             
             # Write message to storage and update manifest and state machine
-            message = await self.context_update(message)
+            message = await self.apply_and_persist_message(message)
             # Send message to user
             await self.send_text(message)
         
@@ -577,7 +580,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             message.print()
         
         # Write message to storage and update manifest and state machine
-        await self.context_update(message)
+        await self.apply_and_persist_message(message)
         
         # ---------------------------------------------------------------------------------
         # STAGE 2: INJECT MESSAGE FOR MATCH AGENT
@@ -589,7 +592,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                                        text   = data_str )
         msg_with_data.print()
         # Write message to storage and update manifest and state machine
-        await self.context_update(msg_with_data)
+        await self.apply_and_persist_message(msg_with_data)
         
         # ---------------------------------------------------------------------------------
         # Signal need for another response
@@ -664,7 +667,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             message.print()
         
         # Write message to storage and update manifest and state machine
-        message = await self.context_update(message)
+        message = await self.apply_and_persist_message(message)
         
         # If message contains text then send it to the human user
         if message.text :
@@ -686,7 +689,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             message.print()
             # Write message to storage and update manifest and state machine
-            await self.context_update(message)
+            await self.apply_and_persist_message(message)
         
         # ---------------------------------------------------------------------------------
         # Signal need for another response
@@ -769,7 +772,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             message.print()
         
         # Write message to storage and update manifest and state machine
-        message = await self.context_update(message)
+        message = await self.apply_and_persist_message(message)
         
         # Send message to user
         await self.send_text(message)
@@ -797,7 +800,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             message.print()
             # Write message to storage and update manifest and state machine
-            await self.context_update(message)
+            await self.apply_and_persist_message(message)
         
         # If case remains open then signal need for another response
         return bool( self.case_manifest and self.case_manifest.is_open )
@@ -836,7 +839,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             message.print()
             # Write message to storage and update manifest and state machine
-            message = await self.context_update(message)
+            message = await self.apply_and_persist_message(message)
             # Send message to human
             await self.send_text(message)
         
