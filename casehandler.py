@@ -420,10 +420,10 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             msg_reply.print()
             
+            # Write reply message to storage and update manifest
+            msg_reply = await self.context_update(msg_reply)
             # Send reply message to user
             await self.send_text(msg_reply)
-            # Write reply message to storage and update manifest
-            await self.context_update(msg_reply)
             
             # Signal need to wait for user's reply
             return False
@@ -504,10 +504,10 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             message.print()
             
+            # Write message to storage and update manifest and state machine
+            message = await self.context_update(message)
             # Send message to user
             await self.send_interactive(message)
-            # Write message to storage and update manifest and state machine
-            await self.context_update(message)
         
         elif argument == "image" :
             
@@ -518,10 +518,10 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             )
             message.print()
             
+            # Write message to storage and update manifest and state machine
+            message = await self.context_update(message)
             # Send message to user
             await self.send_text(message)
-            # Write message to storage and update manifest and state machine
-            await self.context_update(message)
         
         else :
             raise ValueError(f"In {origin}: Invalid argument {argument}")
@@ -663,12 +663,12 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         else :
             message.print()
         
+        # Write message to storage and update manifest and state machine
+        message = await self.context_update(message)
+        
         # If message contains text then send it to the human user
         if message.text :
             await self.send_text(message)
-        
-        # Write message to storage and update manifest and state machine
-        await self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -768,11 +768,11 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         else :
             message.print()
         
+        # Write message to storage and update manifest and state machine
+        message = await self.context_update(message)
+        
         # Send message to user
         await self.send_text(message)
-        
-        # Write message to storage and update manifest and state machine
-        await self.context_update(message)
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -835,9 +835,9 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                 user_eyes = True,
             )
             message.print()
+            # Write message to storage and update manifest and state machine
+            message = await self.context_update(message)
             # Send message to human
             await self.send_text(message)
-            # Write message to storage and update manifest and state machine
-            await self.context_update(message)
         
         return
