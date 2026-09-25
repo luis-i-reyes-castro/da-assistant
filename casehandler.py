@@ -111,7 +111,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         ),
         Async_CH_State(
             "have_model_no_image",
-            on_enter = [ "set_model_if_necessary" ],
             while_in = [ "ask_for_image" ],
         ),
         Async_CH_State(
@@ -122,7 +121,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # Single-task agents
         Async_CH_State(
             "image_agent",
-            on_enter = [ "set_model_if_necessary" ],
             while_in = [ "call_image_agent" ],
             on_exit  = [ "clear_image_agent_context" ],
         ),
@@ -266,16 +264,11 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         if ( not self.machine ) or ( state not in self.machine.states ) :
             raise ValueError(f"In {here()}: Invalid FSM state '{state}'")
         
-        if model and ( model not in self.tool_server.dkdb.MODELS_AVAILABLE ) :
-            raise ValueError(f"In {here()}: Invalid drone model '{model}'")
+        if model :
+            self.model_choice = model
+            self.ensure_model_loaded()
         
         self.machine.set_state( state, model = self)
-        self.model_choice = model
-        
-        if model and ( not self.tool_server.dkdb.model ) :
-            error, result = self.tool_server.dkdb.set_model(model)
-            if error :
-                raise ValueError(f"In {here()}: {result}")
         
         return
     
@@ -313,6 +306,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                 ( self.state in ( "have_nothing", "have_image_no_model") )
             ) :
                 self.model_choice = message.choice.id
+                self.ensure_model_loaded()
                 await self.trigger("has_model_choice")
             
             msg_has_image = bool(
@@ -370,7 +364,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         return
     
     # =====================================================================================
-    # ON ENTER AND ON EXIT METHODS
+    # ON EXIT METHODS
     # =====================================================================================
     
     async def clear_image_agent_context(self) -> None :
@@ -381,19 +375,35 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         
         return self.agent_context_clear("match")
     
-    async def set_model_if_necessary(self) -> None :
-        
-        if not self.model_choice :
-            return
-        if self.model_choice not in self.tool_server.dkdb.MODELS_AVAILABLE :
-            raise ValueError(
-                f"In {here()}: Invalid drone model '{self.model_choice}'"
-            )
+    # =====================================================================================
+    # DRONE MODEL SETUP
+    # =====================================================================================
 
-        if not self.tool_server.dkdb.model :
-            error, result = self.tool_server.dkdb.set_model(self.model_choice)
-            if error :
-                raise ValueError(f"In {here()}: {result}")
+    def ensure_model_loaded(self) -> None :
+        
+        model_choice = self.model_choice
+        if not model_choice :
+            raise ValueError(
+                f"In {here()}: Missing drone model choice"
+            )
+        if model_choice not in self.tool_server.dkdb.MODELS_AVAILABLE :
+            raise ValueError(
+                f"In {here()}: Invalid drone model choice '{model_choice}'"
+            )
+        
+        if ( loaded_model := self.tool_server.dkdb.model ) :
+            
+            if loaded_model != model_choice :
+                raise ValueError(
+                    f"In {here()}: Loaded drone model '{loaded_model}' does not "
+                    f"match selected model '{model_choice}'"
+                )
+            
+            return
+        
+        error, result = self.tool_server.dkdb.set_model(model_choice)
+        if error :
+            raise ValueError(f"In {here()}: {result}")
         
         return
     
@@ -538,6 +548,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     def setup_image_agent(self) -> None :
         
+        self.ensure_model_loaded()
         self.image_agent = AsyncAgent( "image", self.IMAGE_AGENT_MODELS)
         
         drone_model = self.tool_server.dkdb.model
@@ -604,6 +615,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     def setup_match_agent(self) -> None :
         
+        self.ensure_model_loaded()
         self.match_agent = AsyncAgent( "match", self.MAIN_AGENT_MODELS)
         
         lan_reg_data = self.user_data.lan_reg_data if self.user_data else None
@@ -701,6 +713,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     def setup_main_agent(self) -> None :
         
+        self.ensure_model_loaded()
         self.main_agent = AsyncAgent( "main", self.MAIN_AGENT_MODELS)
         
         lan_reg_data = self.user_data.lan_reg_data if self.user_data else None
