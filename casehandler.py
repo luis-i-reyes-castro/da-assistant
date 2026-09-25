@@ -21,7 +21,7 @@ from sofia_utils.printing import (
 from wa_agents.agent import AsyncAgent
 from wa_agents.case_handler_base import (
     AsyncWhatsAppCaseHandler,
-    Async_CH_State,
+    CaseHandlerState,
     TransitionDict,
 )
 from wa_agents.case_handler_models import (
@@ -70,68 +70,45 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     @classmethod
     def define_state_machine_config(cls) -> tuple[
-        list[Async_CH_State],
+        list[CaseHandlerState],
         str,
         list[TransitionDict],
     ] :
         """
-        Define state machine states and transitions. \\
-        Returns:
-            * List of states. For each state:
-                * Required field: `name`
-                * Optional fields: `on_enter`, `while_in`, `on_exit`.
-            * List of transitions as dicts with keys:
-                * `source`
-                * `trigger`
-                * `dest`
-            * Initial state name.
-        
-        NOTE:
-            * Lists `on_enter` / `on_exit` are true FSM callbacks and should only contain
-              methods that must run when a transition changes state.
-            * List `while_in` contains response-generation actions that
-              `run_while_in_action()` dispatches manually while the handler remains in
-              the current state.
-            * Because `auto_transitions = False`, ingesting a message can leave the
-              machine in the same state without re-running `on_enter`. That is why
-              `ask_for_*` and `call_*_agent` live in `while_in`.
-            * If we instead forced same-state transitions with
-              `auto_transitions = True`, we would also need to account for that
-              state's `on_exit` + `on_enter` firing on every such loop.
+        Define state machine states and transitions.
+        For more information on this method see `CaseHandlerBase`.
         """
         states = [
         
         # Initial state
-        Async_CH_State("idle"),
+        CaseHandlerState("idle"),
 
         # Information-gathering states
-        Async_CH_State(
+        CaseHandlerState(
             "have_nothing",
             while_in = [ "ask_for_model_having_nothing" ],
         ),
-        Async_CH_State(
+        CaseHandlerState(
             "have_model_no_image",
             while_in = [ "ask_for_image" ],
         ),
-        Async_CH_State(
+        CaseHandlerState(
             "have_image_no_model",
             while_in = [ "ask_for_model_having_image" ],
         ),
         
         # Single-task agents
-        Async_CH_State(
+        CaseHandlerState(
             "image_agent",
             while_in = [ "call_image_agent" ],
-            on_exit  = [ "clear_image_agent_context" ],
         ),
-        Async_CH_State(
+        CaseHandlerState(
             "match_agent",
             while_in = [ "call_match_agent" ],
-            on_exit  = [ "clear_match_agent_context" ],
         ),
         
         # Main agent
-        Async_CH_State(
+        CaseHandlerState(
             "main_agent",
             while_in = [ "call_main_agent" ],
         ),
@@ -268,7 +245,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             self.model_choice = model
             self.ensure_model_loaded()
         
-        self.machine.set_state( state, model = self)
+        self.machine.set_state(state)
         
         return
     
@@ -305,8 +282,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                 isinstance( message, HumanUserInteractiveReplyMsg) and
                 ( self.state in ( "have_nothing", "have_image_no_model") )
             ) :
-                self.model_choice = message.choice.id
-                self.ensure_model_loaded()
+                self.model_choice = self.validate_model_choice(message.choice.id)
                 await self.trigger("has_model_choice")
             
             msg_has_image = bool(
@@ -324,11 +300,18 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         
         elif isinstance( message, AssistantMsg) :
             
-            if message.agent == "image" :
+            if (
+                ( message.agent == "image" ) and
                 await self.trigger("has_image_analysis")
+            ) :
+                self.agent_context_clear("image")
             
-            elif ( message.agent == "match" ) and message.tool_calls :
+            elif (
+                ( message.agent == "match" ) and
+                message.tool_calls            and
                 await self.trigger("has_match_tool_call")
+            ) :
+                self.agent_context_clear("match")
         
         # ---------------------------------------------------------------------------------
         # AFTER TRANSITION
@@ -364,32 +347,29 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         return
     
     # =====================================================================================
-    # ON EXIT METHODS
-    # =====================================================================================
-    
-    async def clear_image_agent_context(self) -> None :
-        
-        return self.agent_context_clear("image")
-    
-    async def clear_match_agent_context(self) -> None :
-        
-        return self.agent_context_clear("match")
-    
-    # =====================================================================================
     # DRONE MODEL SETUP
     # =====================================================================================
-
-    def ensure_model_loaded(self) -> None :
+    
+    def validate_model_choice(
+        self,
+        model_choice : str | None,
+    ) -> str :
         
-        model_choice = self.model_choice
         if not model_choice :
             raise ValueError(
                 f"In {here()}: Missing drone model choice"
             )
+        
         if model_choice not in self.tool_server.dkdb.MODELS_AVAILABLE :
             raise ValueError(
                 f"In {here()}: Invalid drone model choice '{model_choice}'"
             )
+        
+        return model_choice
+    
+    def ensure_model_loaded(self) -> None :
+        
+        model_choice = self.validate_model_choice(self.model_choice)
         
         if ( loaded_model := self.tool_server.dkdb.model ) :
             
@@ -458,10 +438,8 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             await self.context_build()
         
         # Retrieve manually-dispatched actions from current state
-        state   = self.machine.get_state(self.state)
-        actions = getattr( state, "while_in", [] )
-        
-        for action in actions :
+        state = self.machine.get_state(self.state)
+        for action in state.while_in :
             
             if action == "ask_for_model_having_nothing" :
                 return await self.ask_user_for("model_having_nothing")
