@@ -33,7 +33,7 @@ plain state names are used before model selection, and values such as
 `match_agent,T50` are used afterward. Restoring a case does not replay transitions;
 stored messages are only scanned to rebuild the derived agent contexts.
 
-![CaseHandler State Machine](./state_machine.png)
+![CaseHandler State Machine](./casehandler.png)
 
 ## Domain Knowledge
 

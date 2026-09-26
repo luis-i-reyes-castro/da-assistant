@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Case Handler
 -----
@@ -835,3 +836,8 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             await self.send_text(message)
         
         return
+
+
+if __name__ == "__main__" :
+    
+    CaseHandler.draw_state_machine_graph(f"{Path(__file__).stem}.png")
