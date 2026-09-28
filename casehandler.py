@@ -43,7 +43,7 @@ from wa_agents.supabase import (
     WhatsAppDatabaseRecord_Contact,
 )
 from wa_agents.whatsapp_functions import markdown_to_whatsapp
-from wa_agents.whatsapp_models import WhatsAppMessage
+from wa_agents.whatsapp_models import WhatsApp_IB_Message
 
 from .domain_knowledge.dk_basemodels import RCImageAnalysis
 from .tool_server import ToolServer
@@ -394,7 +394,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     async def process_message(
         self,
-        message       : WhatsAppMessage,
+        message       : WhatsApp_IB_Message,
         media_content : bytes | None = None,
     ) -> bool :
         
