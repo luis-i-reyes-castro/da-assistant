@@ -53,7 +53,7 @@ The main tool calls exposed through [`ToolServer`](tool_server.py) are:
 
 1. Sofia's `WhatsAppAPIServer` receives WhatsApp webhooks, normalizes them in
    Supabase Postgres, resolves a case-handler route, and enqueues the message.
-2. The server's lifespan-managed `AsyncQueueWorker` drains messages routed with
+2. The server's lifespan-managed `WhatsAppAPIWorker` drains messages routed with
    `handler_key = 'da-assistant'` and instantiates [`CaseHandler`](casehandler.py).
 3. [`CaseHandler`](casehandler.py) restores its persisted state and advances its FSM.
 4. The handler routes work across these stages:
@@ -70,7 +70,7 @@ The main tool calls exposed through [`ToolServer`](tool_server.py) are:
 | [`casehandler.py`](casehandler.py) | Application-specific state machine and agent orchestration |
 | [`tool_server.py`](tool_server.py) | Tool execution layer for component data and diagnosis lookup |
 | Sofia `backend/app.py` | Webhook HTTP entrypoint and handler registry |
-| `wa_agents.AsyncQueueWorker` | Lifespan-managed queue worker |
+| `wa_agents.api_worker.WhatsAppAPIWorker` | Lifespan-managed queue worker |
 | [`domain_knowledge/`](domain_knowledge/) | Structured knowledge base, preprocessing, analysis, and validation scripts |
 | [`agent_prompts/`](agent_prompts/) | Prompt templates and interactive-message payloads |
 | [`agent_tools/`](agent_tools/) | Tool schemas used by the match and main agents |

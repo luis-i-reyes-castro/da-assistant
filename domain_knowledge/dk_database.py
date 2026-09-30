@@ -12,9 +12,11 @@ from typing import ( Any,
                      Callable )
 
 from sofia_utils.io import write_to_json_string
-from sofia_utils.printing import ( print_ind,
-                                   print_sep )
-from wa_agents.whatsapp_models import (
+from sofia_utils.printing import (
+    print_ind,
+    print_sep,
+)
+from wa_agents.io_models import (
     WhatsAppInteractiveOption as InteractiveOption,
 )
 
