@@ -403,8 +403,8 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         if isinstance( msg, HumanServerMsg) :
             return False
         
-        # If user message is not text, image, interactive reply then reply with a
-        # message indicating lack of support
+        # If user message is not text, image, or interactive reply then
+        # reply with a message indicating lack of support
         if message.type not in ( "text", "image", "interactive") :
             
             system_message = self.load_system_message("unsupported.json")
@@ -412,17 +412,14 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                 origin = here(),
                 text   = system_message.get("body"),
             )
-            msg_reply.print()
-            
-            # Write reply message to storage and update manifest
             msg_reply = await self.apply_and_persist_message(msg_reply)
-            # Send reply message to user
             await self.send_text(msg_reply)
             
-            # Signal need to wait for user's reply
+            if self.debug :
+                msg_reply.print()
+            
             return False
         
-        # Signal need to generate a response
         return True if msg else False
     
     # =====================================================================================
@@ -468,7 +465,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         
         if argument.startswith("model") :
             
-            # Prepare header/body
             system_message = self.load_system_message("ask_for_model.json")
             msg_header     = system_message.get("title")
             msg_body       = None
@@ -483,23 +479,18 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                     e_msg = f"Invalid argument {argument}"
                     raise ValueError(f"In class CaseHandler method ask_user_for: {e_msg}")
             
-            # Retrieve drone model options
-            msg_options = self.tool_server.dkdb.get_model_options()
-            
-            # Construct message
             message = ServerInteractiveOptsMsg(
                 origin  = origin,
                 type    = "button",
                 header  = msg_header,
                 body    = msg_body,
-                options = msg_options,
+                options = self.tool_server.dkdb.get_model_options(),
             )
-            message.print()
-            
-            # Write message to storage and update manifest and state machine
             message = await self.apply_and_persist_message(message)
-            # Send message to user
             await self.send_interactive(message)
+            
+            if self.debug :
+                message.print()
         
         elif argument == "image" :
             
@@ -508,17 +499,15 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
                 origin = origin,
                 text   = system_message.get("body"),
             )
-            message.print()
-            
-            # Write message to storage and update manifest and state machine
             message = await self.apply_and_persist_message(message)
-            # Send message to user
             await self.send_text(message)
+            
+            if self.debug :
+                message.print()
         
         else :
             raise ValueError(f"In {origin}: Invalid argument {argument}")
         
-        # Return False because we need to wait for user to reply
         return False
     
     # =====================================================================================
@@ -566,11 +555,12 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # If the agent did not respond then simply return False
         if not message or message.is_empty() :
            return False
-        else :
-            message.print()
         
         # Write message to storage and update manifest and state machine
-        await self.apply_and_persist_message(message)
+        message = await self.apply_and_persist_message(message)
+        
+        if self.debug :
+            message.print()
         
         # ---------------------------------------------------------------------------------
         # STAGE 2: INJECT MESSAGE FOR MATCH AGENT
@@ -578,11 +568,14 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # Retrive data from Domain Knowledge Database
         data_str = self.tool_server.dkdb.list_messages()
         # Construct message
-        msg_with_data = ServerTextMsg( origin = f"{origin}[stage-2]",
-                                       text   = data_str )
-        msg_with_data.print()
+        msg_with_data = ServerTextMsg(
+            origin = f"{origin}[stage-2]",
+            text   = data_str,
+        )
         # Write message to storage and update manifest and state machine
-        await self.apply_and_persist_message(msg_with_data)
+        msg_with_data = await self.apply_and_persist_message(msg_with_data)
+        if self.debug :
+            msg_with_data.print()
         
         # ---------------------------------------------------------------------------------
         # Signal need for another response
@@ -629,10 +622,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     async def call_match_agent( self, max_tokens : int | None = None) -> bool :
         # ---------------------------------------------------------------------------------
-        # Send agent update to user
-        # self.send_agent_update( "match_start", debug)
-        
-        # ---------------------------------------------------------------------------------
         # Set text for message origin field
         origin = here()
         
@@ -643,7 +632,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # ---------------------------------------------------------------------------------
         # STAGE 1: GENERATE INITIAL MATCH AGENT RESPONSE
         
-        # Generate response
         message = await self.match_agent.get_response(
             context    = self.agent_contexts["match"],
             origin     = f"{origin}[stage-1]",
@@ -654,8 +642,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # If the agent did not respond then simply return False
         if not message or message.is_empty() :
            return False
-        else :
-            message.print()
         
         # Write message to storage and update manifest and state machine
         message = await self.apply_and_persist_message(message)
@@ -663,6 +649,9 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # If message contains text then send it to the human user
         if message.text :
             await self.send_text(message)
+        
+        if self.debug :
+            message.print()
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -673,14 +662,14 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         
         tool_results = self.tool_server.process(message.tool_calls)
         if tool_results :
-            # Construct message
             message = ToolResultsMsg(
                 origin       = f"{origin}[stage-2]",
                 tool_results = tool_results,
             )
-            message.print()
-            # Write message to storage and update manifest and state machine
-            await self.apply_and_persist_message(message)
+            message = await self.apply_and_persist_message(message)
+            
+            if self.debug :
+                message.print()
         
         # ---------------------------------------------------------------------------------
         # Signal need for another response
@@ -735,10 +724,6 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         Returns: True if we need to generate more responses, else False.
         """
         # ---------------------------------------------------------------------------------
-        # Send agent update to user
-        # self.send_agent_update( "main_start", debug)
-        
-        # ---------------------------------------------------------------------------------
         # Set text for message origin field
         origin = here()
         
@@ -760,14 +745,15 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         # If the agent did not respond then simply return False
         if not message or message.is_empty() :
            return False
-        else :
-            message.print()
         
         # Write message to storage and update manifest and state machine
         message = await self.apply_and_persist_message(message)
         
         # Send message to user
         await self.send_text(message)
+        
+        if self.debug :
+            message.print()
         
         # If there are no tool calls then there is no need for more responses
         if not message.tool_calls :
@@ -780,19 +766,19 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         for tc in message.tool_calls :
             if tc.name == "mark_as_resolved" :
                 await self.case_mark_as_resolved()
+        
         # Process low level tool calls
         tool_results = self.tool_server.process(message.tool_calls)
         
         # Process tool results
         if tool_results :
-            # Construct message
             message = ToolResultsMsg(
                 origin       = f"{origin}[stage-2]",
                 tool_results = tool_results,
             )
-            message.print()
-            # Write message to storage and update manifest and state machine
-            await self.apply_and_persist_message(message)
+            message = await self.apply_and_persist_message(message)
+            if self.debug :
+                message.print()
         
         # If case remains open then signal need for another response
         return bool( self.case_manifest and self.case_manifest.is_open )
@@ -823,17 +809,15 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         agent_updates : dict = self.load_system_message("agent_updates.json")
         message_text  : str  = agent_updates.get(message_name)
         if message_text :
-            # Construct message
             message = ServerTextMsg(
                 origin    = here(),
                 text      = message_text,
                 user_eyes = True,
             )
-            message.print()
-            # Write message to storage and update manifest and state machine
             message = await self.apply_and_persist_message(message)
-            # Send message to human
             await self.send_text(message)
+            if self.debug :
+                message.print()
         
         return
 
