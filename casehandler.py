@@ -10,6 +10,7 @@ Case Handler
 * Mark cases as resolved.
 """
 
+from datetime import timedelta
 from pathlib import Path
 from uuid import UUID
 
@@ -39,7 +40,10 @@ from wa_agents.case_handler_models import (
     ToolResultsMsg,
 )
 from wa_agents.io_functions import markdown_to_whatsapp
-from wa_agents.io_models import WhatsApp_IB_Message
+from wa_agents.io_models import (
+    WhatsApp_IB_Message,
+    WhatsApp_IB_MessageEcho,
+)
 from wa_agents.supabase import (
     WhatsAppDatabaseRecord_Business,
     WhatsAppDatabaseRecord_Contact,
@@ -171,20 +175,22 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
         contact  : WhatsAppDatabaseRecord_Contact,
         *,
         api_inbound_msg_id : int | None        = None,
+        database_url       : str | None        = None,
+        debug              : bool              = False,
         handler_id         : int | None        = None,
         owner_token        : UUID | str | None = None,
-        debug              : bool              = False,
-        database_url       : str | None        = None,
+        silence_timeout    : timedelta | None  = None,
     ) -> None :
         
         super().__init__(
             business,
             contact,
             api_inbound_msg_id = api_inbound_msg_id,
+            database_url       = database_url,
+            debug              = debug,
             handler_id         = handler_id,
             owner_token        = owner_token,
-            debug              = debug,
-            database_url       = database_url,
+            silence_timeout    = silence_timeout,
         )
         
         # Drone model choice
@@ -394,13 +400,13 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
     
     async def process_message(
         self,
-        message       : WhatsApp_IB_Message,
+        message       : WhatsApp_IB_Message | WhatsApp_IB_MessageEcho,
         media_content : bytes | None = None,
     ) -> bool :
         
         # Dedup and ingest message
         msg = await self.dedup_and_ingest_message( message, media_content)
-        if isinstance( msg, HumanServerMsg) :
+        if ( not msg ) or isinstance( msg, HumanServerMsg) :
             return False
         
         # If user message is not text, image, or interactive reply then
@@ -420,7 +426,7 @@ class CaseHandler (AsyncWhatsAppCaseHandler) :
             
             return False
         
-        return True if msg else False
+        return True
     
     # =====================================================================================
     # RUN WHILE_IN ACTION AS A FUNCTION OF FSM STATE
