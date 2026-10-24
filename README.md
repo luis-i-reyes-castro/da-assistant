@@ -28,7 +28,8 @@ for the drone model; an image moves it directly to `have_image_no_model`.
 
 The handler itself is initialized as a `transitions.AsyncMachine` via
 `AsyncWhatsAppCaseHandler.init_machine(...)`. The current FSM state and selected
-drone model are persisted together in `wa_case_handler_case_manifests.machine_state`:
+drone model are persisted together in
+`wa_agents.case_handler_case_manifests.machine_state`:
 plain state names are used before model selection, and values such as
 `match_agent,T50` are used afterward. Restoring a case does not replay transitions;
 stored messages are only scanned to rebuild the derived agent contexts.
@@ -144,7 +145,7 @@ queue worker in the same FastAPI process.
 Configure a business route after applying the current `wa_agents` schema:
 
 ```sql
-INSERT INTO public.wa_case_handler_routes (
+INSERT INTO wa_agents.case_handler_routes (
   business,
   contact,
   handler_key
